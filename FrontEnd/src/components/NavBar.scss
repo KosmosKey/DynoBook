@@ -1,0 +1,45 @@
+nav {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  .NavigationBar__TitleLogo {
+    color: #ec4f43;
+    font-size: 30px;
+  }
+  .NavigationBar__Input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6f8fa;
+    min-width: 300px;
+    padding: 6px 15px;
+    border-radius: 50px;
+    input {
+      padding: 10px;
+      width: 100%;
+      background: transparent;
+      outline-width: 0;
+      font-size: 16px;
+      border: none;
+    }
+    .MuiSvgIcon-root {
+      color: #b2b3b3;
+    }
+  }
+  .NavigationBar__ProfilePicture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .MuiSvgIcon-root {
+      font-size: 30px;
+    }
+    button {
+      margin-right: 5px;
+    }
+    .NavigationBar__NofiticationIcon {
+      margin-right: 15px;
+    }
+  }
+}

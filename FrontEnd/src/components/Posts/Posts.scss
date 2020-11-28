@@ -1,0 +1,153 @@
+.SocialMediaBody__PostsBody {
+  width: 100%;
+
+  .Posts__ {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid #f1f4f6;
+    background: #fff;
+    .Avatar {
+      height: 65px;
+      width: 65px;
+      background-size: cover;
+    }
+    .Posts__NameInformation {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+    }
+  }
+
+  .Posts__Name {
+    display: flex;
+    justify-content: space-between;
+    span {
+      color: #696969;
+    }
+    .Posts__AvatarTitle {
+      align-items: center;
+      display: flex;
+      cursor: pointer;
+      .Avatar {
+        border: 2px solid #f2f4f6;
+      }
+      .Posts__NameUsername {
+        margin-left: 10px;
+        h3 {
+          color: #141414;
+          cursor: pointer;
+        }
+        h3:hover {
+          text-decoration: underline;
+        }
+
+        p {
+          color: #a7a7a7;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .Posts__Image {
+    height: 350px;
+    width: 100%;
+    background: url("https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px 5px 2px 2px;
+  }
+  .Posts__Location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+      margin-right: 5px;
+      color: #696969;
+    }
+    .LocationIcon {
+      color: #ff786d;
+      font-size: 28px;
+    }
+  }
+  .Posts__LikesComments {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    .Posts__Icons {
+      display: flex;
+    }
+    .favourite:hover {
+      .HeartIcon {
+        color: red;
+      }
+    }
+    .messagebtn:hover {
+      .MessageOutline {
+        color: #93e2f8;
+      }
+    }
+
+    .sharebtn:hover {
+      .ShareIcon {
+        color: #14ccff;
+      }
+    }
+
+    .PostIconButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+
+      p {
+        margin-left: 0px;
+        font-size: 20px;
+        margin-bottom: 3px;
+        color: #a7a7a7;
+        font-weight: 500;
+      }
+
+      .MessageOutline {
+        color: #a7a7a7;
+        transition: 350ms ease-in-out;
+      }
+      .ShareIcon {
+        color: #93e2f8;
+        transition: 350ms ease-in-out;
+      }
+    }
+    .messagebtn {
+      p {
+        margin-bottom: 5px;
+      }
+    }
+    .Posts__Location {
+      display: flex;
+    }
+    .MuiButtonBase-root {
+      padding: 10px;
+      .HeartIcon {
+        color: #a7a7a7;
+        transition: 350ms ease-in-out;
+      }
+      .MuiSvgIcon-root {
+        font-size: 30px;
+      }
+    }
+  }
+  .Posts__Paragraph {
+    margin-top: 10px;
+    width: 100%;
+    p {
+      color: #141414;
+      line-height: 27px;
+      font-size: 17px;
+    }
+  }
+}

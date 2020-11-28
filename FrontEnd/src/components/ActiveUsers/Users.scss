@@ -1,0 +1,96 @@
+.OnlineUsers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+
+  .OnlineUsers__Avatar {
+    width: 55px;
+    height: 55px;
+  }
+  .OnlineUsers__ProfilePictureName {
+    display: flex;
+    align-items: center;
+    .OnlineUsers__Name {
+      margin-left: 10px;
+      h3 {
+        margin-left: 3px;
+        font-size: large;
+        color: #141414;
+      }
+      h3:hover {
+        text-decoration: underline;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 600;
+        color: #979797;
+      }
+    }
+  }
+  .OnlineUsers__ActiveButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgb(91, 244, 105);
+    margin-right: 15px;
+  }
+}
+
+.OnlineUsers:last-child {
+  margin-bottom: 0px !important;
+}
+
+.OnlineUsers:hover {
+  background: #fcfeff;
+}
+
+.OfflineUsers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  background: #fff;
+
+  .OfflineUsers__Avatar {
+    width: 55px;
+    height: 55px;
+  }
+  .OfflineUsers__ProfilePictureName {
+    display: flex;
+    align-items: center;
+    .OfflineUsers__Name {
+      margin-left: 10px;
+      h3 {
+        margin-left: 3px;
+        font-size: large;
+        color: #141414;
+      }
+      h3:hover {
+        text-decoration: underline;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 600;
+        color: #979797;
+      }
+    }
+  }
+  .OfflineUsers__ActiveButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #dadada;
+    margin-right: 15px;
+  }
+}
+
+.OfflineUsers:hover {
+  background: #fcfeff;
+}

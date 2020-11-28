@@ -1,0 +1,148 @@
+.Login {
+  background: #eb4233;
+  flex: 1;
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+  .Login__Body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  .Login__Container {
+    background: #fff;
+    border-radius: 5px;
+    padding: 35px;
+    width: 100%;
+    max-width: 600px;
+    height: fit-content;
+    h1 {
+      text-align: center;
+      color: #eb4233;
+      font-size: 38px;
+      padding-top: 20px;
+      margin-bottom: 40px;
+    }
+  }
+  .Login__UserNameInput {
+    display: flex;
+    align-items: center;
+    background: #f4f7f6;
+    margin-top: 30px;
+    input {
+      border: none;
+      outline-width: 0;
+      background: transparent;
+      padding: 15px 10px;
+      width: 100%;
+    }
+  }
+  .MuiSvgIcon-root {
+    position: relative;
+    background: transparent;
+    margin-left: 10px;
+  }
+
+  .Login__EmailAddress {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    background: #f4f7f6;
+    input {
+      width: 100%;
+      border: none;
+      outline-width: 0;
+      padding: 15px;
+      background: transparent;
+    }
+  }
+
+  .LoginInput__FirstLast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+
+    .LoginInput__FirstLast,
+    .Login__InputField {
+      width: 100%;
+    }
+    .first {
+      margin-right: 15px;
+    }
+    .Login__InputField {
+      background: #f4f7f6;
+      input {
+        width: 100%;
+        padding: 15px 10px;
+        border: none;
+        border: none;
+        outline-width: 0;
+        background: transparent;
+      }
+    }
+  }
+
+  .Login__Password {
+    display: flex;
+    align-items: center;
+    background: #f4f7f6;
+    margin-top: 30px;
+    input {
+      width: 100%;
+      padding: 15px 10px;
+      outline-width: 0;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px;
+    background: #eb4233;
+    font-weight: bold;
+    color: #fff;
+    transition: 350ms ease;
+    border: 2px solid transparent;
+  }
+
+  button:hover {
+    background: #fff;
+    color: #eb4233;
+    border: 2px solid #eb4233;
+  }
+}
+
+@media screen and (max-width: 506px) {
+  .Login {
+    padding: 20px;
+    .Login__Container {
+      h1 {
+        font-size: 30px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 354px) {
+  .Login {
+    padding: 20px;
+    .Login__Container {
+      padding: 20px;
+      h1 {
+        font-size: 23px !important;
+      }
+    }
+    .LoginInput__FirstLast {
+      flex-direction: column;
+      .last {
+        margin-top: 30px;
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.Suggestions {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  .Suggestions__Profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .Suggestions__Avatar {
+      width: 65px;
+      height: 65px;
+      margin-right: 13px;
+      border: 2px solid #f1f4f6;
+    }
+    .MuiButtonBase-root {
+      padding: 8px;
+    }
+    .Suggestions__User {
+      display: flex;
+      align-items: center;
+    }
+    .Suggestions__ProfileTitle {
+      h4 {
+        color: #292929;
+        cursor: pointer;
+      }
+      h4:hover {
+        text-decoration: underline;
+      }
+      p {
+        color: #b0b0b0;
+        font-weight: 600;
+      }
+    }
+    .Suggestions__AddButton {
+      .CircleOutlineIcon {
+        color: #eb4233 !important;
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+.Suggestions:hover {
+  background: #fcfeff;
+}

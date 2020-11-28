@@ -1,0 +1,218 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.SocialMediaBody__ {
+  background: #f6f8fa;
+  flex: 1;
+  display: flex;
+  .SocialMediaBody__Posts {
+    flex: 0.5;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    .SocialMediaBody__InputContainer {
+      background: #fff;
+      height: fit-content;
+      padding: 30px;
+      width: 100%;
+      border-radius: 5px;
+      border: 2px solid #f3f5f7;
+      .SocialMediaBody__InputContainerDiv {
+        height: 200px;
+      }
+      textarea {
+        width: 100%;
+        font-size: 17px;
+        height: 100%;
+        padding: 25px;
+        line-height: 25px;
+        border: none;
+        outline-width: 0;
+        resize: none;
+      }
+
+      .SocialMediaBody__IconsSend {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 35px;
+        .Icons__ {
+          .MuiSvgIcon-root {
+            color: #c7c7c7;
+            font-size: 28px;
+          }
+        }
+        .SendBtn {
+          font-weight: bold;
+          color: #fff;
+          margin-top: 2px;
+          padding: 8px 40px !important;
+          background: #eb4233;
+          font-size: 16px;
+          border: 2px solid transparent;
+          transition: 350ms ease;
+          .SendIcon {
+            font-size: 20px;
+            margin-left: 8px;
+          }
+        }
+        .SendBtn:hover {
+          background: #fff;
+          color: #eb4233;
+          border: 2px solid #eb4233;
+        }
+      }
+    }
+  }
+  .SocialMediaBody__ProfileTrends {
+    flex: 0.3;
+  }
+  .SocialMediaBody__OnlineOfflineUsers {
+    background: #fff;
+    flex: 0.2;
+    border-top: 2px solid #f1f4f6;
+    border-left: 2px solid #f1f4f6;
+  }
+
+  .SocialMediaProfile__Followers {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    .Posts {
+      text-align: center;
+      margin: 0 15px;
+      margin-bottom: 30px;
+      color: #838383;
+      h2 {
+        color: #696969;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .SocialMediaBody__ProfileTrends {
+    padding: 30px 0;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+
+    .SocialMediaBodyProfile__Header {
+      height: 150px;
+      background: url("https://images.hdqwalls.com/download/best-nature-image-1440x900.jpg");
+      background-size: cover;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    .SocialMediaBodyProfile__Profile {
+      background: #fff;
+      width: 100%;
+      border: 2px solid #f1f4f6;
+      border-radius: 5px;
+    }
+    .SocialMediaProfile__Info {
+      display: flex;
+      justify-content: center;
+
+      .AvatarProfile {
+        display: flex;
+        position: relative;
+        .Avatar {
+          position: absolute;
+          top: -35px;
+          border: 2px solid #fff;
+          height: 100px;
+          width: 100px;
+          background-size: cover;
+        }
+        .Name {
+          .Name__H1_Icon {
+            display: flex;
+            align-items: center;
+            .MuiSvgIcon-root {
+              margin-left: 7px;
+              font-size: 20px;
+              color: #eb4233;
+            }
+          }
+
+          margin-left: 115px;
+          h1 {
+            color: #131313;
+            font-size: 30px;
+          }
+          p {
+            color: #979797;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  .SocialMediaBody__Suggestions {
+    background: #fff;
+    border: 2px solid #f1f4f6;
+    margin-top: 30px;
+    h3 {
+      color: #131313;
+      font-size: 23px;
+      margin-left: 15px;
+      margin-top: 15px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .SocialMediaBody__Trends {
+    background: #fff;
+    border: 2px solid #f1f4f6;
+    margin-top: 10px;
+    padding: 15px;
+    .SocialMediaBody__TrendsBody {
+      padding-top: 7px;
+    }
+    h3 {
+      font-size: 23px;
+    }
+  }
+
+  .SocialMediaBody__OnlineOfflineUsers {
+    .SocialMediaBody__Online {
+      padding: 10px;
+      .SocialMediaBody__OnlineText {
+        color: #838383;
+        font-weight: 600;
+        font-size: large;
+        margin-bottom: 15px;
+        margin-top: 10px;
+        padding: 10px;
+      }
+    }
+    .SocialMediaBody__OfflineText {
+      color: #838383;
+      font-weight: 600;
+      font-size: large;
+      margin-bottom: 15px;
+      padding: 10px;
+    }
+    .SocialMediaBody__OfflineContainer {
+      padding: 10px;
+    }
+  }
+}
+.OfflineUsers {
+  background: yellow;
+}

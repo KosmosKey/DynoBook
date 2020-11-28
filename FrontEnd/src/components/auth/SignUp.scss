@@ -1,0 +1,102 @@
+.SignUp {
+  background: #eb4233;
+  flex: 1;
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+  .SignUp__Body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  .SignUp__Container {
+    background: #fff;
+    border-radius: 5px;
+    padding: 35px;
+    width: 100%;
+    max-width: 600px;
+    height: fit-content;
+    h1 {
+      text-align: center;
+      color: #eb4233;
+      font-size: 38px;
+      padding-top: 20px;
+      margin-bottom: 30px;
+    }
+  }
+  .SignUp__UserNameInput {
+    display: flex;
+    align-items: center;
+    background: #f4f7f6;
+    input {
+      border: none;
+      outline-width: 0;
+      background: transparent;
+      padding: 15px 10px;
+      width: 100%;
+    }
+  }
+  .MuiSvgIcon-root {
+    position: relative;
+    background: transparent;
+    margin-left: 10px;
+  }
+
+  .SignUp__Password {
+    display: flex;
+    align-items: center;
+    background: #f4f7f6;
+    margin-top: 30px;
+    input {
+      width: 100%;
+      padding: 15px 10px;
+      outline-width: 0;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px;
+    background: #eb4233;
+    font-weight: bold;
+    color: #fff;
+    transition: 350ms ease;
+    border: 2px solid transparent;
+  }
+
+  button:hover {
+    background: #fff;
+    color: #eb4233;
+    border: 2px solid #eb4233;
+  }
+}
+
+@media screen and (max-width: 506px) {
+  .SignUp {
+    padding: 20px;
+    .SignUp__Container {
+      h1 {
+        font-size: 30px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 354px) {
+  .SignUp {
+    padding: 20px;
+    .SignUp__Container {
+      padding: 20px;
+      h1 {
+        font-size: 23px !important;
+      }
+    }
+  }
+}
