@@ -8,9 +8,6 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 require("./Passport");
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(
   cookieSession({
     name: "session",
@@ -26,10 +23,15 @@ app.use(
   })
 );
 
-app.use(passport.session());
-app.use(passport.initialize());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 5000;
+app.use(passport.initialize());
+app.use(passport.session());
+
+const PORT = process.env.PORT || 6000;
+
+app.use("/dyno", require("./router"));
 
 mongoose
   .connect(`${process.env.MONGODB}`, {
@@ -40,4 +42,9 @@ mongoose
   .then(() => console.log("MonogDB Is Successfully Connected..."))
   .catch(() => console.log("Failed To Connect MongoDB"));
 
-app.listen(() => console.log(`The port is running on ${PORT}`));
+app.get("/", (req, res) => {
+  res.send(req.user);
+  console.log(req.user);
+});
+
+app.listen(PORT, () => console.log(`The port is running on ${PORT}`));
