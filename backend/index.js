@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 5000;
 
 app.use("/dyno", require("./router"));
 
@@ -42,9 +42,5 @@ mongoose
   .then(() => console.log("MonogDB Is Successfully Connected..."))
   .catch(() => console.log("Failed To Connect MongoDB"));
 
-app.get("/", (req, res) => {
-  res.send(req.user);
-  console.log(req.user);
-});
 
 app.listen(PORT, () => console.log(`The port is running on ${PORT}`));

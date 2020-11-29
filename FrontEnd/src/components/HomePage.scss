@@ -76,6 +76,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  img {
+    position: absolute;
+    bottom: -50px;
+    max-width: 690px;
+    z-index: 1;
+  }
   svg {
     width: 100%;
     background: #fff;
@@ -84,13 +90,6 @@
     stroke: #eb4233;
     stroke-width: 5px;
   }
-}
-
-img {
-  position: absolute;
-  bottom: -50px;
-  max-width: 690px;
-  z-index: 1;
 }
 
 .ParticlesJS {

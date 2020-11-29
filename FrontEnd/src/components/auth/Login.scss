@@ -12,7 +12,13 @@
     align-items: center;
     flex: 1;
   }
+  .Login__SuccessMessage {
+    margin-bottom: 30px;
+  }
 
+  .Login__ErrorAlert {
+    margin-bottom: 30px;
+  }
   .Login__Container {
     background: #fff;
     border-radius: 5px;
@@ -25,7 +31,7 @@
       color: #eb4233;
       font-size: 38px;
       padding-top: 20px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
   }
   .Login__UserNameInput {

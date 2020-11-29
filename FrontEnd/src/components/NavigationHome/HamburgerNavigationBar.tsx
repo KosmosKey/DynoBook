@@ -1,7 +1,7 @@
-import { Button } from "@material-ui/core";
 import React from "react";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import "./Hamburger.scss";
-import HomeIcon from "@material-ui/icons/Home";
 
 interface NavigationProps {
   navBar: boolean;
@@ -15,25 +15,37 @@ const HamburgerNavigationBar: React.FC<NavigationProps> = ({
   return (
     <div className={`HamburgerNavigationBar ${navBar && "active"}`}>
       <div className="HamburgerContainer">
-        <h1>DynoBook</h1>
-        <Button
-          className="HamburgerNavigationbar__ButtonOne"
+        <Link
+          to="/"
+          style={{ textDecoration: "none", width: "100%" }}
           onClick={navClose}
         >
-          Home
-        </Button>
-        <Button
-          className="HamburgerNavigationbar__ButtonOne"
-          onClick={navClose}
-        >
-          Log In
-        </Button>
-        <Button
-          className="HamburgerNavigationbar__ButtonTwo"
-          onClick={navClose}
-        >
-          Create Account
-        </Button>
+          <h1>DynoBook</h1>
+        </Link>
+        <Link to="/" style={{ textDecoration: "none", width: "100%" }}>
+          <Button
+            className="HamburgerNavigationbar__ButtonOne"
+            onClick={navClose}
+          >
+            Home
+          </Button>
+        </Link>
+        <Link to="/Login" style={{ textDecoration: "none", width: "100%" }}>
+          <Button
+            className="HamburgerNavigationbar__ButtonOne"
+            onClick={navClose}
+          >
+            Log In
+          </Button>
+        </Link>
+        <Link to="/Signup" style={{ textDecoration: "none", width: "100%" }}>
+          <Button
+            className="HamburgerNavigationbar__ButtonTwo"
+            onClick={navClose}
+          >
+            Create Account
+          </Button>
+        </Link>
       </div>
       <div className="HamburgerNavigtaionBar__Black" onClick={navClose}></div>
     </div>

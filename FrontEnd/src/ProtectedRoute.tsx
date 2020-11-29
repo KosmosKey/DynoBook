@@ -18,7 +18,7 @@ const ProtectedRoute: React.FC<IProps> = ({
     <Route
       {...rest}
       render={(props: any) =>
-        !user ? <Component {...props} /> : <Redirect to="/" />
+        !user ? <Component {...props} /> : <Redirect to="/Home" />
       }
     />
   );

@@ -5,7 +5,7 @@ const User = require("./User");
 const bcrypt = require("bcryptjs");
 
 app.post("/register", (req, res, next) => {
-  const { first_name, last_name, email, username, password } = req.body;
+  const { first_name, last_name, email, username, password, image } = req.body;
   if (!first_name || !last_name || !email || !username || !password)
     return res.status(400).send("You haven't filled out all the fields");
   User.findOne({ username: username }).then((user) => {
@@ -16,15 +16,16 @@ app.post("/register", (req, res, next) => {
         first_name: first_name,
         last_name: last_name,
         email: email,
+        image: image,
         password: hash,
       });
 
-      newProfile.save().then((err, user) => {
-        if (err) return res.status(400).send(err);
-        if (user)
+      newProfile.save().then((user) => {
+        if (user) {
           return res
             .status(200)
-            .send("Congrats! You can now go and Log In with your user.");
+            .send("Congrats! You can now Log In with your user.");
+        }
       });
     });
   });
@@ -45,6 +46,14 @@ app.post("/login", (req, res, next) => {
       });
     }
   })(req, res, next);
+});
+
+app.get("/", (req, res) => {
+  if (!req.user) {
+    res.status(400).send("no user");
+  } else {
+    res.status(200).send(req.user);
+  }
 });
 
 module.exports = app;

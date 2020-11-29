@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import "./HomePage.scss";
 import BackgroundImage from "./header-hero.png";
 import Particles from "react-particles-js";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -17,8 +18,22 @@ const HomePage = () => {
               get started!
             </p>
             <div className="HomePage__Buttons">
-              <Button className="HomePage__GetStarted">Get Started</Button>
-              <Button className="HomePage__LogIn">Log In</Button>
+              <Link
+                to="/Signup"
+                style={{
+                  width: "100%",
+                  marginRight: "20px",
+                  textDecoration: "none",
+                }}
+              >
+                <Button className="HomePage__GetStarted">Get Started</Button>
+              </Link>
+              <Link
+                to="/Login"
+                style={{ width: "100%", textDecoration: "none" }}
+              >
+                <Button className="HomePage__LogIn">Log In</Button>
+              </Link>
             </div>
           </div>
           <svg viewBox="0 0 500 80" preserveAspectRatio="none">
