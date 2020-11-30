@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.scss";
@@ -10,37 +10,45 @@ import NavigationHome from "./components/NavigationHome/NavigationHome";
 import SocialMediaBody from "./components/SocialMediaBody";
 import PrivateRouter from "./PrivateRouter";
 import ProtectedRoute from "./ProtectedRoute";
+import { Route } from "react-router-dom";
 import {
   setUserInformation,
   userAuthenticated,
+  userInformation,
+  loaderScreen,
   userError,
 } from "./reducerSlices/authSlicer";
 import axios from "./Axios";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
+  const [userLoader, setUserLoader] = useState<boolean>(true);
+
   const user = useSelector(userAuthenticated);
+
+  const userInfo = useSelector(userInformation);
+
+  const loader = useSelector(loaderScreen);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     axios
       .get("/dyno", {
-        headers: {
-          "Content-Type": "application/json",
-        },
         withCredentials: true,
       })
       .then((res) => {
         dispatch(setUserInformation(res.data));
-        console.log(res.data);
+        setUserLoader(false);
       })
       .catch((err) => {
-        dispatch(userError);
-        console.log(err.response.data);
+        dispatch(userError(null));
+        setUserLoader(false);
       });
   }, [user, dispatch]);
   return (
     <div className="App">
+      {loader && <LoadingScreen />}
       <NavigationHome />
       <Switch>
         <ProtectedRoute exact path="/" component={HomePage} />

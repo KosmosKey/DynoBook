@@ -216,3 +216,52 @@
 .OfflineUsers {
   background: yellow;
 }
+
+.LoadingScreen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #eb4233;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  .LoadingScreen__Circular {
+    color: #fff;
+  }
+  .LoadingScreen__Logo {
+    width: 100%;
+    max-width: 350px;
+    h1 {
+      color: #fff;
+      font-size: 65px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .LoadingScreen__Linear {
+      color: #fff;
+    }
+  }
+  .MuiLinearProgress-bar {
+    background: #fff;
+  }
+  .MuiLinearProgress-colorSecondary {
+    background-color: rgb(255, 174, 202);
+  }
+}
+
+@media screen and (max-width: 371px) {
+  .LoadingScreen {
+    .LoadingScreen__Logo {
+      width: 100%;
+      max-width: 200px;
+      h1 {
+        color: #fff;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./SignUp.scss";
 import PersonIcon from "@material-ui/icons/Person";
@@ -37,7 +37,8 @@ const SignUp: React.FC = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        dispatch(loginSuccess);
+        history.push("/Home");
+        dispatch(loginSuccess(true));
         setErrorLogin("");
         setLoginTargets({ ...loginTargets, username: "", password: "" });
       })

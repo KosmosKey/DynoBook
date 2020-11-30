@@ -235,6 +235,13 @@
     img {
       max-width: 250px !important;
     }
+    .HomePage__Buttons {
+      flex-direction: column;
+      margin-top: 15px !important;
+      button:last-child {
+        margin-top: 15px;
+      }
+    }
     header {
       padding-top: 50px;
     }
