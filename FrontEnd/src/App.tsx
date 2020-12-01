@@ -10,7 +10,6 @@ import NavigationHome from "./components/NavigationHome/NavigationHome";
 import SocialMediaBody from "./components/SocialMediaBody";
 import PrivateRouter from "./PrivateRouter";
 import ProtectedRoute from "./ProtectedRoute";
-import { Route } from "react-router-dom";
 import {
   setUserInformation,
   userAuthenticated,
@@ -22,13 +21,11 @@ import axios from "./Axios";
 import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
-  const [userLoader, setUserLoader] = useState<boolean>(true);
-
   const user = useSelector(userAuthenticated);
 
-  const userInfo = useSelector(userInformation);
-
   const loader = useSelector(loaderScreen);
+
+  const userInfo = useSelector(userInformation);
 
   const dispatch = useDispatch();
 
@@ -39,17 +36,15 @@ function App() {
       })
       .then((res) => {
         dispatch(setUserInformation(res.data));
-        setUserLoader(false);
       })
       .catch((err) => {
         dispatch(userError(null));
-        setUserLoader(false);
       });
   }, [user, dispatch]);
   return (
     <div className="App">
       {loader && <LoadingScreen />}
-      <NavigationHome />
+      {userInfo ? <NavigationBar /> : <NavigationHome />}
       <Switch>
         <ProtectedRoute exact path="/" component={HomePage} />
         <ProtectedRoute path="/Login" component={SignUp} />

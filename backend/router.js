@@ -22,9 +22,10 @@ app.post("/register", (req, res, next) => {
 
       newProfile.save().then((user) => {
         if (user) {
-          return res
-            .status(200)
-            .send("Congrats! You can now Log In with your user.");
+          return res.status(200).json({
+            id: user.id,
+            message: "Congrats! You can now Log In with your user.",
+          });
         }
       });
     });
@@ -54,6 +55,13 @@ app.get("/", (req, res) => {
   } else {
     res.status(200).send(req.user);
   }
+});
+
+app.post("/logout", (req, res) => {
+  req.logOut();
+  req.session = null;
+  req.user = null;
+  res.send("Logged out!");
 });
 
 module.exports = app;

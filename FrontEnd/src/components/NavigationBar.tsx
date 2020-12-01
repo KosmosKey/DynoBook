@@ -1,12 +1,30 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import HomeIcon from "@material-ui/icons/Home";
 import { Avatar, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { logoutUser } from "../reducerSlices/authSlicer";
+import axios from "../Axios";
+import Cookies from "js-cookie";
 
 const NavigationBar: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    axios
+      .post("/dyno/logout")
+      .then((res) => {
+        dispatch(logoutUser(false));
+        sessionStorage.removeItem("session");
+        alert("Yayy");
+      })
+      .catch((err) => {});
+  };
+
   return (
     <nav className="NavigationBar">
       <div className="NavigationBar__Input">
@@ -25,6 +43,9 @@ const NavigationBar: React.FC = () => {
           <NotificationsIcon />
         </IconButton>
         <Avatar>H</Avatar>
+        <IconButton style={{ marginLeft: "10px" }} onClick={logout}>
+          <ExitToAppIcon />
+        </IconButton>
       </div>
     </nav>
   );

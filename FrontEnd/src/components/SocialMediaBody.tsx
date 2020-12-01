@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
@@ -11,14 +12,18 @@ import Trends from "./Suggestions/Trends";
 import Posts from "./Posts/Posts";
 import OnlineUsers from "./ActiveUsers/OnlineUsers";
 import OfflineUsers from "./ActiveUsers/OfflineUsers";
+import { userInformation } from "../reducerSlices/authSlicer";
+import CreateIcon from "@material-ui/icons/Create";
 
 const SocialMediaBody: React.FC = () => {
+  const user = useSelector(userInformation);
+
   return (
     <div className="SocialMediaBody__">
       <div className="SocialMediaBody__Posts">
         <div className="SocialMediaBody__InputContainer">
           <div className="SocialMediaBody__InputContainerDiv">
-            <textarea placeholder="What's going on Mago?" />
+            <textarea placeholder={`What's going on ${user?.first_name}?`} />
           </div>
           <div className="SocialMediaBody__IconsSend">
             <div className="Icons__">
@@ -56,18 +61,25 @@ const SocialMediaBody: React.FC = () => {
           <div className="SocialMediaBodyProfile__ProfileInformation">
             <div className="SocialMediaProfile__Info">
               <div className="AvatarProfile">
-                <Avatar
-                  src="https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=800&q=70"
-                  className="Avatar"
-                >
-                  H
-                </Avatar>
+                <div className="Avatar__Div">
+                  <Avatar src={user?.image && user.image} className="Avatar">
+                    {`${!user?.image && user?.username?.charAt(0)}`}
+                  </Avatar>
+                  <div className="Avatar__Edit">
+                    <p>
+                      <CreateIcon />
+                      Edit
+                    </p>
+                  </div>
+                </div>
                 <div className="Name">
                   <div className="Name__H1_Icon">
-                    <h1>Gautham SK</h1>
+                    <h1>
+                      {user?.first_name} {user?.last_name?.charAt(0)}.
+                    </h1>
                     <CheckCircleIcon />
                   </div>
-                  <p>@gautham</p>
+                  <p>@{user?.username}</p>
                 </div>
               </div>
             </div>

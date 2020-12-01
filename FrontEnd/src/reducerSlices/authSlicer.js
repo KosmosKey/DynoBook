@@ -22,6 +22,11 @@ export const authReducer = createSlice({
       state.authenticated = false;
       state.loading = false;
     },
+    logoutUser: (state, action) => {
+      state.user = null;
+      state.authenticated = action.payload;
+      state.loading = true;
+    },
   },
 });
 
@@ -29,6 +34,7 @@ export const {
   setUserInformation,
   loginSuccess,
   userError,
+  logoutUser,
 } = authReducer.actions;
 
 export const userInformation = (state) => state.user.user;

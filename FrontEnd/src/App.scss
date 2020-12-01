@@ -127,17 +127,54 @@
     .SocialMediaProfile__Info {
       display: flex;
       justify-content: center;
-
-      .AvatarProfile {
-        display: flex;
+      .Avatar__Div {
         position: relative;
-        .Avatar {
+      }
+      .AvatarProfile {
+        position: relative;
+
+        .Avatar__Div {
           position: absolute;
           top: -35px;
           border: 2px solid #fff;
           height: 100px;
           width: 100px;
           background-size: cover;
+          text-transform: uppercase;
+          border-radius: 50px;
+          .Avatar {
+            height: 100%;
+            width: 100%;
+            font-size: 50px;
+            background: #eb5043;
+            cursor: pointer;
+          }
+          .Avatar__Edit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 350ms ease;
+            opacity: 0;
+
+            p {
+              font-size: medium;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .MuiSvgIcon-root {
+                font-size: large;
+                margin-right: 2px;
+              }
+            }
+          }
         }
         .Name {
           .Name__H1_Icon {
@@ -163,6 +200,7 @@
       }
     }
   }
+
   .SocialMediaBody__Suggestions {
     background: #fff;
     border: 2px solid #f1f4f6;
@@ -248,6 +286,12 @@
   }
   .MuiLinearProgress-colorSecondary {
     background-color: rgb(255, 174, 202);
+  }
+}
+
+.Avatar__Div:hover {
+  .Avatar__Edit {
+    opacity: 1 !important;
   }
 }
 

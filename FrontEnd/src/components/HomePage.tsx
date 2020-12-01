@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
 import "./HomePage.scss";
 import BackgroundImage from "./header-hero.png";

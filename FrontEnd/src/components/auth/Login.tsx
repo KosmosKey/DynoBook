@@ -6,6 +6,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import { Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "../../Axios";
+import db from "../firebase";
 
 type eventTargets = {
   first_name: string;
@@ -39,7 +40,7 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         setErrorAlert("");
-        setSuccessAlert(res.data);
+        setSuccessAlert(res.data.message);
         setValueTargets({
           ...valueTargets,
           first_name: "",
@@ -47,6 +48,9 @@ const Login: React.FC = () => {
           username: "",
           email: "",
           password: "",
+        });
+        db.collection("user").add({
+          id: res.data.id,
         });
       })
       .catch((err) => {
