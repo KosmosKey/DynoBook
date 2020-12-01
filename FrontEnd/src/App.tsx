@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.scss";
@@ -41,6 +41,7 @@ function App() {
         dispatch(userError(null));
       });
   }, [user, dispatch]);
+
   return (
     <div className="App">
       {loader && <LoadingScreen />}

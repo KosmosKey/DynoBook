@@ -19,7 +19,7 @@ const NavigationBar: React.FC = () => {
       .post("/dyno/logout")
       .then((res) => {
         dispatch(logoutUser(false));
-        sessionStorage.removeItem("session");
+        Cookies.remove("session");
         alert("Yayy");
       })
       .catch((err) => {});
