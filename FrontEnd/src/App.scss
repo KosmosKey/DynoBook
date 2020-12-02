@@ -121,6 +121,13 @@
     }
   }
 
+  .SocialMediaProfile__Followers.loading {
+    width: 100%;
+    .Posts {
+      width: 100%;
+    }
+  }
+
   .SocialMediaBody__ProfileTrends {
     padding: 30px 0;
     padding-right: 40px;
@@ -152,6 +159,11 @@
       justify-content: center;
       .Avatar__Div {
         position: relative;
+      }
+      .Avatar__Skeleton {
+        height: 100%;
+        width: 100%;
+        background: #e3e3e3;
       }
       .AvatarProfile {
         position: relative;
@@ -219,6 +231,15 @@
             color: #979797;
             font-weight: 600;
           }
+        }
+      }
+
+      .AvatarProfile.skeleton {
+        width: 100%;
+        max-width: 80%;
+        padding-top: 10px;
+        .SocialMediaBody__Skeleton {
+          width: 100%;
         }
       }
     }
