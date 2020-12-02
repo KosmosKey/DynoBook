@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Picker } from "emoji-mart";
+import "emoji-mart/css/emoji-mart.css";
 import { useSelector } from "react-redux";
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
@@ -14,23 +16,88 @@ import OnlineUsers from "./ActiveUsers/OnlineUsers";
 import OfflineUsers from "./ActiveUsers/OfflineUsers";
 import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
+import db from "./firebase";
 
 const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
 
+  const [followers, setFollowers] = useState<any>([]);
+  const [following, setFollowing] = useState<any>([]);
+  const [posts, setPosts] = useState<any>([]);
+
+  const [textValue, setTextValue] = useState<string>("");
+
+  const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("users")
+        .doc(user.id)
+        .collection("followers")
+        .onSnapshot((snapshot) => {
+          setFollowers(snapshot.docs.map((doc) => doc.data()));
+        });
+
+      db.collection("users")
+        .doc(user.id)
+        .collection("following")
+        .onSnapshot((snapshot) => {
+          setFollowing(snapshot.docs.map((doc) => doc.data()));
+        });
+
+      db.collection("users")
+        .doc(user.id)
+        .collection("posts")
+        .onSnapshot((snapshot) => {
+          setPosts(snapshot.docs.map((doc) => doc.data()));
+        });
+    }
+  }, [user]);
+
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextValue(e.target.value);
+  };
+
+  const addEmojiInput = (e: any) => {
+    let emoji = e.native;
+    setTextValue(textValue + " " + emoji + " ");
+    setEmojiDisplay(!emojiDisplay);
+  };
+
+  const emoijFunction = () => {
+    if (emojiDisplay) {
+      setEmojiDisplay(!emojiDisplay);
+    }
+  };
+
   return (
     <div className="SocialMediaBody__">
+      {emojiDisplay && (
+        <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
+      )}
       <div className="SocialMediaBody__Posts">
         <div className="SocialMediaBody__InputContainer">
           <div className="SocialMediaBody__InputContainerDiv">
-            <textarea placeholder={`What's going on ${user?.first_name}?`} />
+            <textarea
+              placeholder={`What's going on ${user?.first_name}?`}
+              value={textValue}
+              onChange={onChange}
+            />
           </div>
           <div className="SocialMediaBody__IconsSend">
             <div className="Icons__">
               <IconButton>
                 <PhotoCameraIcon />
               </IconButton>
-              <IconButton>
+              {emojiDisplay && (
+                <span className="emoji__picker">
+                  <Picker onSelect={addEmojiInput} />
+                </span>
+              )}
+              <IconButton
+                className="Emoji__Button"
+                onClick={() => setEmojiDisplay(!emojiDisplay)}
+              >
                 <EmojiEmotionsIcon />
               </IconButton>
               <IconButton>
@@ -57,7 +124,9 @@ const SocialMediaBody: React.FC = () => {
       </div>
       <div className="SocialMediaBody__ProfileTrends">
         <div className="SocialMediaBodyProfile__Profile">
-          <div className="SocialMediaBodyProfile__Header"></div>
+          <div className="SocialMediaBodyProfile__Header">
+            <h1>DynoBook</h1>
+          </div>
           <div className="SocialMediaBodyProfile__ProfileInformation">
             <div className="SocialMediaProfile__Info">
               <div className="AvatarProfile">
@@ -86,15 +155,15 @@ const SocialMediaBody: React.FC = () => {
             <div className="SocialMediaProfile__Followers">
               <div className="Posts">
                 <h4>POSTS</h4>
-                <h2>1200</h2>
+                <h2>{posts?.length}</h2>
               </div>
               <div className="Posts">
                 <h4>FOLLOWING</h4>
-                <h2>200</h2>
+                <h2>{following?.length}</h2>
               </div>
               <div className="Posts">
                 <h4>FOLLOWERS</h4>
-                <h2>10.2k</h2>
+                <h2>{followers?.length}</h2>
               </div>
             </div>
           </div>

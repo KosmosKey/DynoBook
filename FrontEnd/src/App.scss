@@ -17,6 +17,15 @@
   background: #f6f8fa;
   flex: 1;
   display: flex;
+  .SocialMediaBody__Overlay {
+    position: fixed;
+    background: transparent;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
   .SocialMediaBody__Posts {
     flex: 0.5;
     display: flex;
@@ -50,10 +59,17 @@
         align-items: center;
         justify-content: space-between;
         margin-top: 35px;
+        position: relative;
         .Icons__ {
           .MuiSvgIcon-root {
             color: #c7c7c7;
             font-size: 28px;
+          }
+
+          .emoji__picker {
+            position: absolute;
+            bottom: -150px;
+            z-index: 100;
           }
         }
         .SendBtn {
@@ -113,10 +129,17 @@
 
     .SocialMediaBodyProfile__Header {
       height: 150px;
-      background: url("https://images.hdqwalls.com/download/best-nature-image-1440x900.jpg");
+      background: #eb5043;
       background-size: cover;
       border-top-right-radius: 5px;
       border-top-left-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      h1 {
+        font-size: xx-large;
+      }
     }
     .SocialMediaBodyProfile__Profile {
       background: #fff;

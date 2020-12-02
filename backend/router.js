@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 
 app.post("/register", (req, res, next) => {
   const { first_name, last_name, email, username, password, image } = req.body;
+
   if (!first_name || !last_name || !email || !username || !password)
     return res.status(400).send("You haven't filled out all the fields");
   User.findOne({ username: username }).then((user) => {

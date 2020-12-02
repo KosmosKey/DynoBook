@@ -14,17 +14,6 @@ import Cookies from "js-cookie";
 const NavigationBar: React.FC = () => {
   const dispatch = useDispatch();
 
-  const logout = () => {
-    axios
-      .post("/dyno/logout")
-      .then((res) => {
-        dispatch(logoutUser(false));
-        Cookies.remove("session");
-        alert("Yayy");
-      })
-      .catch((err) => {});
-  };
-
   return (
     <nav className="NavigationBar">
       <div className="NavigationBar__Input">
@@ -43,9 +32,6 @@ const NavigationBar: React.FC = () => {
           <NotificationsIcon />
         </IconButton>
         <Avatar>H</Avatar>
-        <IconButton style={{ marginLeft: "10px" }} onClick={logout}>
-          <ExitToAppIcon />
-        </IconButton>
       </div>
     </nav>
   );
