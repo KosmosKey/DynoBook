@@ -16,8 +16,9 @@ import OnlineUsers from "./ActiveUsers/OnlineUsers";
 import OfflineUsers from "./ActiveUsers/OfflineUsers";
 import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
-import db from "./firebase";
+import db, { storage } from "./firebase";
 import { Skeleton } from "@material-ui/lab";
+import CommentComponent from "./LikesComment/CommentComponent";
 
 const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
@@ -31,6 +32,10 @@ const SocialMediaBody: React.FC = () => {
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
+
+  const [image, setImage] = useState<any>("");
+
+  const [ili, setIli] = useState<any>("");
 
   useEffect(() => {
     if (user) {
@@ -75,13 +80,40 @@ const SocialMediaBody: React.FC = () => {
     }
   };
 
+  const fileChanger = (e: any) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  const upload = (e: React.FormEvent) => {
+    e.preventDefault();
+    const uploadTask = storage.ref(`/images/${image.name}`).put(image);
+    uploadTask.on("state_changed", console.log, console.error, () => {
+      storage
+        .ref("images")
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) =>
+          db.collection("users").add({ name: "name", image: url })
+        );
+    });
+  };
+
+  useEffect(() => {
+    db.collection("users").onSnapshot((snapshot) => {
+      snapshot.docs.map((doc) => setIli(doc.data()));
+    });
+  });
+
   return (
     <div className="SocialMediaBody__">
+      {/*  <CommentComponent /> */}
+
       {emojiDisplay && (
         <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
       )}
       <div className="SocialMediaBody__Posts">
-        <div className="SocialMediaBody__InputContainer">
+        <form className="SocialMediaBody__InputContainer" onSubmit={upload}>
           <div className="SocialMediaBody__InputContainerDiv">
             <textarea
               placeholder={`What's going on ${user?.first_name}?`}
@@ -91,7 +123,8 @@ const SocialMediaBody: React.FC = () => {
           </div>
           <div className="SocialMediaBody__IconsSend">
             <div className="Icons__">
-              <IconButton>
+              <IconButton className="InputFileBox">
+                <input type="file" onChange={fileChanger} />
                 <PhotoCameraIcon />
               </IconButton>
               {emojiDisplay && (
@@ -112,12 +145,12 @@ const SocialMediaBody: React.FC = () => {
                 <LocationOnIcon />
               </IconButton>
             </div>
-            <Button className="SendBtn">
+            <Button type="submit" className="SendBtn">
               Send
               <SendIcon className="SendIcon" />
             </Button>
           </div>
-        </div>
+        </form>
         <div className="SocialMediaBody__PostsBody">
           <Posts />
           <Posts />
@@ -236,45 +269,6 @@ const SocialMediaBody: React.FC = () => {
                 </div>
               </Fragment>
             )}
-
-            {/* <div className="SocialMediaProfile__Info">
-              <div className="AvatarProfile">
-                <div className="Avatar__Div">
-                  <Avatar src={user?.image && user.image} className="Avatar">
-                    {`${!user?.image && user?.username?.charAt(0)}`}
-                  </Avatar>
-                  <div className="Avatar__Edit">
-                    <p>
-                      <CreateIcon />
-                      Edit
-                    </p>
-                  </div>
-                </div>
-                <div className="Name">
-                  <div className="Name__H1_Icon">
-                    <h1>
-                      {user?.first_name} {user?.last_name?.charAt(0)}.
-                    </h1>
-                    <CheckCircleIcon />
-                  </div>
-                  <p>@{user?.username}</p>
-                </div>
-              </div>
-            </div>
-            <div className="SocialMediaProfile__Followers">
-              <div className="Posts">
-                <h4>POSTS</h4>
-                <h2>{posts?.length}</h2>
-              </div>
-              <div className="Posts">
-                <h4>FOLLOWING</h4>
-                <h2>{following?.length}</h2>
-              </div>
-              <div className="Posts">
-                <h4>FOLLOWERS</h4>
-                <h2>{followers?.length}</h2>
-              </div>
-            </div> */}
           </div>
         </div>
         <div className="SocialMediaBody__Suggestions">
