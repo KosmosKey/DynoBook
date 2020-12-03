@@ -2,7 +2,12 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 import { useSelector } from "react-redux";
-import { Avatar, Button, IconButton } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  IconButton,
+} from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -16,9 +21,9 @@ import OnlineUsers from "./ActiveUsers/OnlineUsers";
 import OfflineUsers from "./ActiveUsers/OfflineUsers";
 import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
+import ImageIcon from "@material-ui/icons/Image";
 import db, { storage } from "./firebase";
 import { Skeleton } from "@material-ui/lab";
-import CommentComponent from "./LikesComment/CommentComponent";
 
 const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
@@ -28,14 +33,14 @@ const SocialMediaBody: React.FC = () => {
   const [posts, setPosts] = useState<any>([]);
 
   const [textValue, setTextValue] = useState<string>("");
-
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
-
-  const [profileLoading, setProfileLoading] = useState<boolean>(true);
-
+  const [favorite, setFavourite] = useState(false);
+  const [emojiAdd, setEmojiAdd] = useState(false);
   const [image, setImage] = useState<any>("");
 
-  const [ili, setIli] = useState<any>("");
+  const [submitLoader, setSubmitLoader] = useState(false);
+
+  const [profileLoading, setProfileLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (user) {
@@ -72,6 +77,7 @@ const SocialMediaBody: React.FC = () => {
     let emoji = e.native;
     setTextValue(textValue + " " + emoji + " ");
     setEmojiDisplay(!emojiDisplay);
+    setEmojiAdd(true);
   };
 
   const emoijFunction = () => {
@@ -87,23 +93,35 @@ const SocialMediaBody: React.FC = () => {
 
   const upload = (e: React.FormEvent) => {
     e.preventDefault();
-    const uploadTask = storage.ref(`/images/${image.name}`).put(image);
-    uploadTask.on("state_changed", console.log, console.error, () => {
-      storage
-        .ref("images")
-        .child(image.name)
-        .getDownloadURL()
-        .then((url) =>
-          db.collection("users").add({ name: "name", image: url })
-        );
-    });
+    setSubmitLoader(true);
+    if (image) {
+      const uploadTask = storage.ref(`/images/${image.name}`).put(image);
+      uploadTask.on("state_changed", () => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            db.collection("users").add({ name: "name", image: url });
+            setTextValue("");
+            setImage(null);
+            setEmojiAdd(false);
+            setFavourite(false);
+            setSubmitLoader(false);
+          });
+      });
+    } else {
+      db.collection("users")
+        .add({ name: "name", image: image })
+        .then(() => {
+          setTextValue("");
+          setImage(null);
+          setEmojiAdd(false);
+          setFavourite(false);
+          setSubmitLoader(false);
+        });
+    }
   };
-
-  useEffect(() => {
-    db.collection("users").onSnapshot((snapshot) => {
-      snapshot.docs.map((doc) => setIli(doc.data()));
-    });
-  });
 
   return (
     <div className="SocialMediaBody__">
@@ -114,40 +132,87 @@ const SocialMediaBody: React.FC = () => {
       )}
       <div className="SocialMediaBody__Posts">
         <form className="SocialMediaBody__InputContainer" onSubmit={upload}>
-          <div className="SocialMediaBody__InputContainerDiv">
-            <textarea
-              placeholder={`What's going on ${user?.first_name}?`}
-              value={textValue}
-              onChange={onChange}
-            />
+          <div
+            className="SocialMediaBody__InputContainerDiv"
+            style={
+              submitLoader
+                ? {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }
+                : {}
+            }
+          >
+            {submitLoader ? (
+              <CircularProgress
+                size={100}
+                thickness={2.5}
+                className="SocialMediaBody__SubmitLoaderSpinner"
+              />
+            ) : (
+              <textarea
+                placeholder={`What's going on ${user?.first_name}?`}
+                value={textValue}
+                onChange={onChange}
+              />
+            )}
           </div>
-          <div className="SocialMediaBody__IconsSend">
-            <div className="Icons__">
-              <IconButton className="InputFileBox">
-                <input type="file" onChange={fileChanger} />
-                <PhotoCameraIcon />
-              </IconButton>
-              {emojiDisplay && (
-                <span className="emoji__picker">
-                  <Picker onSelect={addEmojiInput} />
-                </span>
-              )}
-              <IconButton
-                className="Emoji__Button"
-                onClick={() => setEmojiDisplay(!emojiDisplay)}
-              >
-                <EmojiEmotionsIcon />
-              </IconButton>
-              <IconButton>
-                <BookmarkIcon />
-              </IconButton>
-              <IconButton>
-                <LocationOnIcon />
-              </IconButton>
+          {image && (
+            <div
+              className="SocialMediaBody__ImageDiv"
+              style={submitLoader ? { display: "none" } : {}}
+            >
+              <ImageIcon />
+              <p>{image.name}</p>
             </div>
+          )}
+          <div
+            className="SocialMediaBody__IconsSend"
+            style={image ? { marginTop: "10px" } : { marginTop: "30px" }}
+          >
+            {submitLoader ? (
+              <div className="SocialMediaBody__SkeletonLoaders">
+                <Skeleton animation="wave" style={{ width: "100%" }} />
+                <Skeleton animation="wave" style={{ width: "100%" }} />
+              </div>
+            ) : (
+              <div className="Icons__">
+                <IconButton className="InputFileBox">
+                  <input type="file" onChange={fileChanger} />
+                  <PhotoCameraIcon style={image ? { color: "#EB5043" } : {}} />
+                </IconButton>
+                {emojiDisplay && (
+                  <span className="emoji__picker">
+                    <Picker onSelect={addEmojiInput} />
+                  </span>
+                )}
+                <IconButton
+                  className="Emoji__Button"
+                  onClick={() => setEmojiDisplay(!emojiDisplay)}
+                >
+                  <EmojiEmotionsIcon
+                    style={emojiAdd ? { color: "#F0CD0D" } : {}}
+                  />
+                </IconButton>
+                <IconButton onClick={() => setFavourite(!favorite)}>
+                  <BookmarkIcon style={favorite ? { color: "#FF786D" } : {}} />
+                </IconButton>
+                <IconButton>
+                  <LocationOnIcon />
+                </IconButton>
+              </div>
+            )}
+
             <Button type="submit" className="SendBtn">
-              Send
-              <SendIcon className="SendIcon" />
+              {submitLoader ? (
+                <p>Sending...</p>
+              ) : (
+                <Fragment>
+                  <p>Send</p>
+                  <SendIcon className="SendIcon" />
+                </Fragment>
+              )}
             </Button>
           </div>
         </form>

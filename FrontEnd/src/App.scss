@@ -26,6 +26,31 @@
     top: 0;
     z-index: 2;
   }
+
+  .SocialMediaBody__SkeletonLoaders {
+    flex: 1;
+    margin-right: 50px;
+    .MuiSkeleton-root {
+      width: 100%;
+    }
+  }
+  .SocialMediaBody__ImageDiv {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 10px;
+    .MuiSvgIcon-root {
+      color: #292929;
+      font-size: 25px;
+    }
+    p {
+      font-size: 13px;
+      color: #292929;
+      font-weight: 500;
+      padding-left: 5px;
+      padding-top: 0.5px;
+    }
+  }
   .SocialMediaBody__Posts {
     flex: 0.5;
     display: flex;
@@ -42,6 +67,9 @@
       border: 2px solid #f3f5f7;
       .SocialMediaBody__InputContainerDiv {
         height: 200px;
+        .SocialMediaBody__SubmitLoaderSpinner {
+          color: #eb5043;
+        }
       }
       textarea {
         width: 100%;
@@ -58,7 +86,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 35px;
         position: relative;
         .Icons__ {
           .InputFileBox {
@@ -71,6 +98,8 @@
               bottom: 0;
               border: none;
               outline: none;
+              cursor: pointer;
+              opacity: 0;
             }
           }
           .MuiSvgIcon-root {
@@ -90,9 +119,10 @@
           margin-top: 2px;
           padding: 8px 40px !important;
           background: #eb4233;
-          font-size: 16px;
+          font-size: medium;
           border: 2px solid transparent;
           transition: 350ms ease;
+          text-transform: capitalize;
           .SendIcon {
             font-size: 20px;
             margin-left: 8px;
