@@ -411,3 +411,30 @@
     }
   }
 }
+
+@media screen and (max-width: 1450px) {
+  .SocialMediaBody__OnlineOfflineUsers {
+    flex: 0.15 !important;
+  }
+  .SocialMediaBody__ProfileTrends {
+    flex: 0.45 !important;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .SocialMediaBody__OnlineOfflineUsers {
+    display: none;
+  }
+  .SocialMediaBody__ProfileTrends {
+    flex: 0.5 !important;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .SocialMediaBody__ProfileTrends {
+    display: none !important;
+  }
+  .SocialMediaBody__Posts {
+    flex: 1 !important;
+  }
+}

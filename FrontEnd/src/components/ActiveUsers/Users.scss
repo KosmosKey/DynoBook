@@ -20,6 +20,12 @@
         margin-left: 3px;
         font-size: large;
         color: #141414;
+        display: inline-block;
+        max-width: 80%;
+        height: 1.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       h3:hover {
         text-decoration: underline;
@@ -93,4 +99,35 @@
 
 .OfflineUsers:hover {
   background: #fcfeff;
+}
+
+@media screen and (max-width: 1450px) {
+  .OnlineUsers {
+    .OnlineUsers__ProfilePictureName {
+      .OnlineUsers__Name {
+        h3 {
+          display: none;
+        }
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+  .OnlineUsers__Avatar,
+  .OfflineUsers__Avatar {
+    margin-right: 5px !important;
+  }
+
+  .OfflineUsers__ProfilePictureName {
+    .OfflineUsers__Name {
+      h3 {
+        display: none;
+      }
+
+      p {
+        display: none;
+      }
+    }
+  }
 }

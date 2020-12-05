@@ -96,18 +96,6 @@ const SocialMediaBody: React.FC = () => {
   const fileChanger = (e: any) => {
     const file = e.target.files[0];
     setImageName(file);
-    if (file) {
-      const uploadTask = storage.ref(`/images/${file.name}`).put(file);
-      uploadTask.on("state_changed", () => {
-        storage
-          .ref("images")
-          .child(file.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImage(url);
-          });
-      });
-    }
   };
 
   const upload = (e: React.FormEvent) => {
@@ -117,6 +105,21 @@ const SocialMediaBody: React.FC = () => {
     } else {
       setSubmitLoader(true);
       setFailMessage(false);
+
+      if (imageName) {
+        const uploadTask = storage
+          .ref(`/images/${imageName.name}`)
+          .put(imageName);
+        uploadTask.on("state_changed", () => {
+          storage
+            .ref("images")
+            .child(imageName.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImage(url);
+            });
+        });
+      }
 
       db.collection("posts")
         .add({
@@ -216,7 +219,9 @@ const SocialMediaBody: React.FC = () => {
               <div className="Icons__">
                 <IconButton className="InputFileBox">
                   <input type="file" onChange={fileChanger} />
-                  <PhotoCameraIcon style={image ? { color: "#EB5043" } : {}} />
+                  <PhotoCameraIcon
+                    style={imageName ? { color: "#EB5043" } : {}}
+                  />
                 </IconButton>
                 {emojiDisplay && (
                   <span className="emoji__picker">
