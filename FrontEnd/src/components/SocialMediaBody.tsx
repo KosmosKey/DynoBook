@@ -11,7 +11,6 @@ import {
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@material-ui/icons/Send";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Suggestions from "./Suggestions/Suggestions";
@@ -23,7 +22,9 @@ import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
 import db, { storage } from "./firebase";
-import { Skeleton } from "@material-ui/lab";
+import { Alert, Skeleton } from "@material-ui/lab";
+import CloseIcon from "@material-ui/icons/Close";
+import firebase from "firebase";
 
 const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
@@ -32,15 +33,18 @@ const SocialMediaBody: React.FC = () => {
   const [following, setFollowing] = useState<any>([]);
   const [posts, setPosts] = useState<any>([]);
 
-  const [textValue, setTextValue] = useState<string>("");
+  const [textValue, setTextValue] = useState<any>("");
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
   const [favorite, setFavourite] = useState(false);
   const [emojiAdd, setEmojiAdd] = useState(false);
-  const [image, setImage] = useState<any>("");
+  const [image, setImage] = useState<any>(null);
+  const [imageName, setImageName] = useState<any>("");
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [failMessage, setFailMessage] = useState<boolean | string>(false);
 
   useEffect(() => {
     if (user) {
@@ -71,6 +75,9 @@ const SocialMediaBody: React.FC = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextValue(e.target.value);
+    if (e.target.value) {
+      setFailMessage("");
+    }
   };
 
   const addEmojiInput = (e: any) => {
@@ -88,39 +95,56 @@ const SocialMediaBody: React.FC = () => {
 
   const fileChanger = (e: any) => {
     const file = e.target.files[0];
-    setImage(file);
+    setImageName(file);
+    if (file) {
+      const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+      uploadTask.on("state_changed", () => {
+        storage
+          .ref("images")
+          .child(file.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImage(url);
+          });
+      });
+    }
   };
 
   const upload = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitLoader(true);
-    if (image) {
-      const uploadTask = storage.ref(`/images/${image.name}`).put(image);
-      uploadTask.on("state_changed", () => {
-        storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            db.collection("users").add({ name: "name", image: url });
-            setTextValue("");
-            setImage(null);
-            setEmojiAdd(false);
-            setFavourite(false);
-            setSubmitLoader(false);
-          });
-      });
+    if (!textValue) {
+      setFailMessage("Please do not leave the field blank.");
     } else {
-      db.collection("users")
-        .add({ name: "name", image: image })
+      setSubmitLoader(true);
+      setFailMessage(false);
+
+      db.collection("posts")
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          first_name: user.first_name,
+          last_name: user.last_name,
+          username: user.username,
+          message: textValue,
+          favorite: favorite,
+          image: image,
+        })
         .then(() => {
           setTextValue("");
           setImage(null);
+          setImageName(null);
           setEmojiAdd(false);
           setFavourite(false);
           setSubmitLoader(false);
+          setUploadSuccess(true);
         });
+
+      setTimeout(() => setUploadSuccess(false), 2500);
     }
+  };
+
+  const resetImage = () => {
+    setImage(null);
+    setImageName(null);
   };
 
   return (
@@ -132,6 +156,12 @@ const SocialMediaBody: React.FC = () => {
       )}
       <div className="SocialMediaBody__Posts">
         <form className="SocialMediaBody__InputContainer" onSubmit={upload}>
+          {uploadSuccess && (
+            <Alert severity="success">
+              Nice! You have successfully posted a post
+            </Alert>
+          )}
+          {failMessage && <Alert severity="error">{failMessage}</Alert>}
           <div
             className="SocialMediaBody__InputContainerDiv"
             style={
@@ -158,18 +188,24 @@ const SocialMediaBody: React.FC = () => {
               />
             )}
           </div>
-          {image && (
+          {imageName && (
             <div
               className="SocialMediaBody__ImageDiv"
               style={submitLoader ? { display: "none" } : {}}
             >
               <ImageIcon />
-              <p>{image.name}</p>
+              <p>{imageName.name}</p>
+              <IconButton
+                className="SocialMediaBody__CloseButton"
+                onClick={resetImage}
+              >
+                <CloseIcon />
+              </IconButton>
             </div>
           )}
           <div
             className="SocialMediaBody__IconsSend"
-            style={image ? { marginTop: "10px" } : { marginTop: "30px" }}
+            style={imageName ? { marginTop: "10px" } : { marginTop: "30px" }}
           >
             {submitLoader ? (
               <div className="SocialMediaBody__SkeletonLoaders">
@@ -197,9 +233,6 @@ const SocialMediaBody: React.FC = () => {
                 </IconButton>
                 <IconButton onClick={() => setFavourite(!favorite)}>
                   <BookmarkIcon style={favorite ? { color: "#FF786D" } : {}} />
-                </IconButton>
-                <IconButton>
-                  <LocationOnIcon />
                 </IconButton>
               </div>
             )}

@@ -16,8 +16,6 @@ app.post("/register", (req, res, next) => {
         username: username,
         first_name: first_name,
         last_name: last_name,
-        email: email,
-        image: image,
         password: hash,
       });
 

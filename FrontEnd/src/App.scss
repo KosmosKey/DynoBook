@@ -17,6 +17,10 @@
   background: #f6f8fa;
   flex: 1;
   display: flex;
+
+  .SocialMediaBody__Input {
+    width: 100%;
+  }
   .SocialMediaBody__Overlay {
     position: fixed;
     background: transparent;
@@ -25,6 +29,16 @@
     left: 0;
     top: 0;
     z-index: 2;
+  }
+
+  .SocialMediaBody__CloseButton {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    margin-top: 2px;
+    .MuiSvgIcon-root {
+      font-size: 20px !important;
+    }
   }
 
   .SocialMediaBody__SkeletonLoaders {
@@ -80,6 +94,8 @@
         border: none;
         outline-width: 0;
         resize: none;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
       }
 
       .SocialMediaBody__IconsSend {

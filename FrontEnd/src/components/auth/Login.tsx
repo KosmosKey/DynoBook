@@ -46,14 +46,11 @@ const Login: React.FC = () => {
           first_name: "",
           last_name: "",
           username: "",
-          email: "",
           password: "",
         });
         db.collection("user").add({
           id: res.data.id,
-          following: 0,
-          followers: 0,
-          posts: 0,
+          profile_picture: null,
         });
       })
       .catch((err) => {
