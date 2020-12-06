@@ -31,7 +31,8 @@ const SocialMediaBody: React.FC = () => {
 
   const [followers, setFollowers] = useState<any>([]);
   const [following, setFollowing] = useState<any>([]);
-  const [posts, setPosts] = useState<any>([]);
+  const [collection, setCollection] = useState<any>([]);
+  const [collectionLoader, setCollectionLoader] = useState<boolean>(true);
 
   const [textValue, setTextValue] = useState<any>("");
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
@@ -39,6 +40,7 @@ const SocialMediaBody: React.FC = () => {
   const [emojiAdd, setEmojiAdd] = useState(false);
   const [image, setImage] = useState<any>(null);
   const [imageName, setImageName] = useState<any>("");
+  const [posts, setPosts] = useState<any>(null);
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
@@ -73,6 +75,17 @@ const SocialMediaBody: React.FC = () => {
     setProfileLoading(false);
   }, [user]);
 
+  useEffect(() => {
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setCollection(
+          snapshot.docs.map((doc) => ({ id: doc.id, posts: doc.data() }))
+        );
+        setCollectionLoader(false);
+      });
+  });
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextValue(e.target.value);
     if (e.target.value) {
@@ -96,6 +109,19 @@ const SocialMediaBody: React.FC = () => {
   const fileChanger = (e: any) => {
     const file = e.target.files[0];
     setImageName(file);
+
+    if (file) {
+      const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+      uploadTask.on("state_changed", () => {
+        storage
+          .ref("images")
+          .child(file.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImage(url);
+          });
+      });
+    }
   };
 
   const upload = (e: React.FormEvent) => {
@@ -106,40 +132,23 @@ const SocialMediaBody: React.FC = () => {
       setSubmitLoader(true);
       setFailMessage(false);
 
-      if (imageName) {
-        const uploadTask = storage
-          .ref(`/images/${imageName.name}`)
-          .put(imageName);
-        uploadTask.on("state_changed", () => {
-          storage
-            .ref("images")
-            .child(imageName.name)
-            .getDownloadURL()
-            .then((url) => {
-              setImage(url);
-            });
-        });
-      }
+      db.collection("posts").add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+        message: textValue,
+        favorite: favorite,
+        image: image,
+      });
 
-      db.collection("posts")
-        .add({
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          first_name: user.first_name,
-          last_name: user.last_name,
-          username: user.username,
-          message: textValue,
-          favorite: favorite,
-          image: image,
-        })
-        .then(() => {
-          setTextValue("");
-          setImage(null);
-          setImageName(null);
-          setEmojiAdd(false);
-          setFavourite(false);
-          setSubmitLoader(false);
-          setUploadSuccess(true);
-        });
+      setTextValue("");
+      setImage(null);
+      setImageName(null);
+      setEmojiAdd(false);
+      setFavourite(false);
+      setSubmitLoader(false);
+      setUploadSuccess(true);
 
       setTimeout(() => setUploadSuccess(false), 2500);
     }
@@ -149,6 +158,8 @@ const SocialMediaBody: React.FC = () => {
     setImage(null);
     setImageName(null);
   };
+
+  console.log(collection);
 
   return (
     <div className="SocialMediaBody__">
@@ -255,12 +266,14 @@ const SocialMediaBody: React.FC = () => {
           </div>
         </form>
         <div className="SocialMediaBody__PostsBody">
-          <Posts />
-          <Posts />
-          <Posts />
-          <Posts />
-          <Posts />
-          <Posts />
+          {collection.map(({ id, posts }: any) => (
+            <Posts
+              key={id}
+              imagePost={posts.image}
+              item={posts}
+              loading={collectionLoader}
+            />
+          ))}
         </div>
       </div>
       <div className="SocialMediaBody__ProfileTrends">

@@ -1,52 +1,60 @@
-import React from "react";
-import { Avatar, IconButton } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { Avatar, IconButton, styled } from "@material-ui/core";
 import "./Posts.scss";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
-import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import moment from "moment";
 
-const Posts: React.FC = () => {
+interface iProps {
+  imagePost: string;
+  item: any;
+  loading: boolean;
+}
+
+const Posts: React.FC<iProps> = ({ imagePost, item, loading }) => {
+  if (loading) {
+    return <h1>Hello??</h1>;
+  }
   return (
     <div className="Posts__">
-      <div className="Posts__Image"></div>
+      {item?.image && (
+        <div
+          style={{
+            width: "100%",
+            height: "350px",
+            borderRadius: "5px 5px 2px 2px",
+            backgroundImage: `url(${imagePost})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+      )}
       <div className="Posts__NameInformation">
         <div className="Posts__Name">
           <div className="Posts__AvatarTitle">
             <Avatar
               className="Avatar"
-              src="https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=800&q=70"
-            />
+              style={{ background: "#EB5043" }}
+              src={item?.image && item.image}
+            >
+              {!item?.image && (
+                <p style={{ fontSize: "25px", fontWeight: "bold" }}>
+                  {item?.first_name?.charAt(0)}
+                </p>
+              )}
+            </Avatar>
             <div className="Posts__NameUsername">
-              <h3>Niclas Ernst</h3>
-              <p>@Niclas</p>
+              <h3>{item?.first_name}</h3>
+              <p>@{item?.username}</p>
             </div>
           </div>
-          <span>Tuesday, November 17, 2020</span>
+          <span>
+            {moment(new Date(item?.timestamp?.toDate()), "YYYYMMDD").fromNow()}
+          </span>
         </div>
         <div className="Posts__Paragraph">
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-            unde consequuntur nihil quisquam eveniet, est debitis a expedita
-            voluptatum non veritatis alias optio officiis hic similique,
-            voluptates sapiente recusandae? Nihil? Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Nihil alias eveniet iusto nesciunt
-            maiores soluta unde esse odio ex rerum sit a accusantium, adipisci
-            atque ea in possimus dicta corrupti! Lorem, ipsum dolor sit amet
-            consectetur adipisicing elit. Tenetur unde consequuntur nihil
-            quisquam eveniet, est debitis a expedita voluptatum non veritatis
-            alias optio officiis hic similique, voluptates sapiente recusandae?
-            Nihil? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Nihil alias eveniet iusto nesciunt maiores soluta unde esse odio ex
-            rerum sit a accusantium, adipisci atque ea in possimus dicta
-            corrupti! Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Tenetur unde consequuntur nihil quisquam eveniet, est debitis a
-            expedita voluptatum non veritatis alias optio officiis hic
-            similique, voluptates sapiente recusandae? Nihil? Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Nihil alias eveniet iusto
-            nesciunt maiores soluta unde esse odio ex rerum sit a accusantium,
-            adipisci atque ea in possimus dicta corrupti!
-          </p>
+          <p>{item?.message}</p>
         </div>
         <div className="Posts__LikesComments">
           <div className="Posts__Icons">
@@ -54,23 +62,22 @@ const Posts: React.FC = () => {
               <IconButton>
                 <FavoriteBorderOutlinedIcon className="HeartIcon" />
               </IconButton>
-              <p>25</p>
+              <p>{item?.likes}</p>
             </div>
             <div className="PostIconButton messagebtn">
               <IconButton>
                 <TextsmsOutlinedIcon className="MessageOutline" />
               </IconButton>
-              <p>35</p>
-            </div>
-            <div className="PostIconButton sharebtn">
-              <IconButton>
-                <ShareOutlinedIcon className="ShareIcon" />
-              </IconButton>
+              <p>{item?.likes}</p>
             </div>
           </div>
           <div className="Posts__Location">
-            <p>London, United Kingdom</p>
-            <LocationOnIcon className="LocationIcon" />
+            {item?.favorite && (
+              <Fragment>
+                <p>One of favorite user's post</p>
+                <BookmarkIcon className="LocationIcon" />
+              </Fragment>
+            )}
           </div>
         </div>
       </div>

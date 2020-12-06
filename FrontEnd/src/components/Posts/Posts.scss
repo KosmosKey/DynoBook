@@ -25,12 +25,19 @@
   .Posts__Name {
     display: flex;
     justify-content: space-between;
+    position: relative;
     span {
       color: #696969;
+      font-size: small;
+      font-weight: 500;
+      position: absolute;
+      top: 0;
+      right: 0;
     }
     .Posts__AvatarTitle {
       align-items: center;
       display: flex;
+      margin-top: 5px;
       cursor: pointer;
       .Avatar {
         border: 2px solid #f2f4f6;
@@ -54,12 +61,12 @@
   }
 
   .Posts__Image {
-    height: 350px;
     width: 100%;
+    height: 350px;
+    border-radius: 5px 5px 2px 2px;
     background: url("https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
     background-size: cover;
     background-position: center;
-    border-radius: 5px 5px 2px 2px;
   }
   .Posts__Location {
     display: flex;
@@ -93,21 +100,18 @@
       }
     }
 
-    .sharebtn:hover {
-      .ShareIcon {
-        color: #14ccff;
-      }
-    }
-
     .PostIconButton {
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 10px;
+      .MuiSvgIcon-root {
+        font-size: 25px !important;
+      }
 
       p {
         margin-left: 0px;
-        font-size: 20px;
+        font-size: large;
         margin-bottom: 3px;
         color: #a7a7a7;
         font-weight: 500;
@@ -129,15 +133,16 @@
     }
     .Posts__Location {
       display: flex;
+      p {
+        font-size: small;
+        font-weight: 500;
+      }
     }
     .MuiButtonBase-root {
       padding: 10px;
       .HeartIcon {
         color: #a7a7a7;
         transition: 350ms ease-in-out;
-      }
-      .MuiSvgIcon-root {
-        font-size: 30px;
       }
     }
   }
@@ -147,7 +152,7 @@
     p {
       color: #141414;
       line-height: 27px;
-      font-size: 17px;
+      font-size: medium;
     }
   }
 }
