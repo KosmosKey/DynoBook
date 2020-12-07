@@ -7,6 +7,8 @@ import {
   Button,
   CircularProgress,
   IconButton,
+  makeStyles,
+  Modal,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
@@ -29,13 +31,32 @@ import {
   profile_picture,
   setProfilePicture,
 } from "../reducerSlices/authSlicer";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
 
+const useStyles = makeStyles((theme: any) => ({
+  paper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
+    width: 400,
+    backgroundColor: "#fff",
+    border: "2px solid #EB5043",
+    boxShadow: theme.shadows[5],
+    outline: "none",
+  },
+}));
+
 const SocialMediaBody: React.FC = () => {
+  const classes = useStyles();
+
   const user = useSelector(userInformation);
   const user_profile = useSelector(profile_picture);
 
   const dispatch = useDispatch();
+
+  const [modal, setModal] = useState<boolean>(false);
 
   const [followers, setFollowers] = useState<any>([]);
   const [following, setFollowing] = useState<any>([]);
@@ -181,7 +202,6 @@ const SocialMediaBody: React.FC = () => {
   const profilePictureChanger = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileLoading(true);
       const uploadTask = storage.ref(`/profile_picture/${file.name}`).put(file);
       uploadTask.on("state_changed", () => {
         storage
@@ -190,7 +210,7 @@ const SocialMediaBody: React.FC = () => {
           .getDownloadURL()
           .then((url) => {
             setImagePreview(url);
-            setProfileLoading(false);
+            setModal(true);
           });
       });
     }
@@ -198,18 +218,87 @@ const SocialMediaBody: React.FC = () => {
 
   const uploadProfilePicture = () => {
     if (imagePreview) {
+      setProfileLoading(true);
+
       db.collection("user")
         .doc(user.id)
         .set({
           id: user.id,
           profile_picture: imagePreview,
         })
-        .then(() => setProfileLoading(false));
+        .then(() => {
+          setProfileLoading(false);
+          setModal(false);
+        });
     }
   };
+
+  const cancelProfilePicture = () => {
+    setModal(false);
+    setImagePreview(null);
+  };
+
+  const body = (
+    <div className={classes.paper}>
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10px",
+
+          color: "#141414",
+        }}
+      >
+        <AccountBoxIcon style={{ color: "#141414", marginRight: "10px" }} />{" "}
+        Edit Profile Picture
+      </h2>
+      <p style={{ padding: "15px", marginTop: "5px", color: "#696969" }}>
+        Are you sure that you want to edit your profile picture?
+      </p>
+      <div
+        style={{
+          display: "flex",
+          borderTop: "1px solid #979797",
+          marginTop: "10px",
+        }}
+      >
+        <Button
+          style={{
+            background: "#EB5043",
+            color: "#fff",
+            width: "100%",
+            borderRadius: "0px",
+          }}
+          onClick={uploadProfilePicture}
+        >
+          Yes, Change
+        </Button>
+        <Button
+          style={{
+            background: "#fff",
+            color: "#EB5043",
+            width: "100%",
+            borderRadius: "0px",
+          }}
+          onClick={cancelProfilePicture}
+        >
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
   return (
     <div className="SocialMediaBody__">
       {/*  <CommentComponent /> */}
+      <Modal
+        open={modal}
+        onClose={() => setModal(!modal)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
 
       {emojiDisplay && (
         <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
@@ -412,7 +501,6 @@ const SocialMediaBody: React.FC = () => {
                       >
                         {`${!user?.image && user?.username?.charAt(0)}`}
                       </Avatar>
-                      <button onClick={uploadProfilePicture}>x</button>
 
                       <div className="Avatar__Edit">
                         <input type="file" onChange={profilePictureChanger} />
