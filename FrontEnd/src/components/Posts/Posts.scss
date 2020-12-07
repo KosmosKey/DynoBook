@@ -1,6 +1,11 @@
 .SocialMediaBody__PostsBody {
   width: 100%;
 
+  .SocialMediaBody__Loader {
+    color: #eb5043;
+    margin-top: 50px;
+  }
+
   .Posts__ {
     margin-top: 30px;
     display: flex;

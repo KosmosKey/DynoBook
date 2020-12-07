@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Avatar, IconButton, styled } from "@material-ui/core";
+import { Avatar, IconButton } from "@material-ui/core";
 import "./Posts.scss";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
@@ -13,9 +13,6 @@ interface iProps {
 }
 
 const Posts: React.FC<iProps> = ({ imagePost, item, loading }) => {
-  if (loading) {
-    return <h1>Hello??</h1>;
-  }
   return (
     <div className="Posts__">
       {item?.image && (

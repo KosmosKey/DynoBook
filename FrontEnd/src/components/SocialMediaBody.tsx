@@ -69,10 +69,9 @@ const SocialMediaBody: React.FC = () => {
         .collection("posts")
         .onSnapshot((snapshot) => {
           setPosts(snapshot.docs.map((doc) => doc.data()));
+          setProfileLoading(false);
         });
     }
-
-    setProfileLoading(false);
   }, [user]);
 
   useEffect(() => {
@@ -84,7 +83,7 @@ const SocialMediaBody: React.FC = () => {
         );
         setCollectionLoader(false);
       });
-  });
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextValue(e.target.value);
@@ -128,23 +127,29 @@ const SocialMediaBody: React.FC = () => {
     e.preventDefault();
     if (!textValue) {
       setFailMessage("Please do not leave the field blank.");
+    }
+    if (imageName.size > 3097152) {
+      setFailMessage("Your image has more than 2 MB");
     } else {
       setSubmitLoader(true);
       setFailMessage(false);
 
-      db.collection("posts").add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        first_name: user.first_name,
-        last_name: user.last_name,
-        username: user.username,
-        message: textValue,
-        favorite: favorite,
-        image: image,
-      });
+      db.collection("posts")
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          first_name: user.first_name,
+          last_name: user.last_name,
+          username: user.username,
+          message: textValue,
+          favorite: favorite,
+          image: image,
+        })
+        .then(() => {
+          setImage(null);
+          setImageName(null);
+        });
 
       setTextValue("");
-      setImage(null);
-      setImageName(null);
       setEmojiAdd(false);
       setFavourite(false);
       setSubmitLoader(false);
@@ -158,8 +163,6 @@ const SocialMediaBody: React.FC = () => {
     setImage(null);
     setImageName(null);
   };
-
-  console.log(collection);
 
   return (
     <div className="SocialMediaBody__">
@@ -265,15 +268,30 @@ const SocialMediaBody: React.FC = () => {
             </Button>
           </div>
         </form>
-        <div className="SocialMediaBody__PostsBody">
-          {collection.map(({ id, posts }: any) => (
-            <Posts
-              key={id}
-              imagePost={posts.image}
-              item={posts}
-              loading={collectionLoader}
+        <div
+          className="SocialMediaBody__PostsBody"
+          style={
+            collectionLoader
+              ? { display: "flex", justifyContent: "center" }
+              : {}
+          }
+        >
+          {collectionLoader ? (
+            <CircularProgress
+              size={125}
+              thickness={2}
+              className="SocialMediaBody__Loader"
             />
-          ))}
+          ) : (
+            collection.map(({ id, posts }: any) => (
+              <Posts
+                key={id}
+                imagePost={posts.image}
+                item={posts}
+                loading={collectionLoader}
+              />
+            ))
+          )}
         </div>
       </div>
       <div className="SocialMediaBody__ProfileTrends">
