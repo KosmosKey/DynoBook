@@ -6,6 +6,7 @@ export const authReducer = createSlice({
     user: null,
     authenticated: true,
     loading: true,
+    pfp: null,
   },
   reducers: {
     setUserInformation: (state, action) => {
@@ -27,6 +28,9 @@ export const authReducer = createSlice({
       state.authenticated = action.payload;
       state.loading = true;
     },
+    setProfilePicture: (state, action) => {
+      state.pfp = action.payload;
+    },
   },
 });
 
@@ -35,10 +39,12 @@ export const {
   loginSuccess,
   userError,
   logoutUser,
+  setProfilePicture,
 } = authReducer.actions;
 
 export const userInformation = (state) => state.user.user;
 export const userAuthenticated = (state) => state.user.authenticated;
 export const loaderScreen = (state) => state.user.loading;
+export const profile_picture = (state) => state.user.pfp;
 
 export default authReducer.reducer;

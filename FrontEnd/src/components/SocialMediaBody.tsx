@@ -8,6 +8,7 @@ import {
   CircularProgress,
   IconButton,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -24,23 +25,31 @@ import ImageIcon from "@material-ui/icons/Image";
 import db, { storage } from "./firebase";
 import { Alert, Skeleton } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
+import {
+  profile_picture,
+  setProfilePicture,
+} from "../reducerSlices/authSlicer";
 import firebase from "firebase";
 
 const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
+  const user_profile = useSelector(profile_picture);
+
+  const dispatch = useDispatch();
 
   const [followers, setFollowers] = useState<any>([]);
   const [following, setFollowing] = useState<any>([]);
   const [collection, setCollection] = useState<any>([]);
   const [collectionLoader, setCollectionLoader] = useState<boolean>(true);
 
-  const [textValue, setTextValue] = useState<any>("");
+  const [textValue, setTextValue] = useState<string>("");
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
   const [favorite, setFavourite] = useState(false);
   const [emojiAdd, setEmojiAdd] = useState(false);
   const [image, setImage] = useState<any>(null);
   const [imageName, setImageName] = useState<any>("");
   const [posts, setPosts] = useState<any>(null);
+  const [imagePreview, setImagePreview] = useState<any>(null);
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
@@ -50,29 +59,35 @@ const SocialMediaBody: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      db.collection("users")
+      db.collection("user")
         .doc(user.id)
         .collection("followers")
         .onSnapshot((snapshot) => {
           setFollowers(snapshot.docs.map((doc) => doc.data()));
         });
 
-      db.collection("users")
+      db.collection("user")
         .doc(user.id)
         .collection("following")
         .onSnapshot((snapshot) => {
           setFollowing(snapshot.docs.map((doc) => doc.data()));
         });
 
-      db.collection("users")
+      db.collection("user")
         .doc(user.id)
         .collection("posts")
         .onSnapshot((snapshot) => {
           setPosts(snapshot.docs.map((doc) => doc.data()));
+        });
+
+      db.collection("user")
+        .doc(user.id)
+        .onSnapshot((snapshot) => {
+          dispatch(setProfilePicture(snapshot.data()));
           setProfileLoading(false);
         });
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   useEffect(() => {
     db.collection("posts")
@@ -127,9 +142,8 @@ const SocialMediaBody: React.FC = () => {
     e.preventDefault();
     if (!textValue) {
       setFailMessage("Please do not leave the field blank.");
-    }
-    if (imageName.size > 3097152) {
-      setFailMessage("Your image has more than 2 MB");
+    } else if (imageName.size > 3097152) {
+      setFailMessage("Your image has more than 3 MB");
     } else {
       setSubmitLoader(true);
       setFailMessage(false);
@@ -147,12 +161,12 @@ const SocialMediaBody: React.FC = () => {
         .then(() => {
           setImage(null);
           setImageName(null);
+          setSubmitLoader(false);
         });
 
       setTextValue("");
       setEmojiAdd(false);
       setFavourite(false);
-      setSubmitLoader(false);
       setUploadSuccess(true);
 
       setTimeout(() => setUploadSuccess(false), 2500);
@@ -164,6 +178,35 @@ const SocialMediaBody: React.FC = () => {
     setImageName(null);
   };
 
+  const profilePictureChanger = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileLoading(true);
+      const uploadTask = storage.ref(`/profile_picture/${file.name}`).put(file);
+      uploadTask.on("state_changed", () => {
+        storage
+          .ref("images")
+          .child(file.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImagePreview(url);
+            setProfileLoading(false);
+          });
+      });
+    }
+  };
+
+  const uploadProfilePicture = () => {
+    if (imagePreview) {
+      db.collection("user")
+        .doc(user.id)
+        .set({
+          id: user.id,
+          profile_picture: imagePreview,
+        })
+        .then(() => setProfileLoading(false));
+    }
+  };
   return (
     <div className="SocialMediaBody__">
       {/*  <CommentComponent /> */}
@@ -364,12 +407,16 @@ const SocialMediaBody: React.FC = () => {
                   <div className="AvatarProfile">
                     <div className="Avatar__Div">
                       <Avatar
-                        src={user?.image && user.image}
+                        src={user_profile && user_profile.profile_picture}
                         className="Avatar"
                       >
                         {`${!user?.image && user?.username?.charAt(0)}`}
                       </Avatar>
+                      <button onClick={uploadProfilePicture}>x</button>
+
                       <div className="Avatar__Edit">
+                        <input type="file" onChange={profilePictureChanger} />
+
                         <p>
                           <CreateIcon />
                           Edit

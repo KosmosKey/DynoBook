@@ -242,6 +242,7 @@
             background: #eb5043;
             cursor: pointer;
           }
+
           .Avatar__Edit {
             position: absolute;
             width: 100%;
@@ -256,6 +257,15 @@
             cursor: pointer;
             transition: 350ms ease;
             opacity: 0;
+            input {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              outline-width: 0;
+              border: none;
+              opacity: 0;
+              cursor: pointer;
+            }
 
             p {
               font-size: medium;
