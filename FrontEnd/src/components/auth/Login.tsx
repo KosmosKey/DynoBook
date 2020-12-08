@@ -49,8 +49,7 @@ const Login: React.FC = () => {
           username: "",
           password: "",
         });
-        db.collection("user").add({
-          id: res.data.id,
+        db.collection("user").doc(res.data.id).set({
           profile_picture: null,
         });
       })

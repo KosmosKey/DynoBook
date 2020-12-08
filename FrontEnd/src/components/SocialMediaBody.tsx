@@ -8,8 +8,8 @@ import {
   CircularProgress,
   IconButton,
   makeStyles,
-  Modal,
 } from "@material-ui/core";
+import Modal from "./Modal";
 import { useDispatch } from "react-redux";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
@@ -56,7 +56,7 @@ const SocialMediaBody: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const [modal, setModal] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const [followers, setFollowers] = useState<any>([]);
   const [following, setFollowing] = useState<any>([]);
@@ -73,10 +73,12 @@ const SocialMediaBody: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<any>(null);
 
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [imageProfilePreview, setImageProfilePreview] = useState<any>(null);
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
+  const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
 
   useEffect(() => {
     if (user) {
@@ -201,104 +203,111 @@ const SocialMediaBody: React.FC = () => {
 
   const profilePictureChanger = (e: any) => {
     const file = e.target.files[0];
-    if (file) {
-      const uploadTask = storage.ref(`/profile_picture/${file.name}`).put(file);
-      uploadTask.on("state_changed", () => {
-        storage
-          .ref("images")
-          .child(file.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImagePreview(url);
-            setModal(true);
-          });
-      });
+    setImageProfilePreview(file);
+
+    if (imageProfilePreview) {
+      if (imageProfilePreview.size > 3097152) {
+        setProfilePictureFailed("Sorry, your image has more than 3 MB");
+      } else {
+        const uploadTask = storage
+          .ref(`/profile_picture/${file.name}`)
+          .put(file);
+        uploadTask.on("state_changed", () => {
+          storage
+            .ref("profile_picture")
+            .child(file.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImagePreview(url);
+              setModalOpen(true);
+            });
+        });
+      }
     }
   };
 
-  const uploadProfilePicture = () => {
-    if (imagePreview) {
-      setProfileLoading(true);
+  console.log(imageProfilePreview);
 
-      db.collection("user")
-        .doc(user.id)
-        .set({
-          id: user.id,
-          profile_picture: imagePreview,
-        })
-        .then(() => {
-          setProfileLoading(false);
-          setModal(false);
-        });
-    }
+  const uploadProfilePicture = () => {
+    setProfileLoading(true);
+
+    db.collection("user")
+      .doc(user.id)
+      .set({
+        profile_picture: imagePreview,
+      })
+      .then(() => {
+        setProfileLoading(false);
+        setImageProfilePreview(null);
+        setProfilePictureFailed("");
+        setModalOpen(false);
+      });
   };
 
   const cancelProfilePicture = () => {
-    setModal(false);
+    setModalOpen(false);
+    setImageProfilePreview(null);
+    setProfilePictureFailed("");
     setImagePreview(null);
   };
 
-  const body = (
-    <div className={classes.paper}>
-      <h2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "10px",
-
-          color: "#141414",
-        }}
-      >
-        <AccountBoxIcon style={{ color: "#141414", marginRight: "10px" }} />{" "}
-        Edit Profile Picture
-      </h2>
-      <p style={{ padding: "15px", marginTop: "5px", color: "#696969" }}>
-        Are you sure that you want to edit your profile picture?
-      </p>
-      <div
-        style={{
-          display: "flex",
-          borderTop: "1px solid #979797",
-          marginTop: "10px",
-        }}
-      >
-        <Button
-          style={{
-            background: "#EB5043",
-            color: "#fff",
-            width: "100%",
-            borderRadius: "0px",
-          }}
-          onClick={uploadProfilePicture}
-        >
-          Yes, Change
-        </Button>
-        <Button
-          style={{
-            background: "#fff",
-            color: "#EB5043",
-            width: "100%",
-            borderRadius: "0px",
-          }}
-          onClick={cancelProfilePicture}
-        >
-          Cancel
-        </Button>
-      </div>
-    </div>
-  );
   return (
     <div className="SocialMediaBody__">
       {/*  <CommentComponent /> */}
-      <Modal
-        open={modal}
-        onClose={() => setModal(!modal)}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+      {modalOpen && (
+        <Modal onClose={cancelProfilePicture}>
+          <div className={classes.paper}>
+            <h2
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "10px",
+
+                color: "#141414",
+              }}
+            >
+              <AccountBoxIcon
+                style={{ color: "#141414", marginRight: "10px" }}
+              />
+              Edit Profile Picture
+            </h2>
+            <p style={{ padding: "15px", marginTop: "5px", color: "#696969" }}>
+              Are you sure that you want to edit your profile picture?
+            </p>
+            <div
+              style={{
+                display: "flex",
+                borderTop: "1px solid #979797",
+                marginTop: "10px",
+              }}
+            >
+              <Button
+                style={{
+                  background: "#EB5043",
+                  color: "#fff",
+                  width: "100%",
+                  borderRadius: "0px",
+                }}
+                onClick={uploadProfilePicture}
+              >
+                Yes, Change
+              </Button>
+              <Button
+                style={{
+                  background: "#fff",
+                  color: "#EB5043",
+                  width: "100%",
+                  borderRadius: "0px",
+                }}
+                onClick={cancelProfilePicture}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
 
       {emojiDisplay && (
         <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
@@ -522,6 +531,11 @@ const SocialMediaBody: React.FC = () => {
                     </div>
                   </div>
                 </div>
+                {profilePictureFailed && (
+                  <Alert severity="error" style={{ margin: "10px" }}>
+                    {profilePictureFailed}
+                  </Alert>
+                )}
                 <div className="SocialMediaProfile__Followers">
                   <div className="Posts">
                     <h4>POSTS</h4>
