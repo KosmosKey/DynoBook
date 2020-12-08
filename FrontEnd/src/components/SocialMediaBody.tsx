@@ -205,8 +205,8 @@ const SocialMediaBody: React.FC = () => {
     const file = e.target.files[0];
     setImageProfilePreview(file);
 
-    if (imageProfilePreview) {
-      if (imageProfilePreview.size > 3097152) {
+    if (file) {
+      if (file.size > 3097152) {
         setProfilePictureFailed("Sorry, your image has more than 3 MB");
       } else {
         const uploadTask = storage
@@ -220,13 +220,13 @@ const SocialMediaBody: React.FC = () => {
             .then((url) => {
               setImagePreview(url);
               setModalOpen(true);
+              setImageProfilePreview(null);
+              setProfilePictureFailed("");
             });
         });
       }
     }
   };
-
-  console.log(imageProfilePreview);
 
   const uploadProfilePicture = () => {
     setProfileLoading(true);
@@ -241,6 +241,7 @@ const SocialMediaBody: React.FC = () => {
         setImageProfilePreview(null);
         setProfilePictureFailed("");
         setModalOpen(false);
+        setImage(null);
       });
   };
 
