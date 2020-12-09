@@ -80,6 +80,8 @@ const SocialMediaBody: React.FC = () => {
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
   const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
 
+  const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
   useEffect(() => {
     if (user) {
       db.collection("user")
@@ -145,28 +147,37 @@ const SocialMediaBody: React.FC = () => {
 
   const fileChanger = (e: any) => {
     const file = e.target.files[0];
-    setImageName(file);
 
     if (file) {
-      const uploadTask = storage.ref(`/images/${file.name}`).put(file);
-      uploadTask.on("state_changed", () => {
-        storage
-          .ref("images")
-          .child(file.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImage(url);
-          });
-      });
+      if (file.size > 3097152) {
+        setFailMessage("Your image has more than 3 MB");
+      } else if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+        setFailMessage("Please select valid image");
+      } else {
+        setSubmitLoader(true);
+        setFailMessage("");
+
+        const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+        uploadTask.on("state_changed", () => {
+          storage
+            .ref("images")
+            .child(file.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImage(url);
+              setImageName(file);
+              setSubmitLoader(false);
+            });
+        });
+      }
     }
   };
 
+  console.log(image);
   const upload = (e: React.FormEvent) => {
     e.preventDefault();
     if (!textValue) {
       setFailMessage("Please do not leave the field blank.");
-    } else if (imageName.size > 3097152) {
-      setFailMessage("Your image has more than 3 MB");
     } else {
       setSubmitLoader(true);
       setFailMessage(false);
@@ -185,12 +196,11 @@ const SocialMediaBody: React.FC = () => {
           setImage(null);
           setImageName(null);
           setSubmitLoader(false);
+          setTextValue("");
+          setEmojiAdd(false);
+          setFavourite(false);
+          setUploadSuccess(true);
         });
-
-      setTextValue("");
-      setEmojiAdd(false);
-      setFavourite(false);
-      setUploadSuccess(true);
 
       setTimeout(() => setUploadSuccess(false), 2500);
     }
@@ -206,43 +216,43 @@ const SocialMediaBody: React.FC = () => {
     setImageProfilePreview(file);
 
     if (file) {
-      if (file.size > 3097152) {
-        setProfilePictureFailed("Sorry, your image has more than 3 MB");
-      } else {
-        const uploadTask = storage
-          .ref(`/profile_picture/${file.name}`)
-          .put(file);
-        uploadTask.on("state_changed", () => {
-          storage
-            .ref("profile_picture")
-            .child(file.name)
-            .getDownloadURL()
-            .then((url) => {
-              setImagePreview(url);
-              setModalOpen(true);
-              setImageProfilePreview(null);
-              setProfilePictureFailed("");
-            });
-        });
-      }
+      const uploadTask = storage.ref(`/profile_picture/${file.name}`).put(file);
+      uploadTask.on("state_changed", () => {
+        storage
+          .ref("profile_picture")
+          .child(file.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImagePreview(url);
+            setModalOpen(true);
+            setImageProfilePreview(null);
+            setProfilePictureFailed("");
+          });
+      });
     }
   };
 
   const uploadProfilePicture = () => {
-    setProfileLoading(true);
+    if (imagePreview) {
+      if (imagePreview.size > 3097152) {
+        setProfilePictureFailed("Sorry, your image has more than 3 MB");
+      } else {
+        setProfileLoading(true);
 
-    db.collection("user")
-      .doc(user.id)
-      .set({
-        profile_picture: imagePreview,
-      })
-      .then(() => {
-        setProfileLoading(false);
-        setImageProfilePreview(null);
-        setProfilePictureFailed("");
-        setModalOpen(false);
-        setImage(null);
-      });
+        db.collection("user")
+          .doc(user.id)
+          .set({
+            profile_picture: imagePreview,
+          })
+          .then(() => {
+            setProfileLoading(false);
+            setImageProfilePreview(null);
+            setProfilePictureFailed("");
+            setModalOpen(false);
+            setImage(null);
+          });
+      }
+    }
   };
 
   const cancelProfilePicture = () => {
