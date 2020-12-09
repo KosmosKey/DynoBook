@@ -212,6 +212,7 @@
     flex-direction: column;
 
     .SocialMediaBodyProfile__Header {
+      position: relative;
       height: 150px;
       background: #eb5043;
       background-size: cover;
@@ -221,8 +222,13 @@
       justify-content: center;
       align-items: center;
       color: #fff;
+
       h1 {
         font-size: xx-large;
+      }
+      .MuiSkeleton-root {
+        height: 100%;
+        width: 100%;
       }
     }
     .SocialMediaBodyProfile__Profile {
@@ -231,6 +237,7 @@
       border: 2px solid #f1f4f6;
       border-radius: 5px;
     }
+
     .SocialMediaProfile__Info {
       display: flex;
       justify-content: center;

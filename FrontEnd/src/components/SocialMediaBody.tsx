@@ -80,8 +80,6 @@ const SocialMediaBody: React.FC = () => {
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
   const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
 
-  const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-
   useEffect(() => {
     if (user) {
       db.collection("user")
@@ -173,7 +171,6 @@ const SocialMediaBody: React.FC = () => {
     }
   };
 
-  console.log(image);
   const upload = (e: React.FormEvent) => {
     e.preventDefault();
     if (!textValue) {
@@ -213,46 +210,49 @@ const SocialMediaBody: React.FC = () => {
 
   const profilePictureChanger = (e: any) => {
     const file = e.target.files[0];
-    setImageProfilePreview(file);
-
     if (file) {
-      const uploadTask = storage.ref(`/profile_picture/${file.name}`).put(file);
-      uploadTask.on("state_changed", () => {
-        storage
-          .ref("profile_picture")
-          .child(file.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImagePreview(url);
-            setModalOpen(true);
-            setImageProfilePreview(null);
-            setProfilePictureFailed("");
-          });
-      });
+      if (file.size > 3097152) {
+        setProfilePictureFailed("Your image has more than 3 MB");
+      } else if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+        setProfilePictureFailed("Please select valid image");
+      } else {
+        setImageProfilePreview(file);
+        setProfilePictureFailed("");
+
+        const uploadTask = storage
+          .ref(`/profile_picture/${file.name}`)
+          .put(file);
+        uploadTask.on("state_changed", () => {
+          storage
+            .ref("profile_picture")
+            .child(file.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImagePreview(url);
+              setImageProfilePreview(null);
+              setProfilePictureFailed("");
+            });
+        });
+        setModalOpen(true);
+      }
     }
   };
 
   const uploadProfilePicture = () => {
-    if (imagePreview) {
-      if (imagePreview.size > 3097152) {
-        setProfilePictureFailed("Sorry, your image has more than 3 MB");
-      } else {
-        setProfileLoading(true);
+    setProfileLoading(true);
 
-        db.collection("user")
-          .doc(user.id)
-          .set({
-            profile_picture: imagePreview,
-          })
-          .then(() => {
-            setProfileLoading(false);
-            setImageProfilePreview(null);
-            setProfilePictureFailed("");
-            setModalOpen(false);
-            setImage(null);
-          });
-      }
-    }
+    db.collection("user")
+      .doc(user.id)
+      .set({
+        profile_picture: imagePreview,
+      })
+      .then(() => {
+        setImageProfilePreview(null);
+        setProfilePictureFailed("");
+        setModalOpen(false);
+        setImage(null);
+        setProfileLoading(false);
+      });
   };
 
   const cancelProfilePicture = () => {
@@ -319,7 +319,6 @@ const SocialMediaBody: React.FC = () => {
           </div>
         </Modal>
       )}
-
       {emojiDisplay && (
         <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
       )}
@@ -448,8 +447,17 @@ const SocialMediaBody: React.FC = () => {
       </div>
       <div className="SocialMediaBody__ProfileTrends">
         <div className="SocialMediaBodyProfile__Profile">
-          <div className="SocialMediaBodyProfile__Header">
-            <h1>DynoBook</h1>
+          <div
+            className="SocialMediaBodyProfile__Header"
+            style={
+              profileLoading
+                ? {
+                    background: "#fff",
+                  }
+                : { background: "#eb5043" }
+            }
+          >
+            {!profileLoading && <h1>DynoBook</h1>}
           </div>
           <div className="SocialMediaBodyProfile__ProfileInformation">
             {profileLoading ? (
@@ -543,7 +551,15 @@ const SocialMediaBody: React.FC = () => {
                   </div>
                 </div>
                 {profilePictureFailed && (
-                  <Alert severity="error" style={{ margin: "10px" }}>
+                  <Alert
+                    severity="error"
+                    style={{
+                      width: "100%",
+                      maxWidth: "350px",
+                      margin: "0 auto",
+                      marginTop: "23px",
+                    }}
+                  >
                     {profilePictureFailed}
                   </Alert>
                 )}
