@@ -9,10 +9,9 @@ import moment from "moment";
 interface iProps {
   imagePost: string;
   item: any;
-  loading: boolean;
 }
 
-const Posts: React.FC<iProps> = ({ imagePost, item, loading }) => {
+const Posts: React.FC<iProps> = ({ imagePost, item }) => {
   return (
     <div className="Posts__">
       {item?.image && (
@@ -32,10 +31,14 @@ const Posts: React.FC<iProps> = ({ imagePost, item, loading }) => {
           <div className="Posts__AvatarTitle">
             <Avatar
               className="Avatar"
-              style={{ background: "#EB5043" }}
-              src={item?.image && item.image}
+              style={
+                !item?.profile_picture
+                  ? { background: "#EB5043" }
+                  : { background: "#fff" }
+              }
+              src={item?.profile_picture && item.profile_picture}
             >
-              {!item?.image && (
+              {!item?.profile_picture && (
                 <p style={{ fontSize: "25px", fontWeight: "bold" }}>
                   {item?.first_name?.charAt(0)}
                 </p>

@@ -73,7 +73,6 @@ const SocialMediaBody: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<any>(null);
 
   const [submitLoader, setSubmitLoader] = useState(false);
-  const [imageProfilePreview, setImageProfilePreview] = useState<any>(null);
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
@@ -187,6 +186,7 @@ const SocialMediaBody: React.FC = () => {
           username: user.username,
           message: textValue,
           favorite: favorite,
+          profile_picture: user_profile.profile_picture,
           image: image,
         })
         .then(() => {
@@ -216,7 +216,6 @@ const SocialMediaBody: React.FC = () => {
       } else if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
         setProfilePictureFailed("Please select valid image");
       } else {
-        setImageProfilePreview(file);
         setProfilePictureFailed("");
 
         const uploadTask = storage
@@ -228,12 +227,13 @@ const SocialMediaBody: React.FC = () => {
             .child(file.name)
             .getDownloadURL()
             .then((url) => {
-              setImagePreview(url);
-              setImageProfilePreview(null);
-              setProfilePictureFailed("");
+              if (url) {
+                setImagePreview(url);
+                setProfilePictureFailed("");
+                setModalOpen(true);
+              }
             });
         });
-        setModalOpen(true);
       }
     }
   };
@@ -247,7 +247,6 @@ const SocialMediaBody: React.FC = () => {
         profile_picture: imagePreview,
       })
       .then(() => {
-        setImageProfilePreview(null);
         setProfilePictureFailed("");
         setModalOpen(false);
         setImage(null);
@@ -257,7 +256,6 @@ const SocialMediaBody: React.FC = () => {
 
   const cancelProfilePicture = () => {
     setModalOpen(false);
-    setImageProfilePreview(null);
     setProfilePictureFailed("");
     setImagePreview(null);
   };
@@ -435,12 +433,7 @@ const SocialMediaBody: React.FC = () => {
             />
           ) : (
             collection.map(({ id, posts }: any) => (
-              <Posts
-                key={id}
-                imagePost={posts.image}
-                item={posts}
-                loading={collectionLoader}
-              />
+              <Posts key={id} imagePost={posts.image} item={posts} />
             ))
           )}
         </div>
@@ -526,8 +519,15 @@ const SocialMediaBody: React.FC = () => {
                       <Avatar
                         src={user_profile && user_profile.profile_picture}
                         className="Avatar"
+                        style={
+                          user_profile &&
+                          user_profile.profile_picture && { background: "#fff" }
+                        }
                       >
-                        {`${!user?.image && user?.username?.charAt(0)}`}
+                        {`${
+                          !user_profile.profile_picture &&
+                          user?.first_name?.charAt(0)
+                        }`}
                       </Avatar>
 
                       <div className="Avatar__Edit">
