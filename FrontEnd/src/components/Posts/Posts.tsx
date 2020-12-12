@@ -5,15 +5,17 @@ import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutline
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import moment from "moment";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 interface iProps {
   imagePost: string;
   item: any;
+  id: string;
 }
 
-const Posts: React.FC<iProps> = ({ imagePost, item }) => {
+const Posts: React.FC<iProps> = ({ id, imagePost, item, children }) => {
   return (
-    <div className="Posts__">
+    <div className="Posts__" id={id}>
       {item?.image && (
         <div
           style={{
@@ -58,12 +60,8 @@ const Posts: React.FC<iProps> = ({ imagePost, item }) => {
         </div>
         <div className="Posts__LikesComments">
           <div className="Posts__Icons">
-            <div className="PostIconButton favourite">
-              <IconButton>
-                <FavoriteBorderOutlinedIcon className="HeartIcon" />
-              </IconButton>
-              <p>{item?.likes}</p>
-            </div>
+            <div className="PostIconButton favourite">{children}</div>
+
             <div className="PostIconButton messagebtn">
               <IconButton>
                 <TextsmsOutlinedIcon className="MessageOutline" />

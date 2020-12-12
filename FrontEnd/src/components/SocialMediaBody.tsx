@@ -33,6 +33,7 @@ import {
 } from "../reducerSlices/authSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
+import { LinkedCameraSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -78,6 +79,7 @@ const SocialMediaBody: React.FC = () => {
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
   const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
+  const [likePostsUser, setLikesPostsUser] = useState<any>([]);
 
   useEffect(() => {
     if (user) {
@@ -104,8 +106,13 @@ const SocialMediaBody: React.FC = () => {
 
       db.collection("user")
         .doc(user.id)
+        .onSnapshot((snapshot) => dispatch(setProfilePicture(snapshot.data())));
+
+      db.collection("user")
+        .doc(user.id)
+        .collection("likes")
         .onSnapshot((snapshot) => {
-          dispatch(setProfilePicture(snapshot.data()));
+          setLikesPostsUser(snapshot.docs.map((doc) => doc.id.toString()));
           setProfileLoading(false);
         });
     }
@@ -188,6 +195,7 @@ const SocialMediaBody: React.FC = () => {
           favorite: favorite,
           profile_picture: user_profile.profile_picture,
           image: image,
+          likesCount: 0,
         })
         .then(() => {
           setImage(null);
@@ -258,6 +266,26 @@ const SocialMediaBody: React.FC = () => {
     setModalOpen(false);
     setProfilePictureFailed("");
     setImagePreview(null);
+  };
+
+  const likePost = (id: string) => {
+    db.collection("user")
+      .doc(user.id)
+      .collection("likes")
+      .doc(id)
+      .set({ uuid: id });
+
+    db.collection("posts")
+      .doc(id)
+      .update({ likesCount: firebase.firestore.FieldValue.increment(+1) });
+  };
+
+  const removeLike = (id: string) => {
+    db.collection("user").doc(user.id).collection("likes").doc(id).delete();
+
+    db.collection("posts")
+      .doc(id)
+      .update({ likesCount: firebase.firestore.FieldValue.increment(-1) });
   };
 
   return (
@@ -433,7 +461,23 @@ const SocialMediaBody: React.FC = () => {
             />
           ) : (
             collection.map(({ id, posts }: any) => (
-              <Posts key={id} imagePost={posts.image} item={posts} />
+              <Posts id={id} key={id} imagePost={posts.image} item={posts}>
+                {likePostsUser.includes(id) ? (
+                  <Fragment>
+                    <IconButton onClick={() => removeLike(id)}>
+                      <p>yes</p>
+                    </IconButton>
+                    <p>{posts?.likesCount}</p>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <IconButton onClick={() => likePost(id)}>
+                      <p>No</p>
+                    </IconButton>
+                    <p>{posts?.likesCount}</p>
+                  </Fragment>
+                )}
+              </Posts>
             ))
           )}
         </div>
