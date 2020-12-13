@@ -12,7 +12,6 @@ type eventTargets = {
   first_name: string;
   last_name: string;
   username: string;
-  email: string;
   password: string;
 };
 
@@ -23,7 +22,6 @@ const Login: React.FC = () => {
     first_name: "",
     last_name: "",
     username: "",
-    email: "",
     password: "",
   });
 
@@ -33,7 +31,6 @@ const Login: React.FC = () => {
       .post("/dyno/register", {
         first_name: valueTargets.first_name,
         last_name: valueTargets.last_name,
-        email: valueTargets.email,
         image: null,
         username: valueTargets.username,
         password: valueTargets.password,
@@ -45,11 +42,13 @@ const Login: React.FC = () => {
           ...valueTargets,
           first_name: "",
           last_name: "",
-          email: "",
           username: "",
           password: "",
         });
-        db.collection("user").doc(res.data.id).set({
+        db.collection("user").doc(res.data.profile.id).set({
+          first_name: res.data.profile.first_name,
+          last_name: res.data.profile.last_name,
+          username: res.data.profile.username,
           profile_picture: null,
         });
       })
@@ -109,16 +108,7 @@ const Login: React.FC = () => {
               onChange={onChange}
             />
           </div>
-          <div className="Login__EmailAddress">
-            <EmailIcon />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={valueTargets.email}
-              onChange={onChange}
-            />
-          </div>
+
           <div className="Login__Password">
             <LockIcon />
             <input

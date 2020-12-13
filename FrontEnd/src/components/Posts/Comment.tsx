@@ -13,6 +13,7 @@ const Comment: React.FC<props> = ({ post }) => {
         <Avatar
           className="Post__CommentAvatar"
           src={post?.profile_picture && post?.profile_picture}
+          style={!post?.profile_picture ? { background: "#EA5043" } : {}}
         >
           {!post?.profile_picture && post?.first_name?.charAt(0)}
         </Avatar>

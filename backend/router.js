@@ -5,9 +5,9 @@ const User = require("./User");
 const bcrypt = require("bcryptjs");
 
 app.post("/register", (req, res, next) => {
-  const { first_name, last_name, email, username, password, image } = req.body;
+  const { first_name, last_name, username, password } = req.body;
 
-  if (!first_name || !last_name || !email || !username || !password)
+  if (!first_name || !last_name || !username || !password)
     return res.status(400).send("You haven't filled out all the fields");
   User.findOne({ username: username }).then((user) => {
     if (user) return res.status(400).send("Sorry. The user already exists");
@@ -22,7 +22,13 @@ app.post("/register", (req, res, next) => {
       newProfile.save().then((user) => {
         if (user) {
           return res.status(200).json({
-            id: user.id,
+            profile: {
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              username: user.username,
+            },
+
             message: "Congrats! You can now Log In with your user.",
           });
         }

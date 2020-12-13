@@ -43,17 +43,20 @@ const Posts: React.FC<iProps> = ({
 
   const submitComment = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!commentValue) {
+      return null;
+    } else {
+      db.collection("posts").doc(idComment).collection("comments").add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        first_name: user?.first_name,
+        last_name: user?.last_name,
+        username: user?.username,
+        profile_picture: pfp?.profile_picture,
+        message: commentValue,
+      });
 
-    db.collection("posts").doc(idComment).collection("comments").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      first_name: user?.first_name,
-      last_name: user?.last_name,
-      username: user?.username,
-      profile_picture: pfp?.profile_picture,
-      message: commentValue,
-    });
-
-    setCommentValue("");
+      setCommentValue("");
+    }
   };
 
   const dispatchFunction = (id: string) => {

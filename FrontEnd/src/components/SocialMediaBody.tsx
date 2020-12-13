@@ -80,6 +80,7 @@ const SocialMediaBody: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<any>(null);
 
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [suggestionUsers, setSuggestionUser] = useState<any>([]);
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
@@ -102,6 +103,12 @@ const SocialMediaBody: React.FC = () => {
         });
     }
   }, [idComment]);
+
+  useEffect(() => {
+    db.collection("user").onSnapshot((snapshot) =>
+      setSuggestionUser(snapshot.docs.map((doc) => doc.data()))
+    );
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -278,7 +285,7 @@ const SocialMediaBody: React.FC = () => {
 
     db.collection("user")
       .doc(user.id)
-      .set({
+      .update({
         profile_picture: imagePreview,
       })
       .then(() => {
@@ -662,12 +669,9 @@ const SocialMediaBody: React.FC = () => {
         <div className="SocialMediaBody__Suggestions">
           <h3>Suggestions</h3>
           <div className="SocialMediaBody__SuggestionsResults">
-            <Suggestions />
-            <Suggestions />
-            <Suggestions />
-            <Suggestions />
-            <Suggestions />
-            <Suggestions />
+            {suggestionUsers.map((item: any) => (
+              <Suggestions item={item} />
+            ))}
           </div>
         </div>
         <div className="SocialMediaBody__Trends">
