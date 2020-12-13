@@ -14,6 +14,104 @@
     flex-direction: column;
     border: 2px solid #f1f4f6;
     background: #fff;
+
+    .Post__Comments {
+      width: 100%;
+      .Post__CommentsNoComments {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .Post__CommentSection {
+        height: 100%;
+        max-height: 350px;
+        overflow: scroll;
+        position: relative;
+      }
+      .PostCommentsInput {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: #f6f8fa;
+        width: 100%;
+        input {
+          flex: 1;
+          padding: 15px;
+          background: #fff;
+          border: none;
+          outline-width: 0;
+          border-radius: 50px;
+        }
+        .MuiButtonBase-root {
+          padding: 8px !important;
+          margin-left: 15px;
+          background-color: #eb5043;
+          .PostComment__PostIcon {
+            color: #fff;
+            font-size: large;
+          }
+        }
+      }
+      h1 {
+        font-size: medium;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        color: #141414;
+      }
+      .Post__CommentChildren {
+        display: flex;
+        padding: 25px;
+        border-top: 2px solid #f2f4f6;
+        .Post__CommentAvatar {
+          font-weight: bold;
+          background: #c7c7c7;
+        }
+        .Post__CommentResultDiv {
+          margin-left: 10px;
+          flex: 1;
+
+          .Post__CommentUsername {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-left: 5px;
+            p {
+              font-weight: bold;
+              font-size: medium;
+              color: #141414;
+            }
+            span {
+              font-size: small;
+              color: #979797;
+            }
+          }
+        }
+
+        .Post_CommentAvatarName {
+          display: flex;
+        }
+      }
+      .Post__CommentResult {
+        background: #f6f8fa;
+        padding: 20px;
+        border-radius: 25px;
+        margin-top: 10px;
+        position: relative;
+        span {
+          position: absolute;
+          top: 7px;
+          right: 17px;
+          font-size: x-small;
+          font-weight: 500;
+          color: #a8a8a8;
+        }
+        p {
+          font-size: small;
+          font-weight: 500;
+          line-height: 25px;
+          color: #151515;
+        }
+      }
+    }
     .Avatar {
       height: 65px;
       width: 65px;

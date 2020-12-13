@@ -27,13 +27,15 @@ import ImageIcon from "@material-ui/icons/Image";
 import db, { storage } from "./firebase";
 import { Alert, Skeleton } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import {
   profile_picture,
   setProfilePicture,
 } from "../reducerSlices/authSlicer";
+import { commentId } from "../reducerSlices/postSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
-import { LinkedCameraSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -54,6 +56,7 @@ const SocialMediaBody: React.FC = () => {
 
   const user = useSelector(userInformation);
   const user_profile = useSelector(profile_picture);
+  const idComment = useSelector(commentId);
 
   const dispatch = useDispatch();
 
@@ -63,6 +66,9 @@ const SocialMediaBody: React.FC = () => {
   const [following, setFollowing] = useState<any>([]);
   const [collection, setCollection] = useState<any>([]);
   const [collectionLoader, setCollectionLoader] = useState<boolean>(true);
+
+  const [comments, setComments] = useState<any>([]);
+  const [commentLoader, setCommentLoader] = useState<boolean>(false);
 
   const [textValue, setTextValue] = useState<string>("");
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
@@ -80,6 +86,22 @@ const SocialMediaBody: React.FC = () => {
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
   const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
   const [likePostsUser, setLikesPostsUser] = useState<any>([]);
+
+  useEffect(() => {
+    if (idComment) {
+      setCommentLoader(true);
+      db.collection("posts")
+        .doc(idComment)
+        .collection("comments")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          setComments(
+            snapshot.docs.map((doc) => ({ id: doc.id, posts: doc.data() }))
+          );
+          setCommentLoader(false);
+        });
+    }
+  }, [idComment]);
 
   useEffect(() => {
     if (user) {
@@ -461,18 +483,25 @@ const SocialMediaBody: React.FC = () => {
             />
           ) : (
             collection.map(({ id, posts }: any) => (
-              <Posts id={id} key={id} imagePost={posts.image} item={posts}>
+              <Posts
+                loading={commentLoader}
+                comments={comments}
+                id={id}
+                key={id}
+                imagePost={posts.image}
+                item={posts}
+              >
                 {likePostsUser.includes(id) ? (
                   <Fragment>
                     <IconButton onClick={() => removeLike(id)}>
-                      <p>yes</p>
+                      <FavoriteIcon style={{ color: "#EB5043" }} />
                     </IconButton>
-                    <p>{posts?.likesCount}</p>
+                    <p style={{ color: "#EB5043" }}>{posts?.likesCount}</p>
                   </Fragment>
                 ) : (
                   <Fragment>
                     <IconButton onClick={() => likePost(id)}>
-                      <p>No</p>
+                      <FavoriteBorderIcon style={{ color: "#A7A7A7" }} />
                     </IconButton>
                     <p>{posts?.likesCount}</p>
                   </Fragment>

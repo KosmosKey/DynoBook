@@ -1,19 +1,68 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import firebase from "firebase";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, IconButton } from "@material-ui/core";
 import "./Posts.scss";
-import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import moment from "moment";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import Comment from "./Comment";
+import SendIcon from "@material-ui/icons/Send";
+import { setComments, commentId } from "../../reducerSlices/postSlicer";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import db from "../firebase";
+import {
+  profile_picture,
+  userInformation,
+} from "../../reducerSlices/authSlicer";
 
 interface iProps {
   imagePost: string;
   item: any;
   id: string;
+  comments: any;
+  loading: boolean;
 }
 
-const Posts: React.FC<iProps> = ({ id, imagePost, item, children }) => {
+const Posts: React.FC<iProps> = ({
+  id,
+  imagePost,
+  item,
+  children,
+  comments,
+  loading,
+}) => {
+  const dispatch = useDispatch();
+
+  const [commentValue, setCommentValue] = useState<string>("");
+
+  const user = useSelector(userInformation);
+  const pfp = useSelector(profile_picture);
+
+  const idComment = useSelector(commentId);
+
+  const submitComment = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    db.collection("posts").doc(idComment).collection("comments").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      username: user?.username,
+      profile_picture: pfp?.profile_picture,
+      message: commentValue,
+    });
+
+    setCommentValue("");
+  };
+
+  const dispatchFunction = (id: string) => {
+    dispatch(setComments(id));
+    setCommentValue("");
+  };
+
+  console.log(comments);
+
   return (
     <div className="Posts__" id={id}>
       {item?.image && (
@@ -63,10 +112,9 @@ const Posts: React.FC<iProps> = ({ id, imagePost, item, children }) => {
             <div className="PostIconButton favourite">{children}</div>
 
             <div className="PostIconButton messagebtn">
-              <IconButton>
+              <IconButton onClick={() => dispatchFunction(id)}>
                 <TextsmsOutlinedIcon className="MessageOutline" />
               </IconButton>
-              <p>{item?.likes}</p>
             </div>
           </div>
           <div className="Posts__Location">
@@ -79,6 +127,43 @@ const Posts: React.FC<iProps> = ({ id, imagePost, item, children }) => {
           </div>
         </div>
       </div>
+
+      {idComment === id && loading ? (
+        <CircularProgress
+          thickness={3}
+          size={75}
+          style={{ color: "#EB5043", marginBottom: "75px" }}
+        />
+      ) : (
+        <div className="Post__Comments">
+          {idComment === id && comments !== null && comments.length === 0 && (
+            <p className="Post__CommentsNoComments">
+              No Comments. Be the first one 😎
+            </p>
+          )}
+          <div className="Post__CommentSection">
+            {idComment === id &&
+              comments &&
+              comments?.map((item: any) => <Comment post={item?.posts} />)}
+          </div>
+
+          {id === idComment && (
+            <form className="PostCommentsInput" onSubmit={submitComment}>
+              <input
+                type="text"
+                placeholder="Write your comments here..."
+                value={commentValue}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCommentValue(e.target.value)
+                }
+              />
+              <IconButton type="submit">
+                <SendIcon className="PostComment__PostIcon" />
+              </IconButton>
+            </form>
+          )}
+        </div>
+      )}
     </div>
   );
 };
