@@ -157,7 +157,11 @@ const Posts: React.FC<iProps> = ({
                   setCommentValue(e.target.value)
                 }
               />
-              <IconButton type="submit">
+              <IconButton
+                type="submit"
+                disabled={!commentValue}
+                style={!commentValue ? { opacity: 0.4 } : { opacity: 1 }}
+              >
                 <SendIcon className="PostComment__PostIcon" />
               </IconButton>
             </form>

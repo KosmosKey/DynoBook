@@ -1,18 +1,16 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import HomeIcon from "@material-ui/icons/Home";
 import { Avatar, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { logoutUser } from "../reducerSlices/authSlicer";
-import axios from "../Axios";
-import Cookies from "js-cookie";
+import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
 
 const NavigationBar: React.FC = () => {
-  const dispatch = useDispatch();
+  const user_profile = useSelector(profile_picture);
+  const user = useSelector(userInformation);
 
   return (
     <nav className="NavigationBar">
@@ -31,7 +29,9 @@ const NavigationBar: React.FC = () => {
         <IconButton className="NavigationBar__NofiticationIcon">
           <NotificationsIcon />
         </IconButton>
-        <Avatar>H</Avatar>
+        <Avatar src={user_profile && user_profile.profile_picture}>
+          {!user_profile && user.first_name}
+        </Avatar>
       </div>
     </nav>
   );

@@ -22,7 +22,7 @@ const Comment: React.FC<props> = ({ post }) => {
           <p>
             {post?.first_name} {post?.last_name}
           </p>
-          <span>{post?.username}</span>
+          <span>@{post?.username}</span>
         </div>
         <div className="Post__CommentResult">
           <span>

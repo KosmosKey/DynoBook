@@ -345,6 +345,11 @@
     background: #fff;
     border: 2px solid #f1f4f6;
     margin-top: 30px;
+    flex: 1;
+    max-height: 450px;
+    overflow: scroll;
+    .SocialMediaBody__SuggestionsResults {
+    }
     h3 {
       color: #131313;
       font-size: 23px;

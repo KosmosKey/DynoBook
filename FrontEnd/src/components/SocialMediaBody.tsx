@@ -229,6 +229,11 @@ const SocialMediaBody: React.FC = () => {
           setUploadSuccess(true);
         });
 
+      db.collection("user")
+        .doc(user.id)
+        .collection("posts")
+        .add({ message: textValue });
+
       setTimeout(() => setUploadSuccess(false), 2500);
     }
   };
@@ -657,6 +662,9 @@ const SocialMediaBody: React.FC = () => {
         <div className="SocialMediaBody__Suggestions">
           <h3>Suggestions</h3>
           <div className="SocialMediaBody__SuggestionsResults">
+            <Suggestions />
+            <Suggestions />
+            <Suggestions />
             <Suggestions />
             <Suggestions />
             <Suggestions />
