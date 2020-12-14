@@ -64,8 +64,6 @@ const Posts: React.FC<iProps> = ({
     setCommentValue("");
   };
 
-  console.log(comments);
-
   return (
     <div className="Posts__" id={id}>
       {item?.image && (

@@ -1,15 +1,14 @@
 import React from "react";
 import "./Suggestions.scss";
-import { Avatar, IconButton } from "@material-ui/core";
-import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
+import { Avatar } from "@material-ui/core";
 
 interface iProps {
   item: any;
 }
 
-const Suggestions: React.FC<iProps> = ({ item }) => {
+const Suggestions: React.FC<iProps> = ({ item, children }) => {
   return (
-    <div className="Suggestions">
+    <div className="Suggestions" id={item.id}>
       <div className="Suggestions__Profile">
         <div className="Suggestions__User">
           <Avatar
@@ -34,9 +33,7 @@ const Suggestions: React.FC<iProps> = ({ item }) => {
             <p>@{item.username}</p>
           </div>
         </div>
-        <IconButton className="Suggestions__AddButton">
-          <AddCircleOutlineOutlinedIcon className="CircleOutlineIcon" />
-        </IconButton>
+        {children}
       </div>
     </div>
   );

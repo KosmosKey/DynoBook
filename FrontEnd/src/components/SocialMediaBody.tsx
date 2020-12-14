@@ -15,7 +15,6 @@ import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Suggestions from "./Suggestions/Suggestions";
 import Trends from "./Suggestions/Trends";
 import Posts from "./Posts/Posts";
@@ -29,10 +28,13 @@ import { Alert, Skeleton } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CheckIcon from "@material-ui/icons/Check";
 import {
   profile_picture,
   setProfilePicture,
 } from "../reducerSlices/authSlicer";
+import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
 import { commentId } from "../reducerSlices/postSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
@@ -57,7 +59,6 @@ const SocialMediaBody: React.FC = () => {
   const user = useSelector(userInformation);
   const user_profile = useSelector(profile_picture);
   const idComment = useSelector(commentId);
-
   const dispatch = useDispatch();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -69,6 +70,7 @@ const SocialMediaBody: React.FC = () => {
 
   const [comments, setComments] = useState<any>([]);
   const [commentLoader, setCommentLoader] = useState<boolean>(false);
+  const [userFollowing, setUserFollowing] = useState<any>([]);
 
   const [textValue, setTextValue] = useState<string>("");
   const [emojiDisplay, setEmojiDisplay] = useState<boolean>(false);
@@ -106,7 +108,9 @@ const SocialMediaBody: React.FC = () => {
 
   useEffect(() => {
     db.collection("user").onSnapshot((snapshot) =>
-      setSuggestionUser(snapshot.docs.map((doc) => doc.data()))
+      setSuggestionUser(
+        snapshot.docs.map((doc) => ({ id: doc.id, suggestion: doc.data() }))
+      )
     );
   }, []);
 
@@ -121,7 +125,7 @@ const SocialMediaBody: React.FC = () => {
 
       db.collection("user")
         .doc(user.id)
-        .collection("following")
+        .collection("followingUsers")
         .onSnapshot((snapshot) => {
           setFollowing(snapshot.docs.map((doc) => doc.data()));
         });
@@ -135,13 +139,22 @@ const SocialMediaBody: React.FC = () => {
 
       db.collection("user")
         .doc(user.id)
-        .onSnapshot((snapshot) => dispatch(setProfilePicture(snapshot.data())));
+        .collection("likes")
+        .onSnapshot((snapshot) =>
+          setLikesPostsUser(snapshot.docs.map((doc) => doc.id.toString()))
+        );
 
       db.collection("user")
         .doc(user.id)
-        .collection("likes")
+        .collection("followingUsers")
         .onSnapshot((snapshot) => {
-          setLikesPostsUser(snapshot.docs.map((doc) => doc.id.toString()));
+          setUserFollowing(snapshot.docs.map((doc) => doc.id.toString()));
+        });
+
+      db.collection("user")
+        .doc(user.id)
+        .onSnapshot((snapshot) => {
+          dispatch(setProfilePicture(snapshot?.data()?.profile_picture));
           setProfileLoading(false);
         });
     }
@@ -222,7 +235,7 @@ const SocialMediaBody: React.FC = () => {
           username: user.username,
           message: textValue,
           favorite: favorite,
-          profile_picture: user_profile.profile_picture,
+          profile_picture: user_profile,
           image: image,
           likesCount: 0,
         })
@@ -320,6 +333,22 @@ const SocialMediaBody: React.FC = () => {
     db.collection("posts")
       .doc(id)
       .update({ likesCount: firebase.firestore.FieldValue.increment(-1) });
+  };
+
+  const followUser = (userId: string) => {
+    db.collection("user")
+      .doc(user.id)
+      .collection("followingUsers")
+      .doc(userId)
+      .set({ uuid: userId });
+  };
+
+  const unfollowUser = (id: string) => {
+    db.collection("user")
+      .doc(user.id)
+      .collection("followingUsers")
+      .doc(id)
+      .delete();
   };
 
   return (
@@ -602,17 +631,13 @@ const SocialMediaBody: React.FC = () => {
                   <div className="AvatarProfile">
                     <div className="Avatar__Div">
                       <Avatar
-                        src={user_profile && user_profile.profile_picture}
+                        src={user_profile && user_profile}
                         className="Avatar"
                         style={
-                          user_profile &&
-                          user_profile.profile_picture && { background: "#fff" }
+                          user_profile && user_profile && { background: "#fff" }
                         }
                       >
-                        {`${
-                          !user_profile.profile_picture &&
-                          user?.first_name?.charAt(0)
-                        }`}
+                        {`${!user_profile && user?.first_name?.charAt(0)}`}
                       </Avatar>
 
                       <div className="Avatar__Edit">
@@ -669,8 +694,24 @@ const SocialMediaBody: React.FC = () => {
         <div className="SocialMediaBody__Suggestions">
           <h3>Suggestions</h3>
           <div className="SocialMediaBody__SuggestionsResults">
-            {suggestionUsers.map((item: any) => (
-              <Suggestions item={item} />
+            {suggestionUsers.map(({ id, suggestion }: any) => (
+              <Suggestions key={id} item={suggestion}>
+                {userFollowing.includes(id) ? (
+                  <IconButton
+                    className="Suggestions__AddButton Following"
+                    onClick={() => unfollowUser(id)}
+                  >
+                    <CheckCircleIcon className="Suggestions__CheckIcon" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    className="Suggestions__AddButton"
+                    onClick={() => followUser(id)}
+                  >
+                    <AddCircleOutlineOutlinedIcon className="CircleOutlineIcon" />
+                  </IconButton>
+                )}
+              </Suggestions>
             ))}
           </div>
         </div>

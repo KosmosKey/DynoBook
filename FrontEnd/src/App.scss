@@ -238,6 +238,14 @@
       border-radius: 5px;
     }
 
+    .Suggestions__AddButton.Following {
+      .Suggestions__CheckIcon {
+        color: #eb5043;
+        font-size: 30px;
+        font-weight: bold;
+      }
+    }
+
     .SocialMediaProfile__Info {
       display: flex;
       justify-content: center;
