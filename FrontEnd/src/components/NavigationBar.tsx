@@ -29,8 +29,11 @@ const NavigationBar: React.FC = () => {
         <IconButton className="NavigationBar__NofiticationIcon">
           <NotificationsIcon />
         </IconButton>
-        <Avatar src={user_profile && user_profile.profile_picture}>
-          {!user_profile && user.first_name}
+        <Avatar
+          src={user_profile && user_profile}
+          style={{ background: "#EB5043" }}
+        >
+          {!user_profile && user.first_name.charAt(0)}
         </Avatar>
       </div>
     </nav>

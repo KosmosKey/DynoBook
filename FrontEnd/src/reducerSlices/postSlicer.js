@@ -6,13 +6,13 @@ export const postReducer = createSlice({
     commentId: null,
   },
   reducers: {
-    setComments: (state, action) => {
+    setCommentId: (state, action) => {
       state.commentId = action.payload;
     },
   },
 });
 
-export const { setComments } = postReducer.actions;
+export const { setCommentId } = postReducer.actions;
 
 export const commentId = (state) => state.post.commentId;
 

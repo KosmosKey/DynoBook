@@ -8,7 +8,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import moment from "moment";
 import Comment from "./Comment";
 import SendIcon from "@material-ui/icons/Send";
-import { setComments, commentId } from "../../reducerSlices/postSlicer";
+import { setCommentId, commentId } from "../../reducerSlices/postSlicer";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import db from "../firebase";
 import {
@@ -51,7 +51,7 @@ const Posts: React.FC<iProps> = ({
         first_name: user?.first_name,
         last_name: user?.last_name,
         username: user?.username,
-        profile_picture: pfp?.profile_picture,
+        profile_picture: pfp,
         message: commentValue,
       });
 
@@ -60,7 +60,7 @@ const Posts: React.FC<iProps> = ({
   };
 
   const dispatchFunction = (id: string) => {
-    dispatch(setComments(id));
+    dispatch(setCommentId(id));
     setCommentValue("");
   };
 
@@ -114,7 +114,10 @@ const Posts: React.FC<iProps> = ({
 
             <div className="PostIconButton messagebtn">
               <IconButton onClick={() => dispatchFunction(id)}>
-                <TextsmsOutlinedIcon className="MessageOutline" />
+                <TextsmsOutlinedIcon
+                  className="MessageOutline"
+                  style={idComment === id ? { color: "#93e2f8" } : {}}
+                />
               </IconButton>
             </div>
           </div>
@@ -145,7 +148,9 @@ const Posts: React.FC<iProps> = ({
           <div className="Post__CommentSection">
             {idComment === id &&
               comments &&
-              comments?.map((item: any) => <Comment post={item?.posts} />)}
+              comments?.map((item: any) => (
+                <Comment key={item.id} post={item?.posts} />
+              ))}
           </div>
 
           {id === idComment && (

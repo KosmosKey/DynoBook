@@ -23,19 +23,18 @@ import OfflineUsers from "./ActiveUsers/OfflineUsers";
 import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
-import db, { storage } from "./firebase";
+import db, { database, storage } from "./firebase";
 import { Alert, Skeleton } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CheckIcon from "@material-ui/icons/Check";
 import {
   profile_picture,
   setProfilePicture,
 } from "../reducerSlices/authSlicer";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
-import { commentId } from "../reducerSlices/postSlicer";
+import { commentId, setCommentId } from "../reducerSlices/postSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
 
@@ -105,6 +104,35 @@ const SocialMediaBody: React.FC = () => {
         });
     }
   }, [idComment]);
+
+  useEffect(() => {
+    if (user) {
+      database.ref(".info/connected").on("value", (snapshot) => {
+        if (snapshot.val()) {
+          database
+            .ref(user?.id)
+            .update({ status: true })
+            .then(() => {
+              db.collection("user").doc(user?.id).update({ status: true });
+            });
+        }
+
+        database
+          .ref(user?.id)
+          .onDisconnect()
+          .update({ status: false })
+          .then(() => {
+            db.collection("user").doc(user?.id).update({ status: false });
+          });
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!idComment && comments) {
+      dispatch(setCommentId(collection[0]?.id));
+    }
+  }, [collection, dispatch, comments, idComment]);
 
   useEffect(() => {
     db.collection("user").onSnapshot((snapshot) =>
@@ -341,6 +369,12 @@ const SocialMediaBody: React.FC = () => {
       .collection("followingUsers")
       .doc(userId)
       .set({ uuid: userId });
+
+    db.collection("user")
+      .doc(userId)
+      .collection("followers")
+      .doc(user.id)
+      .set({ uuid: user.id });
   };
 
   const unfollowUser = (id: string) => {
@@ -349,6 +383,8 @@ const SocialMediaBody: React.FC = () => {
       .collection("followingUsers")
       .doc(id)
       .delete();
+
+    db.collection("user").doc(id).collection("followers").doc(user.id).delete();
   };
 
   return (
