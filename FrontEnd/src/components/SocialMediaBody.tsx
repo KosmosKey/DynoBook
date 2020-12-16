@@ -108,21 +108,13 @@ const SocialMediaBody: React.FC = () => {
   useEffect(() => {
     if (user) {
       database.ref(".info/connected").on("value", (snapshot) => {
-        if (snapshot.val()) {
-          database
-            .ref(user?.id)
-            .update({ status: true })
-            .then(() => {
-              db.collection("user").doc(user?.id).update({ status: true });
-            });
-        }
-
         database
           .ref(user?.id)
           .onDisconnect()
-          .update({ status: false })
+          .set({ status: false })
           .then(() => {
-            db.collection("user").doc(user?.id).update({ status: false });
+            database.ref(user?.id).set({ status: true });
+            db.collection("user").doc(user?.id).update({ status: true });
           });
       });
     }
