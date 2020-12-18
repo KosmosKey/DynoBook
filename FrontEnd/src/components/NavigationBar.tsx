@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
@@ -7,6 +7,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Avatar, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const NavigationBar: React.FC = () => {
   const user_profile = useSelector(profile_picture);
@@ -36,6 +37,9 @@ const NavigationBar: React.FC = () => {
           {!user_profile && user.first_name.charAt(0)}
         </Avatar>
       </div>
+      <IconButton className="NavigationBar__HamburgerMenu">
+        <MenuIcon />
+      </IconButton>
     </nav>
   );
 };

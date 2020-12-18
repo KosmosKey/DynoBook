@@ -15,7 +15,6 @@ const OnlineUsers = () => {
           <p>@FiorceArca</p>
         </div>
       </div>
-      <div className="OnlineUsers__ActiveButton" />
     </div>
   );
 };

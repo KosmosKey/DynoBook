@@ -4,6 +4,13 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
+  .NavigationBar__HamburgerMenu {
+    display: none;
+    .MuiSvgIcon-root {
+      font-size: 35px;
+      color: #ec4f43;
+    }
+  }
   .NavigationBar__TitleLogo {
     color: #ec4f43;
     font-size: 30px;
@@ -41,5 +48,23 @@ nav {
     .NavigationBar__NofiticationIcon {
       margin-right: 15px;
     }
+  }
+}
+
+@media screen and (max-width: 850px) {
+  nav {
+    padding: 15px !important;
+  }
+
+  .NavigationBar__TitleLogo {
+    padding-left: 15px;
+  }
+
+  .NavigationBar__HamburgerMenu {
+    display: block !important;
+  }
+  .NavigationBar__Input,
+  .NavigationBar__ProfilePicture {
+    display: none !important;
   }
 }

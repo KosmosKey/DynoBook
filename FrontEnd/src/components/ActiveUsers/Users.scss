@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   padding: 10px;
   border-radius: 25px;
   cursor: pointer;
@@ -36,13 +36,6 @@
         color: #979797;
       }
     }
-  }
-  .OnlineUsers__ActiveButton {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgb(91, 244, 105);
-    margin-right: 15px;
   }
 }
 

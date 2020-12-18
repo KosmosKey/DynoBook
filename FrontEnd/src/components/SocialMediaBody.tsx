@@ -19,7 +19,6 @@ import Suggestions from "./Suggestions/Suggestions";
 import Trends from "./Suggestions/Trends";
 import Posts from "./Posts/Posts";
 import OnlineUsers from "./ActiveUsers/OnlineUsers";
-import OfflineUsers from "./ActiveUsers/OfflineUsers";
 import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
@@ -741,20 +740,13 @@ const SocialMediaBody: React.FC = () => {
       </div>
       <div className="SocialMediaBody__OnlineOfflineUsers">
         <div className="SocialMediaBody__Online">
-          <p className="SocialMediaBody__OnlineText">ONLINE</p>
+          <p className="SocialMediaBody__OnlineText">Users</p>
           <OnlineUsers />
           <OnlineUsers />
           <OnlineUsers />
           <OnlineUsers />
           <OnlineUsers />
           <OnlineUsers />
-        </div>
-        <div className="SocialMediaBody__OfflineContainer">
-          <p className="SocialMediaBody__OfflineText">OFFLINE</p>
-          <OfflineUsers />
-          <OfflineUsers />
-          <OfflineUsers />
-          <OfflineUsers />
         </div>
       </div>
     </div>

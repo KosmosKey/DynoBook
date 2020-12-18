@@ -385,23 +385,13 @@
     .SocialMediaBody__Online {
       padding: 10px;
       .SocialMediaBody__OnlineText {
-        color: #838383;
-        font-weight: 600;
+        color: #eb5043;
+        font-weight: bold;
         font-size: large;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         margin-top: 10px;
         padding: 10px;
       }
-    }
-    .SocialMediaBody__OfflineText {
-      color: #838383;
-      font-weight: 600;
-      font-size: large;
-      margin-bottom: 15px;
-      padding: 10px;
-    }
-    .SocialMediaBody__OfflineContainer {
-      padding: 10px;
     }
   }
 }
