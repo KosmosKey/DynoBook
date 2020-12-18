@@ -106,21 +106,6 @@ const SocialMediaBody: React.FC = () => {
   }, [idComment]);
 
   useEffect(() => {
-    if (user) {
-      database.ref(".info/connected").on("value", (snapshot) => {
-        database
-          .ref(user?.id)
-          .onDisconnect()
-          .set({ status: false })
-          .then(() => {
-            database.ref(user?.id).set({ status: true });
-            db.collection("user").doc(user?.id).update({ status: true });
-          });
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
     if (!idComment && comments) {
       dispatch(setCommentId(collection[0]?.id));
     }
