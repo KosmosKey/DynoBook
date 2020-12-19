@@ -45,12 +45,15 @@ const Login: React.FC = () => {
           username: "",
           password: "",
         });
-        db.collection("user").doc(res.data.profile.id).set({
-          first_name: res.data.profile.first_name,
-          last_name: res.data.profile.last_name,
-          username: res.data.profile.username,
-          profile_picture: null,
-        });
+        db.collection("user")
+          .doc(res.data.profile.id)
+          .set({
+            full_name: `${res.data.profile.first_name} ${res.data.profile.last_name}`,
+            first_name: res.data.profile.first_name,
+            last_name: res.data.profile.last_name,
+            username: res.data.profile.username,
+            profile_picture: null,
+          });
       })
       .catch((err) => {
         setSuccessAlert("");
