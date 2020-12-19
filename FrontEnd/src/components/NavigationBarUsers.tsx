@@ -1,5 +1,7 @@
-import { Avatar } from "@material-ui/core";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Avatar } from "@material-ui/core";
+import { setUserId } from "../reducerSlices/postSlicer";
 
 type userProps = {
   item: any;
@@ -7,8 +9,14 @@ type userProps = {
 };
 
 const NavigationBarUsers: React.FC<userProps> = ({ item, id }) => {
+  const dispatch = useDispatch();
+
   return (
-    <div className="NavigationBarUsers" id={id}>
+    <div
+      className="NavigationBarUsers"
+      id={id}
+      onClick={() => dispatch(setUserId(id))}
+    >
       <Avatar
         className="NavigationBarUsers__Avatar"
         src={item.profile_picture && item.profile_picture}

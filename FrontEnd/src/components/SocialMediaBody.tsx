@@ -19,7 +19,10 @@ import Suggestions from "./Suggestions/Suggestions";
 import Trends from "./Suggestions/Trends";
 import Posts from "./Posts/Posts";
 import OnlineUsers from "./ActiveUsers/OnlineUsers";
-import { userInformation } from "../reducerSlices/authSlicer";
+import {
+  setUserInformation,
+  userInformation,
+} from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
 import db, { database, storage } from "./firebase";
@@ -33,9 +36,15 @@ import {
   setProfilePicture,
 } from "../reducerSlices/authSlicer";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
-import { commentId, setCommentId } from "../reducerSlices/postSlicer";
+import {
+  commentId,
+  setCommentId,
+  setUserId,
+  userId,
+} from "../reducerSlices/postSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
+import CommentComponent from "./LikesComment/CommentComponent";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -59,6 +68,8 @@ const SocialMediaBody: React.FC = () => {
   const idComment = useSelector(commentId);
   const dispatch = useDispatch();
 
+  const user_id = useSelector(userId);
+
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const [followers, setFollowers] = useState<any>([]);
@@ -78,6 +89,14 @@ const SocialMediaBody: React.FC = () => {
   const [imageName, setImageName] = useState<any>("");
   const [posts, setPosts] = useState<any>(null);
   const [imagePreview, setImagePreview] = useState<any>(null);
+
+  const [commentComponentBolean, setCommentComponentBolean] = useState<boolean>(
+    false
+  );
+
+  const [userinformationProfile, setUserinformationProfile] = useState<any>(
+    null
+  );
 
   const [submitLoader, setSubmitLoader] = useState(false);
   const [suggestionUsers, setSuggestionUser] = useState<any>([]);
@@ -363,9 +382,27 @@ const SocialMediaBody: React.FC = () => {
     db.collection("user").doc(id).collection("followers").doc(user.id).delete();
   };
 
+  useEffect(() => {
+    if (user_id) {
+      db.collection("user")
+        .doc(user_id)
+        .onSnapshot((snapshot) => {
+          setUserinformationProfile({ id: snapshot.id, user: snapshot.data() });
+          setCommentComponentBolean(true);
+        });
+    }
+  }, [user_id, dispatch]);
+  console.log(userinformationProfile);
+
   return (
     <div className="SocialMediaBody__">
-      {/*  <CommentComponent /> */}
+      {commentComponentBolean && (
+        <CommentComponent
+          arrayFollowing={userFollowing}
+          id={userinformationProfile.id}
+          user={userinformationProfile.user}
+        />
+      )}
       {modalOpen && (
         <Modal onClose={cancelProfilePicture}>
           <div className={classes.paper}>

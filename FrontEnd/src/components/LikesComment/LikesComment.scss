@@ -12,10 +12,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    width: 70vw;
-    height: 90vh;
     border-radius: 5px;
-    padding: 15px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
   }
@@ -30,68 +28,109 @@
     background: rgba(0, 0, 0, 0.75);
     z-index: 2;
   }
-  .CommentComponent__Avatar {
-    height: 60px;
-    width: 60px;
-    background: #eb5043;
-    font-size: 25px;
-  }
 
-  .CommentComponent__Comments {
-    flex: 1;
+  .CommentComponent__AvatarName {
     display: flex;
-    flex-direction: column;
-    overflow: scroll;
-  }
-  .CommentComponent__UserPost {
-    padding-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
     align-items: flex-start;
-    .CommentComponent__AvatarNamePicture {
-      display: flex;
-    }
-    .CommentComponent__AvatarName {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      margin-left: 10px;
-      h3 {
-        color: #141414;
-        font-size: 22px;
-      }
-    }
-  }
-  .CommentComponent__Input {
-    display: flex;
-    padding-top: 15px;
-    input {
-      flex: 1;
-      padding: 15px;
-      background: #f9f9f9;
-      border: none;
-      outline-width: 0;
-      border-radius: 50px;
-    }
-    button {
+    .CommentComponent__Avatar {
+      width: 200px;
+      height: 200px;
+      font-size: 100px;
+      font-weight: bold;
       background: #eb5043;
-      border-radius: 50%;
-      width: fit-content;
-      margin-left: 15px;
+    }
+    .CommentComopnent__UsersName {
+      text-align: center;
+    }
+    .CommentComponent__FollowersContainer {
+      display: flex;
+      margin-top: 15px;
+      .CommentComponent__Followers,
+      .CommentComponent__Following,
+      .CommentComponent__Posts {
+        text-align: center;
+        padding: 0 15px;
+        p {
+          color: #141414;
+          font-weight: 600;
+        }
+      }
+    }
+    .CommentComponent__Name {
+      margin-left: 25px;
+      margin-top: 20px;
 
-      .MuiSvgIcon-root {
+      .CommentComponent__FollowingButton {
+        width: 100%;
+        background: #eb5043;
+        margin-top: 25px;
         color: #fff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: capitalize;
+        border: 2px solid transparent;
+        p {
+          font-size: medium;
+          color: #fff;
+        }
+        .MuiSvgIcon-root {
+          margin-left: 5px;
+          margin-bottom: 5px;
+        }
+      }
+
+      .CommentComponent__FollowingButton:hover {
+        background: #fff;
+        border: 2px solid #eb5043;
+        .MuiSvgIcon-root {
+          color: #eb5043;
+        }
+        p {
+          font-size: medium;
+          color: #eb5043;
+        }
+      }
+
+      .CommentComponent__FollowButton {
+        width: 100%;
+        background: #fff;
+        margin-top: 25px;
+        color: #fff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #eb5043;
+        text-transform: capitalize;
+        p {
+          font-size: medium;
+          color: #eb5043;
+        }
+        .MuiSvgIcon-root {
+          margin-left: 5px;
+          margin-bottom: 5px;
+        }
+      }
+      .CommentComponent__FollowButton:hover {
+        background: #eb5043;
+        p {
+          font-size: medium;
+          color: #fff;
+        }
+      }
+      h1 {
+        font-size: xx-large;
+        color: #141414;
+      }
+      p {
+        font-size: large;
+        color: #979797;
       }
     }
   }
 
-  .CommentComponent__Paragraph {
-    padding-bottom: 15px;
-    p {
-      font-weight: 400;
-      font-size: medium;
-    }
-  }
   .Comment {
     display: flex;
     justify-content: center;
