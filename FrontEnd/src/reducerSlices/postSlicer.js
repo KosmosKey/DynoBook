@@ -19,7 +19,7 @@ export const postReducer = createSlice({
   },
 });
 
-export const { setCommentId, setUserId } = postReducer.actions;
+export const { setCommentId, setUserId, setUserNull } = postReducer.actions;
 
 export const commentId = (state) => state.post.commentId;
 export const userId = (state) => state.post.userId;

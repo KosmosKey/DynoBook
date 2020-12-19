@@ -57,6 +57,11 @@ nav {
     border: 2px solid #f2f4f6;
     border-radius: 5px;
     overflow: scroll;
+    z-index: 1;
+    .NavigationBar__Spinner {
+      color: #eb5043;
+      text-align: center;
+    }
   }
   .NavigationBar__Input {
     display: flex;

@@ -1,9 +1,7 @@
 import React from "react";
-import Comment from "./Comment";
 import { useSelector } from "react-redux";
 import "./LikesComment.scss";
 import { Avatar, Button, IconButton } from "@material-ui/core";
-import SendIcon from "@material-ui/icons/Send";
 import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
 import db from "../firebase";
@@ -13,9 +11,21 @@ type user = {
   user: any;
   id: string;
   arrayFollowing: any;
+  closeBrowser: () => any;
+  followers: any;
+  posts: any;
+  following: any;
 };
 
-const CommentComponent: React.FC<user> = ({ id, user, arrayFollowing }) => {
+const CommentComponent: React.FC<user> = ({
+  id,
+  user,
+  arrayFollowing,
+  closeBrowser,
+  followers,
+  posts,
+  following,
+}) => {
   const user_profile = useSelector(userInformation);
 
   const followUser = (id: string) => {
@@ -48,8 +58,15 @@ const CommentComponent: React.FC<user> = ({ id, user, arrayFollowing }) => {
 
   return (
     <div className="CommentComponent">
-      <div className="Overlay"></div>
+      <div className="Overlay" onClick={closeBrowser}></div>
       <div className="CommentComponent__OverlayDiv">
+        <IconButton
+          className="CommentComponent__CloseBtn"
+          onClick={closeBrowser}
+        >
+          <CloseIcon />
+        </IconButton>
+
         <div className="CommentComponent__AvatarName">
           <Avatar className="CommentComponent__Avatar">
             {!user?.profile_picture && user?.first_name.charAt(0)}
@@ -62,17 +79,17 @@ const CommentComponent: React.FC<user> = ({ id, user, arrayFollowing }) => {
               <p>@{user?.username}</p>
             </div>
             <div className="CommentComponent__FollowersContainer">
-              <div className="CommentComponent__Followers">
-                <p>Followers</p>
-                <p>{user.followers}</p>
+              <div className="CommentComponent__Posts">
+                <p>Posts</p>
+                <p>{posts?.length}</p>
               </div>
               <div className="CommentComponent__Following">
                 <p>Following</p>
-                <p>{user.following}</p>
+                <p>{following?.length}</p>
               </div>
-              <div className="CommentComponent__Posts">
-                <p>Posts</p>
-                <p>{user.posts}</p>
+              <div className="CommentComponent__Followers">
+                <p>Followers</p>
+                <p>{followers?.length}</p>
               </div>
             </div>
             {arrayFollowing.includes(id) ? (

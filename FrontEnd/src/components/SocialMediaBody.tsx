@@ -39,7 +39,7 @@ import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOut
 import {
   commentId,
   setCommentId,
-  setUserId,
+  setUserNull,
   userId,
 } from "../reducerSlices/postSlicer";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
@@ -106,6 +106,10 @@ const SocialMediaBody: React.FC = () => {
   const [failMessage, setFailMessage] = useState<boolean | string>(false);
   const [profilePictureFailed, setProfilePictureFailed] = useState<string>("");
   const [likePostsUser, setLikesPostsUser] = useState<any>([]);
+
+  const [detectFollowers, setDetectFollowers] = useState<any>(null);
+  const [detectFollowing, setDetectFollowing] = useState<any>(null);
+  const [detectPosts, setDetectPosts] = useState<any>(null);
 
   useEffect(() => {
     if (idComment) {
@@ -390,14 +394,42 @@ const SocialMediaBody: React.FC = () => {
           setUserinformationProfile({ id: snapshot.id, user: snapshot.data() });
           setCommentComponentBolean(true);
         });
+
+      db.collection("user")
+        .doc(user_id)
+        .collection("followingUsers")
+        .onSnapshot((snapshot) => {
+          setDetectFollowing(snapshot.docs.map((doc) => doc.data()));
+        });
+
+      db.collection("user")
+        .doc(user_id)
+        .collection("posts")
+        .onSnapshot((snapshot) => {
+          setDetectPosts(snapshot.docs.map((doc) => doc.data()));
+        });
+
+      db.collection("user")
+        .doc(user_id)
+        .collection("followers")
+        .onSnapshot((snapshot) => {
+          setDetectFollowers(snapshot.docs.map((doc) => doc.data()));
+        });
     }
   }, [user_id, dispatch]);
-  console.log(userinformationProfile);
 
+  const closeCommentComponent = () => {
+    setCommentComponentBolean(false);
+    dispatch(setUserNull(null));
+  };
   return (
     <div className="SocialMediaBody__">
       {commentComponentBolean && (
         <CommentComponent
+          followers={detectFollowers}
+          following={detectFollowing}
+          posts={detectPosts}
+          closeBrowser={closeCommentComponent}
           arrayFollowing={userFollowing}
           id={userinformationProfile.id}
           user={userinformationProfile.user}

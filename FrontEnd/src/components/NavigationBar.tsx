@@ -4,7 +4,7 @@ import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import HomeIcon from "@material-ui/icons/Home";
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar, CircularProgress, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -17,6 +17,7 @@ const NavigationBar: React.FC = () => {
   const [listOfUsers, setListOfUsers] = useState<any>([]);
   const [modalUsers, setModalUsers] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [loader, setLoader] = useState<boolean>(true);
 
   useEffect(() => {
     db.collection("user").onSnapshot((snapshot) =>
@@ -26,12 +27,24 @@ const NavigationBar: React.FC = () => {
     );
   }, []);
 
-  const arratFiltered = listOfUsers.filter(
+  const arratFiltered = listOfUsers?.filter(
     (item: any) =>
       item.users.full_name.toLowerCase().indexOf(inputValue.toLowerCase()) !==
         -1 ||
       item.users.username.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
   );
+
+  const onChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+
+    if (e.target.value !== "") {
+      setModalUsers(true);
+      setLoader(false);
+    } else {
+      setLoader(true);
+      setModalUsers(false);
+    }
+  };
 
   return (
     <nav className="NavigationBar">
@@ -40,17 +53,30 @@ const NavigationBar: React.FC = () => {
           type="text"
           placeholder="Search"
           value={inputValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setInputValue(e.target.value)
-          }
+          onChange={onChangeInputValue}
         />
         <SearchIcon />
       </div>
-      <div className="NavigationBar__Modal">
-        {arratFiltered.map(({ id, users }: any) => (
-          <NavigationBarUsers id={id} key={id} item={users} />
-        ))}
-      </div>
+      {modalUsers && (
+        <div
+          className="NavigationBar__Modal"
+          style={loader ? { alignItems: "center" } : {}}
+        >
+          {loader ? (
+            <CircularProgress className="NavigationBar__Spinner" size={50} />
+          ) : arratFiltered.length === 0 ? (
+            <p
+              style={{ textAlign: "center", padding: "15px", fontWeight: 500 }}
+            >
+              No Users Found
+            </p>
+          ) : (
+            arratFiltered.map(({ id, users }: any) => (
+              <NavigationBarUsers id={id} key={id} item={users} />
+            ))
+          )}
+        </div>
+      )}
       <h1 className="NavigationBar__TitleLogo">DynoBook</h1>
       <div className="NavigationBar__ProfilePicture">
         <IconButton className="NavigationBar__HomeIcon">
