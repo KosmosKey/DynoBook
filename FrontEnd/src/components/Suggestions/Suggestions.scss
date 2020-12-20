@@ -49,3 +49,25 @@
 .Suggestions:hover {
   background: #fcfeff;
 }
+
+@media screen and (max-width: 850px) {
+  .Suggestions {
+    .Suggestions__Avatar {
+      height: 45px !important;
+      width: 45px !important;
+    }
+    .Suggestions__CheckIcon,
+    .CircleOutlineIcon {
+      margin-left: 10px !important;
+      font-size: 25px !important;
+    }
+    .Suggestions__ProfileTitle {
+      p {
+        font-size: xx-small !important;
+      }
+      h4 {
+        font-size: small;
+      }
+    }
+  }
+}

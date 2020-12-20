@@ -28,7 +28,7 @@ const Suggestions: React.FC<iProps> = ({ item, children }) => {
           </Avatar>
           <div className="Suggestions__ProfileTitle">
             <h4>
-              {item.first_name} {item.last_name}
+              {item.first_name} <span>{item.last_name}</span>
             </h4>
             <p>@{item.username}</p>
           </div>

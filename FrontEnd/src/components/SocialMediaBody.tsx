@@ -6,6 +6,7 @@ import {
   Avatar,
   Button,
   CircularProgress,
+  Icon,
   IconButton,
   makeStyles,
 } from "@material-ui/core";
@@ -19,13 +20,10 @@ import Suggestions from "./Suggestions/Suggestions";
 import Trends from "./Suggestions/Trends";
 import Posts from "./Posts/Posts";
 import OnlineUsers from "./ActiveUsers/OnlineUsers";
-import {
-  setUserInformation,
-  userInformation,
-} from "../reducerSlices/authSlicer";
+import { userInformation } from "../reducerSlices/authSlicer";
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
-import db, { database, storage } from "./firebase";
+import db, { storage } from "./firebase";
 import { Alert, Skeleton } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -45,6 +43,7 @@ import {
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
 import CommentComponent from "./LikesComment/CommentComponent";
+import { closeNavBar, navBarBolean } from "../reducerSlices/appSlicer";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -69,6 +68,8 @@ const SocialMediaBody: React.FC = () => {
   const dispatch = useDispatch();
 
   const user_id = useSelector(userId);
+
+  const navigationBarBolean = useSelector(navBarBolean);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -424,7 +425,7 @@ const SocialMediaBody: React.FC = () => {
   };
   return (
     <div className="SocialMediaBody__">
-      <div className="overlayNavBar"></div>
+      <div className={`overlayNavBar ${navigationBarBolean && "active"}`}></div>
       {commentComponentBolean && (
         <CommentComponent
           followers={detectFollowers}
@@ -583,7 +584,7 @@ const SocialMediaBody: React.FC = () => {
                 <p>Sending...</p>
               ) : (
                 <Fragment>
-                  <p>Send</p>
+                  <p className="SocialMediaBody__SendParagraph">Send</p>
                   <SendIcon className="SendIcon" />
                 </Fragment>
               )}
@@ -634,7 +635,17 @@ const SocialMediaBody: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="SocialMediaBody__ProfileTrends">
+      <div
+        className={`SocialMediaBody__ProfileTrends ${
+          navigationBarBolean && "active"
+        }`}
+      >
+        <IconButton
+          className="SocialMediaBody__CloseIcon"
+          onClick={() => dispatch(closeNavBar(false))}
+        >
+          <CloseIcon className="SocialMediaBody__CloseIconMuiSvg" />
+        </IconButton>
         <div className="SocialMediaBodyProfile__Profile">
           <div
             className="SocialMediaBodyProfile__Header"
@@ -803,6 +814,8 @@ const SocialMediaBody: React.FC = () => {
             <Trends paragraph="Liverpool" />
             <Trends paragraph="Chelsea" />
             <Trends paragraph="Real Madrid" />
+            <Trends paragraph="Manchester City" />
+            <Trends paragraph="Manchester City" />
             <Trends paragraph="Manchester City" />
           </div>
         </div>

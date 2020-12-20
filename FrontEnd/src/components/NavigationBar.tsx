@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
@@ -10,6 +10,7 @@ import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
 import MenuIcon from "@material-ui/icons/Menu";
 import db from "./firebase";
 import NavigationBarUsers from "./NavigationBarUsers";
+import { setNavBar } from "../reducerSlices/appSlicer";
 
 const NavigationBar: React.FC = () => {
   const user_profile = useSelector(profile_picture);
@@ -18,6 +19,8 @@ const NavigationBar: React.FC = () => {
   const [modalUsers, setModalUsers] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(true);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     db.collection("user").onSnapshot((snapshot) =>
@@ -95,7 +98,10 @@ const NavigationBar: React.FC = () => {
           {!user_profile && user.first_name.charAt(0)}
         </Avatar>
       </div>
-      <IconButton className="NavigationBar__HamburgerMenu">
+      <IconButton
+        className="NavigationBar__HamburgerMenu"
+        onClick={() => dispatch(setNavBar(true))}
+      >
         <MenuIcon />
       </IconButton>
     </nav>

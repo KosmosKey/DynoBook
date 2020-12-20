@@ -97,16 +97,23 @@ const Posts: React.FC<iProps> = ({
               )}
             </Avatar>
             <div className="Posts__NameUsername">
-              <h3>{item?.first_name}</h3>
+              <h3>
+                {item?.first_name} {item?.last_name.charAt(0)}.
+              </h3>
               <p>@{item?.username}</p>
             </div>
           </div>
-          <span>
+          <span className="Posts__DateSpan">
             {moment(new Date(item?.timestamp?.toDate()), "YYYYMMDD").fromNow()}
           </span>
         </div>
         <div className="Posts__Paragraph">
-          <p>{item?.message}</p>
+          <p>
+            {item?.message} Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Quibusdam repudiandae quidem adipisci tenetur corrupti ab
+            architecto doloremque hic? Magni voluptas repellendus blanditiis
+            accusantium, aperiam eos commodi. Similique nam sapiente placeat.
+          </p>
         </div>
         <div className="Posts__LikesComments">
           <div className="Posts__Icons">

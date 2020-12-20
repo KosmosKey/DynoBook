@@ -260,3 +260,62 @@
     }
   }
 }
+
+@media screen and (max-width: 850px) {
+  .Post__CommentChildren {
+    .Post__CommentResult {
+      padding: 15px !important;
+      p {
+        font-size: 12px !important;
+        font-weight: 600;
+      }
+    }
+    .Post__CommentResultDiv {
+      .Post__CommentUsername {
+        p {
+          font-size: small !important;
+        }
+        span {
+          font-size: x-small !important;
+        }
+      }
+    }
+    .Post_CommentAvatarName {
+      .Post__CommentAvatar {
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+
+  .Posts__ {
+    .Posts__AvatarTitle {
+      margin-top: 20px !important;
+    }
+    .Posts__DateSpan {
+      font-size: x-small !important;
+    }
+
+    .Posts__Paragraph {
+      p {
+        font-size: small;
+        font-weight: 500;
+      }
+    }
+
+    .Posts__AvatarTitle {
+      .Avatar {
+        height: 50px !important;
+        width: 50px !important;
+      }
+      .Posts__NameUsername {
+        h3 {
+          font-size: large;
+        }
+        p {
+          font-size: small;
+        }
+      }
+    }
+  }
+}

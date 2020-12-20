@@ -18,6 +18,27 @@
   flex: 1;
   display: flex;
 
+  .SendBtn {
+    font-weight: bold;
+    color: #fff;
+    margin-top: 2px;
+    padding: 8px 40px !important;
+    background: #eb4233;
+    font-size: medium;
+    border: 2px solid transparent;
+    transition: 350ms ease;
+    text-transform: capitalize;
+    .SendIcon {
+      font-size: 20px;
+      margin-left: 8px;
+    }
+  }
+  .SendBtn:hover {
+    background: #fff;
+    color: #eb4233;
+    border: 2px solid #eb4233;
+  }
+
   .Modal {
     .Modal__Overlay {
       position: fixed;
@@ -147,26 +168,6 @@
             bottom: -150px;
             z-index: 100;
           }
-        }
-        .SendBtn {
-          font-weight: bold;
-          color: #fff;
-          margin-top: 2px;
-          padding: 8px 40px !important;
-          background: #eb4233;
-          font-size: medium;
-          border: 2px solid transparent;
-          transition: 350ms ease;
-          text-transform: capitalize;
-          .SendIcon {
-            font-size: 20px;
-            margin-left: 8px;
-          }
-        }
-        .SendBtn:hover {
-          background: #fff;
-          color: #eb4233;
-          border: 2px solid #eb4233;
         }
       }
     }
@@ -399,6 +400,10 @@
   background: yellow;
 }
 
+.SocialMediaBody__CloseIcon {
+  display: none !important;
+}
+
 .LoadingScreen {
   position: fixed;
   top: 0;
@@ -473,6 +478,98 @@
 }
 
 @media screen and (max-width: 850px) {
+  .SocialMediaBody__SendParagraph {
+    display: none !important;
+  }
+
+  textarea {
+    font-size: small !important;
+  }
+
+  .SocialMediaBody__Posts {
+    flex: 0.5;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    .SocialMediaBody__InputContainer {
+      background: #fff;
+      height: fit-content;
+      padding: 30px;
+      width: 100%;
+      border-radius: 5px;
+      border: 2px solid #f3f5f7;
+      .SocialMediaBody__InputContainerDiv {
+        height: 200px;
+        .SocialMediaBody__SubmitLoaderSpinner {
+          color: #eb5043;
+        }
+      }
+      textarea {
+        width: 100%;
+        font-size: 17px;
+        height: 100%;
+        padding: 25px;
+        line-height: 25px;
+        border: none;
+        outline-width: 0;
+        resize: none;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+
+      .SendBtn {
+        padding: 8px 5px !important;
+        border-radius: 50px !important;
+      }
+    }
+  }
+
+  .SendIcon {
+    margin-left: 0px !important;
+    width: 25px !important;
+  }
+  .SocialMediaBody__CloseIcon {
+    position: absolute !important;
+    top: 10px !important;
+    right: 15px !important;
+    background: #eb4233 !important;
+    width: 30px;
+    height: 30px;
+    display: flex !important;
+    .SocialMediaBody__CloseIconMuiSvg {
+      color: #fff;
+      font-size: large;
+      font-weight: bold;
+    }
+  }
+
+  .Icons__ {
+    button {
+      margin: 0px !important;
+    }
+
+    .Emoji__Button {
+      display: none !important;
+    }
+    .MuiSvgIcon-root {
+      font-size: 25px !important;
+    }
+  }
+
+  .SocialMediaBody__Suggestions {
+    h3 {
+      font-size: medium !important;
+      margin-bottom: 0px !important;
+    }
+  }
+
+  .SocialMediaBody__Trends {
+    h3 {
+      font-size: medium !important;
+    }
+  }
   .overlayNavBar {
     background: rgba(0, 0, 0, 0.75);
     position: fixed;
@@ -481,10 +578,14 @@
     left: 0;
     bottom: 0;
     z-index: 2;
+    opacity: 0;
+    pointer-events: none !important;
+    transition: 350ms ease !important;
   }
   .SocialMediaBody__ProfileTrends {
     z-index: 3;
     position: fixed;
+    opacity: 1 !important;
     right: 0;
     top: 0;
     bottom: 0;
@@ -493,11 +594,15 @@
     max-width: 300px;
     overflow: scroll;
     border-radius: 0px !important;
+    transform: translateX(100%);
+    transition: 350ms ease !important;
+
     .SocialMediaBody__Trends {
       margin-top: 0px !important;
     }
     .SocialMediaBodyProfile__Profile {
       border-radius: 0px !important;
+      padding-top: 30px !important;
     }
     .SocialMediaBody__Suggestions {
       margin-top: 0px;
@@ -556,6 +661,16 @@
       }
     }
   }
+
+  .SocialMediaBody__ProfileTrends.active {
+    opacity: 1 !important;
+    transform: translateX(0%) !important;
+  }
+  .overlayNavBar.active {
+    opacity: 1 !important;
+    pointer-events: all !important;
+  }
+
   .SocialMediaBody__Posts {
     flex: 1 !important;
   }
