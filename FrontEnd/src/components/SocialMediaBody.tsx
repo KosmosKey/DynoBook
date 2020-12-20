@@ -424,6 +424,7 @@ const SocialMediaBody: React.FC = () => {
   };
   return (
     <div className="SocialMediaBody__">
+      <div className="overlayNavBar"></div>
       {commentComponentBolean && (
         <CommentComponent
           followers={detectFollowers}
@@ -645,7 +646,7 @@ const SocialMediaBody: React.FC = () => {
                 : { background: "#eb5043" }
             }
           >
-            {!profileLoading && <h1>DynoBook</h1>}
+            {!profileLoading && <h1>{user?.first_name}</h1>}
           </div>
           <div className="SocialMediaBodyProfile__ProfileInformation">
             {profileLoading ? (
@@ -726,7 +727,7 @@ const SocialMediaBody: React.FC = () => {
 
                         <p>
                           <CreateIcon />
-                          Edit
+                          <span>Edit</span>
                         </p>
                       </div>
                     </div>
@@ -735,7 +736,6 @@ const SocialMediaBody: React.FC = () => {
                         <h1>
                           {user?.first_name} {user?.last_name?.charAt(0)}.
                         </h1>
-                        <CheckCircleIcon />
                       </div>
                       <p>@{user?.username}</p>
                     </div>

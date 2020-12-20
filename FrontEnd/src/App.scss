@@ -473,8 +473,88 @@
 }
 
 @media screen and (max-width: 850px) {
+  .overlayNavBar {
+    background: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+  }
   .SocialMediaBody__ProfileTrends {
-    display: none !important;
+    z-index: 3;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0px !important;
+    margin: 0px !important;
+    max-width: 300px;
+    overflow: scroll;
+    border-radius: 0px !important;
+    .SocialMediaBody__Trends {
+      margin-top: 0px !important;
+    }
+    .SocialMediaBodyProfile__Profile {
+      border-radius: 0px !important;
+    }
+    .SocialMediaBody__Suggestions {
+      margin-top: 0px;
+      border: none !important;
+    }
+    .AvatarProfile {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      flex-direction: column;
+      width: 100%;
+    }
+    .Avatar__Div {
+      position: static !important;
+      background: black !important;
+      margin-bottom: 10px;
+      margin-top: 20px;
+      .Avatar__Edit {
+        top: 10px !important;
+        right: 50px !important;
+        opacity: 1 !important;
+        height: 50px !important;
+        width: 50px !important;
+        background: none !important;
+        .MuiSvgIcon-root {
+          color: #eb4233;
+        }
+        span {
+          display: none;
+        }
+      }
+    }
+    .SocialMediaBodyProfile__Header {
+      display: none !important;
+    }
+    .SocialMediaProfile__Followers {
+      display: none;
+    }
+    .Name {
+      margin: 0 auto !important;
+      width: 100%;
+      padding-bottom: 25px;
+      p {
+        font-size: small !important;
+        width: 100%;
+        text-align: center;
+      }
+      .Name__H1_Icon {
+        width: 100% !important;
+
+        h1 {
+          width: 100%;
+          text-align: center !important;
+          font-size: large !important;
+        }
+      }
+    }
   }
   .SocialMediaBody__Posts {
     flex: 1 !important;
