@@ -68,7 +68,10 @@ const CommentComponent: React.FC<user> = ({
         </IconButton>
 
         <div className="CommentComponent__AvatarName">
-          <Avatar className="CommentComponent__Avatar">
+          <Avatar
+            className="CommentComponent__Avatar"
+            src={user?.profile_picture && user?.profile_picture}
+          >
             {!user?.profile_picture && user?.first_name.charAt(0)}
           </Avatar>
           <div className="CommentComponent__Name">

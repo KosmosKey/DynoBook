@@ -6,7 +6,6 @@ import {
   Avatar,
   Button,
   CircularProgress,
-  Icon,
   IconButton,
   makeStyles,
 } from "@material-ui/core";
@@ -425,7 +424,10 @@ const SocialMediaBody: React.FC = () => {
   };
   return (
     <div className="SocialMediaBody__">
-      <div className={`overlayNavBar ${navigationBarBolean && "active"}`}></div>
+      <div
+        className={`overlayNavBar ${navigationBarBolean && "active"}`}
+        onClick={() => dispatch(closeNavBar(false))}
+      ></div>
       {commentComponentBolean && (
         <CommentComponent
           followers={detectFollowers}
@@ -814,8 +816,6 @@ const SocialMediaBody: React.FC = () => {
             <Trends paragraph="Liverpool" />
             <Trends paragraph="Chelsea" />
             <Trends paragraph="Real Madrid" />
-            <Trends paragraph="Manchester City" />
-            <Trends paragraph="Manchester City" />
             <Trends paragraph="Manchester City" />
           </div>
         </div>

@@ -106,6 +106,10 @@ nav {
     padding: 15px !important;
   }
 
+  .NavigationBar__Modal {
+    display: none !important;
+  }
+
   .NavigationBar__TitleLogo {
     padding-left: 15px;
   }
@@ -116,5 +120,17 @@ nav {
   .NavigationBar__Input,
   .NavigationBar__ProfilePicture {
     display: none !important;
+  }
+}
+
+@media screen and (max-width: 356px) {
+  .NavigationBar__TitleLogo {
+    font-size: 25px !important;
+  }
+
+  .NavigationBar__HamburgerMenu {
+    .MuiSvgIcon-root {
+      font-size: 30px !important;
+    }
   }
 }

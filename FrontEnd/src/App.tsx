@@ -52,10 +52,6 @@ function App() {
         <ProtectedRoute path="/Signup" component={Login} />
         <PrivateRouter path="/Home" component={SocialMediaBody} />
       </Switch>
-      {/* <NavigationBar />
-      <SocialMediaBody /> */}
-      {/*  <SignUp /> */}
-      {/* <Login /> */}
     </div>
   );
 }

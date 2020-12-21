@@ -114,7 +114,6 @@
     padding: 30px;
     .SocialMediaBody__InputContainer {
       background: #fff;
-      height: fit-content;
       padding: 30px;
       width: 100%;
       border-radius: 5px;
@@ -173,11 +172,11 @@
     }
   }
   .SocialMediaBody__ProfileTrends {
-    flex: 0.3;
+    flex: 0.4;
   }
   .SocialMediaBody__OnlineOfflineUsers {
     background: #fff;
-    flex: 0.2;
+    flex: 0.1;
     border-top: 2px solid #f1f4f6;
     border-left: 2px solid #f1f4f6;
   }
@@ -478,6 +477,9 @@
 }
 
 @media screen and (max-width: 850px) {
+  .CommentComponent {
+    display: none !important;
+  }
   .SocialMediaBody__SendParagraph {
     display: none !important;
   }
@@ -494,12 +496,6 @@
     align-items: center;
     padding: 30px;
     .SocialMediaBody__InputContainer {
-      background: #fff;
-      height: fit-content;
-      padding: 30px;
-      width: 100%;
-      border-radius: 5px;
-      border: 2px solid #f3f5f7;
       .SocialMediaBody__InputContainerDiv {
         height: 200px;
         .SocialMediaBody__SubmitLoaderSpinner {
@@ -521,7 +517,8 @@
 
       .SendBtn {
         padding: 8px 5px !important;
-        border-radius: 50px !important;
+        border-radius: 5px !important;
+        min-width: 40px !important;
       }
     }
   }
@@ -596,9 +593,10 @@
     border-radius: 0px !important;
     transform: translateX(100%);
     transition: 350ms ease !important;
-
+    background: black !important;
     .SocialMediaBody__Trends {
       margin-top: 0px !important;
+      flex: 1;
     }
     .SocialMediaBodyProfile__Profile {
       border-radius: 0px !important;
@@ -673,5 +671,28 @@
 
   .SocialMediaBody__Posts {
     flex: 1 !important;
+  }
+}
+
+@media screen and (max-width: 357px) {
+  textarea {
+    font-size: x-small !important;
+    font-weight: bold !important;
+  }
+
+  .SocialMediaBody__Posts {
+    padding: 25px !important;
+    .SocialMediaBody__InputContainer {
+      textarea {
+        font-weight: bold !important;
+      }
+
+      .SendBtn {
+        padding: 8px 5px !important;
+        .MuiSvgIcon-root {
+          font-size: small !important;
+        }
+      }
+    }
   }
 }

@@ -29,7 +29,12 @@ const Comment: React.FC<props> = ({ post }) => {
           <span>
             {moment(new Date(post?.timestamp?.toDate()), "YYYYMMDD").fromNow()}
           </span>
-          <p>{post?.message}</p>
+          <p>
+            {post?.message} Lorem ipsum dolor sit amet, consectetur adipisicing
+            elit. Porro quo repellat quod eaque illo, architecto commodi quos
+            nisi, hic suscipit ducimus laborum deleniti odit rem? Voluptatibus
+            fugiat quos laborum nulla.
+          </p>
         </div>
       </div>
     </div>

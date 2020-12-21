@@ -262,6 +262,9 @@
 }
 
 @media screen and (max-width: 850px) {
+  .Post__CommentsNoComments {
+    font-size: small !important;
+  }
   .Post__CommentChildren {
     .Post__CommentResult {
       padding: 15px !important;
@@ -270,6 +273,7 @@
         font-weight: 600;
       }
     }
+
     .Post__CommentResultDiv {
       .Post__CommentUsername {
         p {
@@ -315,6 +319,83 @@
         p {
           font-size: small;
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 356px) {
+  .Posts__NameInformation {
+    padding: 10px 25px 10px 25px !important;
+  }
+  .Posts__Paragraph {
+    p {
+      font-size: x-small !important;
+    }
+  }
+  .Posts__LikesComments {
+    .Posts__Icons {
+      .PostIconButton {
+        p {
+          font-size: medium !important;
+        }
+        .MuiSvgIcon-root {
+          font-size: 23px !important;
+        }
+      }
+    }
+  }
+
+  .PostCommentsInput {
+    input {
+      font-size: x-small !important;
+    }
+  }
+
+  .Post__CommentChildren {
+    .Post__CommentResultDiv {
+      .Post__CommentUsername {
+        p {
+          font-size: x-small !important;
+          font-weight: bold;
+        }
+        span {
+          font-size: xx-small !important;
+          font-weight: 500 !important;
+        }
+      }
+    }
+
+    .Post__CommentResultDiv {
+      .Post__CommentResult {
+        padding: 15px !important;
+        p {
+          padding-top: 0px !important;
+          line-height: 20px !important;
+          font-size: x-small !important;
+          font-weight: 500 !important;
+        }
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+  .Posts__Name {
+    .Posts__DateSpan {
+      display: none !important;
+    }
+    .Avatar {
+      width: 25px !important;
+      height: 25px !important;
+    }
+    .Posts__NameUsername {
+      h3 {
+        font-size: small !important;
+      }
+      p {
+        font-size: x-small !important;
+        font-weight: 500 !important;
       }
     }
   }
