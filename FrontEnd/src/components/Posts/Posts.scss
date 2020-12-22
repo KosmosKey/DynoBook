@@ -400,3 +400,51 @@
     }
   }
 }
+
+@media screen and (max-width: 305px) {
+  .Post__CommentResult {
+    border-radius: 5px !important;
+    overflow: scroll !important;
+  }
+
+  .SocialMediaBody__Posts {
+    padding: 10px !important;
+  }
+
+  .Posts__AvatarTitle {
+    width: 100% !important;
+  }
+
+  .Posts__ {
+    overflow: hidden !important;
+  }
+
+  .PostCommentsInput {
+    button {
+      display: none !important;
+    }
+  }
+
+  .Posts__NameUsername {
+    h3 {
+      display: inline-block !important;
+      overflow: hidden !important;
+      width: 80% !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      font-size: 13px !important;
+    }
+    p {
+      display: inline-block !important;
+      overflow: hidden !important;
+      width: 80% !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  .Post__CommentsNoComments {
+    font-size: x-small !important;
+    font-weight: 500 !important;
+  }
+}

@@ -681,10 +681,14 @@
   }
 
   .SocialMediaBody__Posts {
+    overflow: hidden !important;
+  }
+
+  .SocialMediaBody__Posts {
     padding: 25px !important;
     .SocialMediaBody__InputContainer {
       textarea {
-        font-weight: bold !important;
+        font-weight: 500 !important;
       }
 
       .SendBtn {

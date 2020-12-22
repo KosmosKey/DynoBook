@@ -8,6 +8,7 @@ import {
   CircularProgress,
   IconButton,
   makeStyles,
+  useMediaQuery,
 } from "@material-ui/core";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
@@ -60,6 +61,8 @@ const useStyles = makeStyles((theme: any) => ({
 
 const SocialMediaBody: React.FC = () => {
   const classes = useStyles();
+
+  const twoHundredPixels = useMediaQuery("(max-width:305px)");
 
   const user = useSelector(userInformation);
   const user_profile = useSelector(profile_picture);
@@ -524,7 +527,11 @@ const SocialMediaBody: React.FC = () => {
               />
             ) : (
               <textarea
-                placeholder={`What's going on ${user?.first_name}?`}
+                placeholder={
+                  twoHundredPixels
+                    ? `Hey ${user?.first_name}!`
+                    : `What's going on ${user?.first_name}?`
+                }
                 value={textValue}
                 onChange={onChange}
               />
