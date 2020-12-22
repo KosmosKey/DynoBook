@@ -1,12 +1,16 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import moment from "moment";
+import { setUserId } from "../../reducerSlices/postSlicer";
 
 interface props {
   post: any;
 }
 
 const Comment: React.FC<props> = ({ post }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="Post__CommentChildren">
       <div className="Post_CommentAvatarName">
@@ -19,7 +23,10 @@ const Comment: React.FC<props> = ({ post }) => {
         </Avatar>
       </div>
       <div className="Post__CommentResultDiv">
-        <div className="Post__CommentUsername">
+        <div
+          className="Post__CommentUsername"
+          onClick={() => dispatch(setUserId(post?.id))}
+        >
           <p>
             {post?.first_name} {post?.last_name}
           </p>

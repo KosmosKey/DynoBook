@@ -78,10 +78,19 @@
               font-weight: bold;
               font-size: medium;
               color: #141414;
+              cursor: pointer;
             }
+            p:hover {
+              text-decoration: underline;
+            }
+
             span {
               font-size: small;
               color: #979797;
+              cursor: pointer;
+            }
+            span:hover {
+              text-decoration: underline !important;
             }
           }
         }

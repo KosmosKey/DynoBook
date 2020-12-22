@@ -1,14 +1,23 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import "./Suggestions.scss";
 import { Avatar } from "@material-ui/core";
+import { setUserId } from "../../reducerSlices/postSlicer";
 
 interface iProps {
   item: any;
+  id: string;
 }
 
-const Suggestions: React.FC<iProps> = ({ item, children }) => {
+const Suggestions: React.FC<iProps> = ({ id, item, children }) => {
+  const dispatch = useDispatch();
+
   return (
-    <div className="Suggestions" id={item.id}>
+    <div
+      className="Suggestions"
+      id={id}
+      onClick={() => dispatch(setUserId(id))}
+    >
       <div className="Suggestions__Profile">
         <div className="Suggestions__User">
           <Avatar

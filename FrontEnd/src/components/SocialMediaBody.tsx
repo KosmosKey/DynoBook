@@ -93,10 +93,6 @@ const SocialMediaBody: React.FC = () => {
   const [posts, setPosts] = useState<any>(null);
   const [imagePreview, setImagePreview] = useState<any>(null);
 
-  const [commentComponentBolean, setCommentComponentBolean] = useState<boolean>(
-    false
-  );
-
   const [userinformationProfile, setUserinformationProfile] = useState<any>(
     null
   );
@@ -259,6 +255,7 @@ const SocialMediaBody: React.FC = () => {
 
       db.collection("posts")
         .add({
+          id: user?.id,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           first_name: user.first_name,
           last_name: user.last_name,
@@ -395,7 +392,6 @@ const SocialMediaBody: React.FC = () => {
         .doc(user_id)
         .onSnapshot((snapshot) => {
           setUserinformationProfile({ id: snapshot.id, user: snapshot.data() });
-          setCommentComponentBolean(true);
         });
 
       db.collection("user")
@@ -422,16 +418,17 @@ const SocialMediaBody: React.FC = () => {
   }, [user_id, dispatch]);
 
   const closeCommentComponent = () => {
-    setCommentComponentBolean(false);
     dispatch(setUserNull(null));
+    setUserinformationProfile(null);
   };
+
   return (
     <div className="SocialMediaBody__">
       <div
         className={`overlayNavBar ${navigationBarBolean && "active"}`}
         onClick={() => dispatch(closeNavBar(false))}
       ></div>
-      {commentComponentBolean && (
+      {user_id && userinformationProfile && (
         <CommentComponent
           followers={detectFollowers}
           following={detectFollowing}
@@ -796,7 +793,7 @@ const SocialMediaBody: React.FC = () => {
           <h3>Suggestions</h3>
           <div className="SocialMediaBody__SuggestionsResults">
             {suggestionUsers.map(({ id, suggestion }: any) => (
-              <Suggestions key={id} item={suggestion}>
+              <Suggestions id={id} key={id} item={suggestion}>
                 {userFollowing.includes(id) ? (
                   <IconButton
                     className="Suggestions__AddButton Following"

@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import db from "./firebase";
 import NavigationBarUsers from "./NavigationBarUsers";
 import { setNavBar } from "../reducerSlices/appSlicer";
+import { userId } from "../reducerSlices/postSlicer";
 
 const NavigationBar: React.FC = () => {
   const user_profile = useSelector(profile_picture);

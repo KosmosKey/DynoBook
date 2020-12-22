@@ -8,7 +8,11 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import moment from "moment";
 import Comment from "./Comment";
 import SendIcon from "@material-ui/icons/Send";
-import { setCommentId, commentId } from "../../reducerSlices/postSlicer";
+import {
+  setCommentId,
+  commentId,
+  setUserId,
+} from "../../reducerSlices/postSlicer";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import db from "../firebase";
 import {
@@ -47,6 +51,7 @@ const Posts: React.FC<iProps> = ({
       return null;
     } else {
       db.collection("posts").doc(idComment).collection("comments").add({
+        id: user?.id,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         first_name: user?.first_name,
         last_name: user?.last_name,
@@ -80,7 +85,10 @@ const Posts: React.FC<iProps> = ({
       )}
       <div className="Posts__NameInformation">
         <div className="Posts__Name">
-          <div className="Posts__AvatarTitle">
+          <div
+            className="Posts__AvatarTitle"
+            onClick={() => dispatch(setUserId(item.id))}
+          >
             <Avatar
               className="Avatar"
               style={
