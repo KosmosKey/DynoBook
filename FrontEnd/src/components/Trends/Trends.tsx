@@ -12,7 +12,7 @@ const Trends: React.FC = () => {
       </header>
 
       <section className="TrendsPageSection">
-        <Grid container direction="row" spacing={7}>
+        <Grid container justify="center" direction="row" spacing={7}>
           <Grid item>
             <TrendsPosts
               paragraph=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam fugiat
