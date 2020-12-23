@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.scss";
 import Login from "./components/auth/Login";
@@ -19,6 +19,7 @@ import {
 } from "./reducerSlices/authSlicer";
 import axios from "./Axios";
 import LoadingScreen from "./components/LoadingScreen";
+import Trends from "./components/Trends/Trends";
 
 function App() {
   const user = useSelector(userAuthenticated);
@@ -51,6 +52,7 @@ function App() {
         <ProtectedRoute path="/Login" component={SignUp} />
         <ProtectedRoute path="/Signup" component={Login} />
         <PrivateRouter path="/Home" component={SocialMediaBody} />
+        <Route path="/Trends" component={Trends} />
       </Switch>
     </div>
   );

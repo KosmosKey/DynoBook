@@ -1,0 +1,105 @@
+.TrendsPage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: red;
+
+  header {
+    border-bottom: 2px solid #f6f8fa;
+    background: #eb5043;
+    padding: 70px;
+
+    h1 {
+      color: #fff;
+      text-align: center;
+      font-size: xx-large;
+    }
+  }
+  .TrendsPageSection {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    overflow: scroll !important;
+    flex: 1;
+    padding-bottom: 100px;
+    background: #f3f5f7;
+  }
+  .Trends__InputField {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    .Trends__SendIcon {
+      background: #eb5043;
+      margin: 0 15px;
+      .MuiSvgIcon-root {
+        font-size: large !important;
+        color: #fff;
+      }
+    }
+    .Trends__Input {
+      background: #f6f8fa;
+      display: flex;
+      padding: 20px;
+      align-items: center;
+      input {
+        flex: 1;
+        padding: 15px 20px;
+        border-radius: 50px;
+        border: none;
+        outline-width: 0;
+        background: #fff;
+        font-size: small;
+      }
+    }
+  }
+}
+
+.TrendsPosts {
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  .MuiAvatar-root {
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .TrendsPosts__Paragraph {
+    p {
+      font-size: small;
+      margin-top: 10px;
+      font-weight: 400;
+      line-height: 23px;
+    }
+  }
+  .TrendsPosts__Profile {
+    display: flex;
+    align-items: center;
+    h3 {
+      margin-left: 10px;
+      font-size: medium;
+      font-weight: 600;
+    }
+  }
+  .TrendPosts__RepliedTo {
+    border-top: #f3f5f7;
+    padding-top: 15px;
+    p {
+      font-size: small;
+      font-weight: 500;
+
+      span {
+        color: #e5aeab;
+        cursor: pointer;
+        font-weight: 600 !important;
+      }
+      span:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
