@@ -191,11 +191,13 @@ const SocialMediaBody: React.FC = () => {
           setProfileLoading(false);
         });
 
-      db.collection("trends").onSnapshot((snapshot) =>
-        setTrendsArray(
-          snapshot.docs.map((doc) => ({ id: doc.id, trend: doc.data() }))
-        )
-      );
+      db.collection("trends")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) =>
+          setTrendsArray(
+            snapshot.docs.map((doc) => ({ id: doc.id, trend: doc.data() }))
+          )
+        );
     }
   }, [user, dispatch]);
 
@@ -437,7 +439,10 @@ const SocialMediaBody: React.FC = () => {
 
   const trendFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    db.collection("trends").add({ trendText: trendInput });
+    db.collection("trends").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      trendText: trendInput,
+    });
     setTrendInput("");
     setTrendSuccessMessage(true);
 
@@ -863,7 +868,7 @@ const SocialMediaBody: React.FC = () => {
           </form>
           <div className="SocialMediaBody__TrendsBody">
             {trendsArray.map(({ id, trend }: any) => (
-              <Trends key={id} paragraph={trend.trendText} />
+              <Trends id={id} key={id} paragraph={trend.trendText} />
             ))}
           </div>
         </div>

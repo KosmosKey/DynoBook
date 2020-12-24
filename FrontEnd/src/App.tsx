@@ -53,7 +53,7 @@ function App() {
         <ProtectedRoute path="/Login" component={SignUp} />
         <ProtectedRoute path="/Signup" component={Login} />
         <PrivateRouter path="/Home" component={SocialMediaBody} />
-        <Route path="/Trends/:hashtag" component={Trends} />
+        <Route path="/Trends" component={Trends} />
         <Route path="*" component={FourZeroFour} />
       </Switch>
     </div>
