@@ -29,6 +29,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import AddIcon from "@material-ui/icons/Add";
 import {
   profile_picture,
   setProfilePicture,
@@ -92,6 +93,12 @@ const SocialMediaBody: React.FC = () => {
   const [imageName, setImageName] = useState<any>("");
   const [posts, setPosts] = useState<any>(null);
   const [imagePreview, setImagePreview] = useState<any>(null);
+
+  const [trendsArray, setTrendsArray] = useState<any>([]);
+  const [trendInput, setTrendInput] = useState("");
+  const [trendSuccessMessage, setTrendSuccessMessage] = useState<boolean>(
+    false
+  );
 
   const [userinformationProfile, setUserinformationProfile] = useState<any>(
     null
@@ -183,6 +190,12 @@ const SocialMediaBody: React.FC = () => {
           dispatch(setProfilePicture(snapshot?.data()?.profile_picture));
           setProfileLoading(false);
         });
+
+      db.collection("trends").onSnapshot((snapshot) =>
+        setTrendsArray(
+          snapshot.docs.map((doc) => ({ id: doc.id, trend: doc.data() }))
+        )
+      );
     }
   }, [user, dispatch]);
 
@@ -422,6 +435,16 @@ const SocialMediaBody: React.FC = () => {
     setUserinformationProfile(null);
   };
 
+  const trendFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    db.collection("trends").add({ trendText: trendInput });
+    setTrendInput("");
+    setTrendSuccessMessage(true);
+
+    setTimeout(() => {
+      setTrendSuccessMessage(false);
+    }, 2500);
+  };
   return (
     <div className="SocialMediaBody__">
       <div
@@ -815,12 +838,33 @@ const SocialMediaBody: React.FC = () => {
         </div>
         <div className="SocialMediaBody__Trends">
           <h3>Trends</h3>
+
+          {trendSuccessMessage && (
+            <Alert severity="success" style={{ margin: "20px 0" }}>
+              You have successfully added a trend!
+            </Alert>
+          )}
+
+          <form
+            className="SocialMediaBody__TrendsInput"
+            onSubmit={trendFormSubmit}
+          >
+            <input
+              type="text"
+              placeholder="Add a trend..."
+              value={trendInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTrendInput(e.target.value)
+              }
+            />
+            <IconButton>
+              <AddIcon />
+            </IconButton>
+          </form>
           <div className="SocialMediaBody__TrendsBody">
-            <Trends paragraph="Manchester United" />
-            <Trends paragraph="Liverpool" />
-            <Trends paragraph="Chelsea" />
-            <Trends paragraph="Real Madrid" />
-            <Trends paragraph="Manchester City" />
+            {trendsArray.map(({ id, trend }: any) => (
+              <Trends key={id} paragraph={trend.trendText} />
+            ))}
           </div>
         </div>
       </div>

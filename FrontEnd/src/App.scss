@@ -373,8 +373,41 @@
     border: 2px solid #f1f4f6;
     margin-top: 10px;
     padding: 15px;
+    .SocialMediaBody__TrendsInput {
+      display: flex;
+      align-items: center;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      button {
+        background: #e5aeab;
+        padding: 5px !important;
+        border: 2px solid transparent;
+        transition: 200ms ease;
+        .MuiSvgIcon-root {
+          color: #fff;
+        }
+      }
+      button:hover {
+        background: #fff;
+        border: 2px solid #e5aeab;
+        .MuiSvgIcon-root {
+          color: #e5aeab;
+        }
+      }
+      input {
+        flex: 1;
+        margin-right: 15px;
+        padding: 15px;
+        border-radius: 50px;
+        border: none;
+        outline-width: 0;
+        background: #f6f8fa;
+      }
+    }
     .SocialMediaBody__TrendsBody {
       padding-top: 7px;
+      max-height: 250px;
+      overflow: scroll;
     }
     h3 {
       font-size: 23px;
@@ -443,7 +476,49 @@
   }
 }
 
+.FourZeroFour {
+  background: #fff;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .FourZeroFour__Div {
+    text-align: center;
+    h1 {
+      font-size: 155px;
+      color: #eb4233;
+    }
+    h3 {
+      color: #eb4233;
+      margin-top: -40px;
+    }
+
+    button {
+      width: 100%;
+      background: #eb4233;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+  }
+}
+
 @media screen and (max-width: 371px) {
+  .FourZeroFour {
+    align-items: center;
+    .FourZeroFour__Div {
+      text-align: center;
+      h1 {
+        font-size: 100px;
+        color: #eb4233;
+      }
+      h3 {
+        color: #eb4233;
+        margin-top: -20px;
+      }
+    }
+  }
+
   .LoadingScreen {
     .LoadingScreen__Logo {
       width: 100%;
