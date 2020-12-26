@@ -11,8 +11,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import db from "./firebase";
 import NavigationBarUsers from "./NavigationBarUsers";
 import { setNavBar } from "../reducerSlices/appSlicer";
-import { setUserId, userId } from "../reducerSlices/postSlicer";
+import { profileLoader } from "../reducerSlices/authSlicer";
+import { setUserId } from "../reducerSlices/postSlicer";
 import { Link } from "react-router-dom";
+import { Skeleton } from "@material-ui/lab";
 
 const NavigationBar: React.FC = () => {
   const user_profile = useSelector(profile_picture);
@@ -21,8 +23,20 @@ const NavigationBar: React.FC = () => {
   const [modalUsers, setModalUsers] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(true);
+  const [navShow, setNavShow] = useState<boolean>(false);
+
+  const profilePictureLoader = useSelector(profileLoader);
 
   const dispatch = useDispatch();
+
+  const handleScroll = () => {
+    console.log(window.scrollY);
+    if (window.scrollY > 150) {
+      setNavShow(true);
+    } else {
+      setNavShow(false);
+    }
+  };
 
   useEffect(() => {
     db.collection("user").onSnapshot((snapshot) =>
@@ -30,6 +44,11 @@ const NavigationBar: React.FC = () => {
         snapshot.docs.map((doc) => ({ id: doc.id, users: doc.data() }))
       )
     );
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const arratFiltered = listOfUsers?.filter(
@@ -58,7 +77,7 @@ const NavigationBar: React.FC = () => {
   };
 
   return (
-    <nav className="NavigationBar">
+    <nav className={`NavigationBar ${navShow && "changeColor"}`}>
       <div className="NavigationBar__Input">
         <input
           type="text"
@@ -108,12 +127,18 @@ const NavigationBar: React.FC = () => {
         <IconButton className="NavigationBar__NofiticationIcon">
           <NotificationsIcon />
         </IconButton>
-        <Avatar
-          src={user_profile && user_profile}
-          style={{ background: "#EB5043" }}
-        >
-          {!user_profile && user.first_name.charAt(0)}
-        </Avatar>
+
+        {profilePictureLoader ? (
+          <Skeleton variant="circle" className="NavigationBar__Skeleton" width={40} height={40} />
+        ) : (
+          <Avatar
+            src={user_profile && user_profile}
+            style={{ background: "#EB5043" }}
+            className="NavigationBar__Avatar"
+          >
+            {!user_profile && user.first_name.charAt(0)}
+          </Avatar>
+        )}
       </div>
       <IconButton
         className="NavigationBar__HamburgerMenu"

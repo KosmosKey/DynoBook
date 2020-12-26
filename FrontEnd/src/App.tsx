@@ -21,6 +21,7 @@ import axios from "./Axios";
 import LoadingScreen from "./components/LoadingScreen";
 import Trends from "./components/Trends/Trends";
 import FourZeroFour from "./FourZeroFour";
+import TrendsRoute from "./TrendsRoute";
 
 function App() {
   const user = useSelector(userAuthenticated);
@@ -53,7 +54,7 @@ function App() {
         <ProtectedRoute path="/Login" component={SignUp} />
         <ProtectedRoute path="/Signup" component={Login} />
         <PrivateRouter path="/Home" component={SocialMediaBody} />
-        <Route path="/Trends" component={Trends} />
+        <TrendsRoute path="/Trends" component={Trends} />
         <Route path="*" component={FourZeroFour} />
       </Switch>
     </div>

@@ -6,8 +6,9 @@
 
   header {
     border-bottom: 2px solid #f6f8fa;
-    background: #eb5043;
+    background: #e6aeab;
     padding: 70px;
+    position: sticky !important;
 
     h1 {
       color: #fff;
@@ -24,6 +25,9 @@
     flex: 1;
     padding-bottom: 100px;
     background: #f3f5f7;
+    .Trends__LoadingBar {
+      color: #ea5043;
+    }
     .NoResults {
       font-size: large;
       font-weight: 500;

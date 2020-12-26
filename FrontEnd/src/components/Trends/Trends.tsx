@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import firebase from "firebase";
 import "./TrendsPage.scss";
-import { Grid, IconButton } from "@material-ui/core";
+import { CircularProgress, Grid, IconButton } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import TrendsPosts from "./TrendsPosts";
 import {
@@ -20,7 +20,7 @@ const Trends: React.FC = () => {
   const trendsName = useSelector(trends_name);
   const trendId = useSelector(trends_id);
   const loadingTrends = useSelector(trends_loader);
-
+  console.log(loadingTrends);
   const [trendIdArray, setTrendIdArray] = useState<any>([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -64,12 +64,18 @@ const Trends: React.FC = () => {
       <section
         className="TrendsPageSection"
         style={
-          trendIdArray?.length === 0
+          trendIdArray?.length === 0 || loadingTrends
             ? { alignItems: "center", justifyContent: "center" }
             : {}
         }
       >
-        {trendIdArray?.length === 0 ? (
+        {loadingTrends ? (
+          <CircularProgress
+            size={100}
+            thickness={3}
+            className="Trends__LoadingBar"
+          />
+        ) : trendIdArray?.length === 0 ? (
           <h1 className="NoResults">
             Be the first one to post in #{trendsName}&nbsp;
             <span>😎</span>
