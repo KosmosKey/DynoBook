@@ -4,7 +4,14 @@ import "./NavBar.scss";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import HomeIcon from "@material-ui/icons/Home";
-import { Avatar, CircularProgress, IconButton } from "@material-ui/core";
+import {
+  Avatar,
+  CircularProgress,
+  IconButton,
+  Paper,
+  Popover,
+  Typography,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -15,6 +22,7 @@ import { profileLoader } from "../reducerSlices/authSlicer";
 import { setUserId } from "../reducerSlices/postSlicer";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@material-ui/lab";
+import { motion } from "framer-motion";
 
 const NavigationBar: React.FC = () => {
   const user_profile = useSelector(profile_picture);
@@ -24,10 +32,30 @@ const NavigationBar: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(true);
   const [navShow, setNavShow] = useState<boolean>(false);
+  const [anchorElMessage, setAnchorElMessage] = useState<null | any>(null);
+  const [anchorElNotification, setAnchorElNotification] = useState<null | any>(
+    null
+  );
 
   const profilePictureLoader = useSelector(profileLoader);
 
   const dispatch = useDispatch();
+
+  const handlePopOverMessage = (e: any) => {
+    setAnchorElMessage(e.currentTarget);
+  };
+
+  const handleClosePopOverMessage = (e: any) => {
+    setAnchorElMessage(null);
+  };
+
+  const handlePopOverNotification = (e: any) => {
+    setAnchorElNotification(e.currentTarget);
+  };
+
+  const handleClosePopOverNotification = (e: any) => {
+    setAnchorElNotification(null);
+  };
 
   const handleScroll = () => {
     console.log(window.scrollY);
@@ -76,9 +104,17 @@ const NavigationBar: React.FC = () => {
     setInputValue("");
   };
 
+  const openMessage = Boolean(anchorElMessage);
+  const openNotification = Boolean(anchorElNotification);
+
   return (
     <nav className={`NavigationBar ${navShow && "changeColor"}`}>
-      <div className="NavigationBar__Input">
+      <motion.div
+        className="NavigationBar__Input"
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <input
           type="text"
           placeholder="Search"
@@ -86,7 +122,7 @@ const NavigationBar: React.FC = () => {
           onChange={onChangeInputValue}
         />
         <SearchIcon />
-      </div>
+      </motion.div>
       {modalUsers && (
         <div
           className="NavigationBar__Modal"
@@ -113,23 +149,99 @@ const NavigationBar: React.FC = () => {
         </div>
       )}
       <Link to="/Home" style={{ textDecoration: "none" }}>
-        <h1 className="NavigationBar__TitleLogo">DynoBook</h1>
+        <motion.h1
+          className="NavigationBar__TitleLogo"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+        >
+          DynoBook
+        </motion.h1>
       </Link>
-      <div className="NavigationBar__ProfilePicture">
+      <motion.div
+        className="NavigationBar__ProfilePicture"
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <Link to="/Home">
           <IconButton className="NavigationBar__HomeIcon">
             <HomeIcon />
           </IconButton>
         </Link>
-        <IconButton className="NavigationBar__ChatIcon">
+        <IconButton
+          className="NavigationBar__ChatIcon"
+          aria-describedby={openMessage ? "popoverMessageBubble" : undefined}
+          onClick={handlePopOverMessage}
+        >
           <ChatBubbleIcon />
         </IconButton>
-        <IconButton className="NavigationBar__NofiticationIcon">
+        <Popover
+          id="mouse-over-popover"
+          open={openMessage}
+          anchorEl={anchorElMessage}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          onClose={handleClosePopOverMessage}
+        >
+          <Paper
+            style={{
+              maxWidth: "150px",
+              padding: "10px",
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
+            Messages coming soon...
+          </Paper>
+        </Popover>
+        <IconButton
+          className="NavigationBar__NofiticationIcon"
+          aria-describedby={
+            openNotification ? "popoverNotificationBubble" : undefined
+          }
+          onClick={handlePopOverNotification}
+        >
           <NotificationsIcon />
         </IconButton>
-
+        <Popover
+          id="mouse-over-popover"
+          open={openNotification}
+          anchorEl={anchorElNotification}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          onClose={handleClosePopOverNotification}
+        >
+          <Paper
+            style={{
+              maxWidth: "150px",
+              padding: "10px",
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
+            Notifications coming soon...
+          </Paper>
+        </Popover>
         {profilePictureLoader ? (
-          <Skeleton variant="circle" className="NavigationBar__Skeleton" width={40} height={40} />
+          <Skeleton
+            variant="circle"
+            className="NavigationBar__Skeleton"
+            width={40}
+            height={40}
+          />
         ) : (
           <Avatar
             src={user_profile && user_profile}
@@ -139,7 +251,7 @@ const NavigationBar: React.FC = () => {
             {!user_profile && user.first_name.charAt(0)}
           </Avatar>
         )}
-      </div>
+      </motion.div>
       <IconButton
         className="NavigationBar__HamburgerMenu"
         onClick={() => dispatch(setNavBar(true))}

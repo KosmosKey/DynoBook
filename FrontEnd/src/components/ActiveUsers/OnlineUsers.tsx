@@ -1,18 +1,31 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import "./Users.scss";
+import { setUserId } from "../../reducerSlices/postSlicer";
 
-const OnlineUsers = () => {
+type users = {
+  item: any;
+  id: string;
+};
+
+const OnlineUsers: React.FC<users> = ({ item, id }) => {
+  const dispatch = useDispatch();
+
   return (
-    <div className="OnlineUsers">
+    <div className="OnlineUsers" onClick={() => dispatch(setUserId(id))}>
       <div className="OnlineUsers__ProfilePictureName">
         <Avatar
           className="OnlineUsers__Avatar"
-          src="https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=800&q=70"
-        />
+          src={item?.profile_picture && item?.profile_picture}
+        >
+          {!item?.profile_picture && item?.first_name.charAt(0)}
+        </Avatar>
         <div className="OnlineUsers__Name">
-          <h3>Arcengelo Michael</h3>
-          <p>@FiorceArca</p>
+          <h3>
+            {item.first_name} {item.last_name}
+          </h3>
+          <p>@{item.username}</p>
         </div>
       </div>
     </div>

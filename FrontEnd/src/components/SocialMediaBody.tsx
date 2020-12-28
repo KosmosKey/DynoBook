@@ -45,6 +45,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import firebase from "firebase";
 import CommentComponent from "./LikesComment/CommentComponent";
 import { closeNavBar, navBarBolean } from "../reducerSlices/appSlicer";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -524,7 +525,12 @@ const SocialMediaBody: React.FC = () => {
       {emojiDisplay && (
         <div className="SocialMediaBody__Overlay" onClick={emoijFunction}></div>
       )}
-      <div className="SocialMediaBody__Posts">
+      <motion.div
+        className="SocialMediaBody__Posts"
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <form className="SocialMediaBody__InputContainer" onSubmit={upload}>
           {uploadSuccess && (
             <Alert severity="success">
@@ -668,8 +674,11 @@ const SocialMediaBody: React.FC = () => {
             ))
           )}
         </div>
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
         className={`SocialMediaBody__ProfileTrends ${
           navigationBarBolean && "active"
         }`}
@@ -872,18 +881,20 @@ const SocialMediaBody: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
-      <div className="SocialMediaBody__OnlineOfflineUsers">
+      </motion.div>
+      <motion.div
+        className="SocialMediaBody__OnlineOfflineUsers"
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <div className="SocialMediaBody__Online">
           <p className="SocialMediaBody__OnlineText">Users</p>
-          <OnlineUsers />
-          <OnlineUsers />
-          <OnlineUsers />
-          <OnlineUsers />
-          <OnlineUsers />
-          <OnlineUsers />
+          {suggestionUsers.map(({ id, suggestion }: any) => (
+            <OnlineUsers key={id} id={id} item={suggestion} />
+          ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

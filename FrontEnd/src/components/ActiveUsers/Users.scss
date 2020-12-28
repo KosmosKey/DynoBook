@@ -16,13 +16,16 @@
     align-items: center;
     .OnlineUsers__Name {
       margin-left: 10px;
+      p {
+        max-width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       h3 {
         margin-left: 3px;
         font-size: large;
         color: #141414;
-        display: inline-block;
         max-width: 80%;
-        height: 1.5em;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

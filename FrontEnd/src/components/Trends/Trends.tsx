@@ -15,6 +15,7 @@ import {
   profile_picture,
   userInformation,
 } from "../../reducerSlices/authSlicer";
+import { motion } from "framer-motion";
 
 const Trends: React.FC = () => {
   const trendsName = useSelector(trends_name);
@@ -43,25 +44,35 @@ const Trends: React.FC = () => {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    db.collection("trends")
-      .doc(trendId)
-      .collection("messages")
-      .add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        value: inputValue,
-        full_name: `${user?.first_name} ${user?.last_name}`,
-        avatar: profilePicture,
-      });
-    setInputValue("");
+    if (!inputValue) {
+      return null;
+    } else {
+      db.collection("trends")
+        .doc(trendId)
+        .collection("messages")
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          value: inputValue,
+          full_name: `${user?.first_name} ${user?.last_name}`,
+          avatar: profilePicture,
+        });
+      setInputValue("");
+    }
   };
 
   return (
     <div className="TrendsPage">
       <header>
-        <h1>#{trendsName && trendsName}</h1>
+        <motion.h1
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 2 }}
+        >
+          #{trendsName && trendsName}
+        </motion.h1>
       </header>
 
-      <section
+      <motion.section
         className="TrendsPageSection"
         style={
           trendIdArray?.length === 0 || loadingTrends
@@ -81,21 +92,27 @@ const Trends: React.FC = () => {
             <span>😎</span>
           </h1>
         ) : (
-          <Grid container justify="center" direction="row" spacing={7}>
-            {trendIdArray?.map(({ id, trend }: any) => (
-              <Grid item key={id}>
-                <TrendsPosts
-                  avatar={trend.avatar}
-                  trendHashtag={trendsName}
-                  key={id}
-                  paragraph={trend?.value}
-                  fullName={trend?.full_name}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 2 }}
+          >
+            <Grid container justify="center" direction="row" spacing={7}>
+              {trendIdArray?.map(({ id, trend }: any) => (
+                <Grid item key={id}>
+                  <TrendsPosts
+                    avatar={trend.avatar}
+                    trendHashtag={trendsName}
+                    key={id}
+                    paragraph={trend?.value}
+                    fullName={trend?.full_name}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </motion.div>
         )}
-      </section>
+      </motion.section>
       <div className="Trends__InputField">
         <form className="Trends__Input" onSubmit={submitForm}>
           <input

@@ -75,7 +75,7 @@ const Posts: React.FC<iProps> = ({
         <div
           style={{
             width: "100%",
-            height: "350px",
+            height: "450px",
             borderRadius: "5px 5px 2px 2px",
             backgroundImage: `url(${imagePost})`,
             backgroundSize: "cover",

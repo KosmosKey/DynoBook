@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "../../Axios";
 import db from "../firebase";
+import { motion } from "framer-motion";
 
 type eventTargets = {
   first_name: string;
@@ -68,7 +69,13 @@ const Login: React.FC = () => {
   return (
     <div className="Login">
       <div className="Login__Body">
-        <form onSubmit={onSubmit} className="Login__Container">
+        <motion.form
+          onSubmit={onSubmit}
+          className="Login__Container"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 2 }}
+        >
           <h1>Create Account</h1>
           {successAlert && (
             <Alert severity="success" className="Login__SuccessMessage">
@@ -123,7 +130,7 @@ const Login: React.FC = () => {
             />
           </div>
           <Button type="submit">Create Account</Button>
-        </form>
+        </motion.form>
       </div>
     </div>
   );

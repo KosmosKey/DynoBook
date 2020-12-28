@@ -6,6 +6,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
 import db from "../firebase";
 import { userInformation } from "../../reducerSlices/authSlicer";
+import { motion } from "framer-motion";
 
 type user = {
   user: any;
@@ -59,7 +60,12 @@ const CommentComponent: React.FC<user> = ({
   return (
     <div className="CommentComponent">
       <div className="Overlay" onClick={closeBrowser}></div>
-      <div className="CommentComponent__OverlayDiv">
+      <motion.div
+        className="CommentComponent__OverlayDiv"
+        initial={{ marginTop: "-150px", opacity: 0 }}
+        animate={{ marginTop: "0px", opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <IconButton
           className="CommentComponent__CloseBtn"
           onClick={closeBrowser}
@@ -115,7 +121,7 @@ const CommentComponent: React.FC<user> = ({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

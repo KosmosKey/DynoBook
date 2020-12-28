@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
+import { motion } from "framer-motion";
 import "./HomePage.scss";
 import BackgroundImage from "./header-hero.png";
 import Particles from "react-particles-js";
@@ -10,8 +10,13 @@ const HomePage = () => {
   return (
     <div className="HomePage">
       <div className="HomePage__Body">
-        <header>
-          <div className="HomePage__Title">
+        <motion.header>
+          <motion.div
+            className="HomePage__Title"
+            initial={{ bottom: 100, opacity: 0 }}
+            animate={{ bottom: 0, opacity: 1 }}
+            transition={{ duration: 2 }}
+          >
             <h3>Welcome to DynoBook</h3>
             <h1>A Place to Share Your Ideas</h1>
             <p>
@@ -36,11 +41,17 @@ const HomePage = () => {
                 <Button className="HomePage__LogIn">Log In</Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
           <svg viewBox="0 0 500 80" preserveAspectRatio="none">
             <path d="M0,0 L0,40 Q250,80 500,40 L500,0 Z" fill="#eb4233" />
           </svg>
-          <img src={BackgroundImage} alt="Laptop" />
+          <motion.img
+            src={BackgroundImage}
+            alt="Laptop"
+            initial={{ bottom: -100, opacity: 0 }}
+            animate={{ bottom: "-50px", opacity: 1 }}
+            transition={{ duration: 2 }}
+          />
           <Particles
             params={{
               particles: {
@@ -76,7 +87,7 @@ const HomePage = () => {
             }}
             className="ParticlesJS"
           />
-        </header>
+        </motion.header>
       </div>
     </div>
   );

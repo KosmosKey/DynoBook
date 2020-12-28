@@ -8,7 +8,7 @@ nav {
   position: sticky !important;
   top: 0;
   z-index: 2;
-  transition: 350ms ease;
+  transition: 500ms ease-in-out;
 
   .NavigationBar__Skeleton {
     background: #e3e3e3 !important;

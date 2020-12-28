@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "../../Axios";
 import { loginSuccess } from "../../reducerSlices/authSlicer";
+import { motion } from "framer-motion";
 
 type loginTargets = {
   username: string;
@@ -49,7 +50,13 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="SignUp">
-      <form onSubmit={onSubmit} className="SignUp__Body">
+      <motion.form
+        onSubmit={onSubmit}
+        className="SignUp__Body"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
         <div className="SignUp__Container">
           <h1>Log In</h1>
           {errorLogin && (
@@ -79,7 +86,7 @@ const SignUp: React.FC = () => {
           </div>
           <Button type="submit">Log In</Button>
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 };
