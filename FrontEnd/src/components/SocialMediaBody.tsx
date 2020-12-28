@@ -101,6 +101,9 @@ const SocialMediaBody: React.FC = () => {
     false
   );
 
+  const match = useMediaQuery("(max-width:1279px)");
+  const matchNavBar = useMediaQuery("(max-width:850px)");
+
   const [userinformationProfile, setUserinformationProfile] = useState<any>(
     null
   );
@@ -440,16 +443,20 @@ const SocialMediaBody: React.FC = () => {
 
   const trendFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    db.collection("trends").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      trendText: trendInput,
-    });
-    setTrendInput("");
-    setTrendSuccessMessage(true);
+    if (!trendInput) {
+      return null;
+    } else {
+      db.collection("trends").add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        trendText: trendInput,
+      });
+      setTrendInput("");
+      setTrendSuccessMessage(true);
 
-    setTimeout(() => {
-      setTrendSuccessMessage(false);
-    }, 2500);
+      setTimeout(() => {
+        setTrendSuccessMessage(false);
+      }, 2500);
+    }
   };
   return (
     <div className="SocialMediaBody__">
@@ -618,17 +625,18 @@ const SocialMediaBody: React.FC = () => {
                 </IconButton>
               </div>
             )}
-
-            <Button type="submit" className="SendBtn">
-              {submitLoader ? (
-                <p>Sending...</p>
-              ) : (
-                <Fragment>
-                  <p className="SocialMediaBody__SendParagraph">Send</p>
-                  <SendIcon className="SendIcon" />
-                </Fragment>
-              )}
-            </Button>
+            <motion.div whileTap={{ scale: 0.9 }}>
+              <Button type="submit" className="SendBtn">
+                {submitLoader ? (
+                  <p>Sending...</p>
+                ) : (
+                  <Fragment>
+                    <p className="SocialMediaBody__SendParagraph">Send</p>
+                    <SendIcon className="SendIcon" />
+                  </Fragment>
+                )}
+              </Button>
+            </motion.div>
           </div>
         </form>
         <div
@@ -656,19 +664,35 @@ const SocialMediaBody: React.FC = () => {
                 item={posts}
               >
                 {likePostsUser.includes(id) ? (
-                  <Fragment>
+                  <motion.div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <IconButton onClick={() => removeLike(id)}>
                       <FavoriteIcon style={{ color: "#EB5043" }} />
                     </IconButton>
                     <p style={{ color: "#EB5043" }}>{posts?.likesCount}</p>
-                  </Fragment>
+                  </motion.div>
                 ) : (
-                  <Fragment>
+                  <motion.div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <IconButton onClick={() => likePost(id)}>
                       <FavoriteBorderIcon style={{ color: "#A7A7A7" }} />
                     </IconButton>
                     <p>{posts?.likesCount}</p>
-                  </Fragment>
+                  </motion.div>
                 )}
               </Posts>
             ))
@@ -676,9 +700,9 @@ const SocialMediaBody: React.FC = () => {
         </div>
       </motion.div>
       <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 2 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={!match ? { duration: 2 } : {}}
         className={`SocialMediaBody__ProfileTrends ${
           navigationBarBolean && "active"
         }`}
@@ -765,7 +789,11 @@ const SocialMediaBody: React.FC = () => {
               <Fragment>
                 <div className="SocialMediaProfile__Info">
                   <div className="AvatarProfile">
-                    <div className="Avatar__Div">
+                    <motion.div
+                      className="Avatar__Div"
+                      whileHover={!matchNavBar ? { scale: 1.1 } : {}}
+                      whileTap={!matchNavBar ? { scale: 0.9 } : {}}
+                    >
                       <Avatar
                         src={user_profile && user_profile}
                         className="Avatar"
@@ -784,7 +812,7 @@ const SocialMediaBody: React.FC = () => {
                           <span>Edit</span>
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                     <div className="Name">
                       <div className="Name__H1_Icon">
                         <h1>
@@ -832,19 +860,29 @@ const SocialMediaBody: React.FC = () => {
             {suggestionUsers.map(({ id, suggestion }: any) => (
               <Suggestions id={id} key={id} item={suggestion}>
                 {userFollowing.includes(id) ? (
-                  <IconButton
-                    className="Suggestions__AddButton Following"
-                    onClick={() => unfollowUser(id)}
+                  <motion.div
+                    whileHover={{ scale: 0.9 }}
+                    whileTap={{ scale: 0.7 }}
                   >
-                    <CheckCircleIcon className="Suggestions__CheckIcon" />
-                  </IconButton>
+                    <IconButton
+                      className="Suggestions__AddButton Following"
+                      onClick={() => unfollowUser(id)}
+                    >
+                      <CheckCircleIcon className="Suggestions__CheckIcon" />
+                    </IconButton>
+                  </motion.div>
                 ) : (
-                  <IconButton
-                    className="Suggestions__AddButton"
-                    onClick={() => followUser(id)}
+                  <motion.div
+                    whileHover={{ scale: 0.9 }}
+                    whileTap={{ scale: 0.7 }}
                   >
-                    <AddCircleOutlineOutlinedIcon className="CircleOutlineIcon" />
-                  </IconButton>
+                    <IconButton
+                      className="Suggestions__AddButton"
+                      onClick={() => followUser(id)}
+                    >
+                      <AddCircleOutlineOutlinedIcon className="CircleOutlineIcon" />
+                    </IconButton>
+                  </motion.div>
                 )}
               </Suggestions>
             ))}
@@ -871,9 +909,11 @@ const SocialMediaBody: React.FC = () => {
                 setTrendInput(e.target.value)
               }
             />
-            <IconButton>
-              <AddIcon />
-            </IconButton>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <IconButton>
+                <AddIcon />
+              </IconButton>
+            </motion.div>
           </form>
           <div className="SocialMediaBody__TrendsBody">
             {trendsArray.map(({ id, trend }: any) => (

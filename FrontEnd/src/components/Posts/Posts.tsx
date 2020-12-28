@@ -19,6 +19,7 @@ import {
   profile_picture,
   userInformation,
 } from "../../reducerSlices/authSlicer";
+import { motion } from "framer-motion";
 
 interface iProps {
   imagePost: string;
@@ -121,15 +122,18 @@ const Posts: React.FC<iProps> = ({
         <div className="Posts__LikesComments">
           <div className="Posts__Icons">
             <div className="PostIconButton favourite">{children}</div>
-
-            <div className="PostIconButton messagebtn">
+            <motion.div
+              className="PostIconButton messagebtn"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <IconButton onClick={() => dispatchFunction(id)}>
                 <TextsmsOutlinedIcon
                   className="MessageOutline"
                   style={idComment === id ? { color: "#93e2f8" } : {}}
                 />
               </IconButton>
-            </div>
+            </motion.div>
           </div>
           <div className="Posts__Location">
             {item?.favorite && (

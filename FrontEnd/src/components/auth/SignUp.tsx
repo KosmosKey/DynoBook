@@ -40,7 +40,7 @@ const SignUp: React.FC = () => {
         setLoginTargets({ ...loginTargets, username: "", password: "" });
       })
       .catch((err) => {
-        setErrorLogin(err.response.data);
+        setErrorLogin(err?.response?.data);
       });
   };
 

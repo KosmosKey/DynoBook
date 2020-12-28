@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import "./Users.scss";
 import { setUserId } from "../../reducerSlices/postSlicer";
+import { motion } from "framer-motion";
 
 type users = {
   item: any;
@@ -13,7 +14,11 @@ const OnlineUsers: React.FC<users> = ({ item, id }) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="OnlineUsers" onClick={() => dispatch(setUserId(id))}>
+    <motion.div
+      className="OnlineUsers"
+      onClick={() => dispatch(setUserId(id))}
+      whileTap={{ scale: 0.9 }}
+    >
       <div className="OnlineUsers__ProfilePictureName">
         <Avatar
           className="OnlineUsers__Avatar"
@@ -28,7 +33,7 @@ const OnlineUsers: React.FC<users> = ({ item, id }) => {
           <p>@{item.username}</p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -38,12 +38,14 @@
   .CommentComponent__AvatarName {
     display: flex;
     align-items: flex-start;
+
     .CommentComponent__Avatar {
       width: 200px;
       height: 200px;
       font-size: 100px;
       font-weight: bold;
       background: #eb5043;
+      text-transform: capitalize;
     }
     .CommentComopnent__UsersName {
       text-align: center;

@@ -21,7 +21,6 @@ const Trends: React.FC = () => {
   const trendsName = useSelector(trends_name);
   const trendId = useSelector(trends_id);
   const loadingTrends = useSelector(trends_loader);
-  console.log(loadingTrends);
   const [trendIdArray, setTrendIdArray] = useState<any>([]);
   const [inputValue, setInputValue] = useState("");
 

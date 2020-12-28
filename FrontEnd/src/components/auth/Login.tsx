@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Login.scss";
 import PersonIcon from "@material-ui/icons/Person";
-import EmailIcon from "@material-ui/icons/Email";
 import LockIcon from "@material-ui/icons/Lock";
 import { Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
@@ -58,7 +57,7 @@ const Login: React.FC = () => {
       })
       .catch((err) => {
         setSuccessAlert("");
-        setErrorAlert(err.response.data);
+        setErrorAlert(err?.response?.data);
       });
   };
 

@@ -10,7 +10,6 @@ import {
   IconButton,
   Paper,
   Popover,
-  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
@@ -20,7 +19,7 @@ import NavigationBarUsers from "./NavigationBarUsers";
 import { setNavBar } from "../reducerSlices/appSlicer";
 import { profileLoader } from "../reducerSlices/authSlicer";
 import { setUserId } from "../reducerSlices/postSlicer";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Skeleton } from "@material-ui/lab";
 import { motion } from "framer-motion";
 
@@ -36,6 +35,8 @@ const NavigationBar: React.FC = () => {
   const [anchorElNotification, setAnchorElNotification] = useState<null | any>(
     null
   );
+
+  const history = useHistory();
 
   const profilePictureLoader = useSelector(profileLoader);
 
@@ -58,7 +59,6 @@ const NavigationBar: React.FC = () => {
   };
 
   const handleScroll = () => {
-    console.log(window.scrollY);
     if (window.scrollY > 150) {
       setNavShow(true);
     } else {
@@ -254,7 +254,10 @@ const NavigationBar: React.FC = () => {
       </motion.div>
       <IconButton
         className="NavigationBar__HamburgerMenu"
-        onClick={() => dispatch(setNavBar(true))}
+        onClick={() => {
+          dispatch(setNavBar(true));
+          history.push("/Home");
+        }}
       >
         <MenuIcon />
       </IconButton>
