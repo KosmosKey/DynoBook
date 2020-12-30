@@ -26,15 +26,12 @@ const SignUp: React.FC = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .post(
-        "/dyno/login",
-        {
-          username: loginTargets.username,
-          password: loginTargets.password,
-        },
-        { withCredentials: true }
-      )
+      .post("/dyno/login", {
+        username: loginTargets.username,
+        password: loginTargets.password,
+      })
       .then((res) => {
+        localStorage.setItem("token", res.data.token);
         dispatch(loginSuccess(true));
         setErrorLogin("");
         setLoginTargets({ ...loginTargets, username: "", password: "" });

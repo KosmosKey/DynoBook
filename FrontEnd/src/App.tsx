@@ -33,10 +33,18 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    var config: { headers: any } = {
+      headers: { "Content-type": "application/json" },
+    };
+
+    if (token) {
+      config.headers["x-auth-bearer"] = token;
+    }
+
     axios
-      .get("/dyno", {
-        withCredentials: true,
-      })
+      .get("/dyno", config)
       .then((res) => {
         dispatch(setUserInformation(res.data));
       })

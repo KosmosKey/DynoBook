@@ -39,6 +39,8 @@ const Trends: React.FC = () => {
           );
         });
     }
+
+    return () => setTrendIdArray(null);
   }, [trendId]);
 
   const submitForm = (e: React.FormEvent) => {

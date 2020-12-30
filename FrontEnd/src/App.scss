@@ -556,10 +556,17 @@
   }
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 880px) {
   .CommentComponent {
     display: none !important;
   }
+
+  .AddButtonTrends {
+    .MuiSvgIcon-root {
+      font-size: large !important;
+    }
+  }
+
   .SocialMediaBody__SendParagraph {
     display: none !important;
   }

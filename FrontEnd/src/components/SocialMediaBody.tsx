@@ -276,9 +276,9 @@ const SocialMediaBody: React.FC = () => {
         .add({
           id: user?.id,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          first_name: user.first_name,
-          last_name: user.last_name,
-          username: user.username,
+          first_name: user?.first_name,
+          last_name: user?.last_name,
+          username: user?.username,
           message: textValue,
           favorite: favorite,
           profile_picture: user_profile,
@@ -910,7 +910,7 @@ const SocialMediaBody: React.FC = () => {
               }
             />
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton>
+              <IconButton className="AddButtonTrends" type="submit">
                 <AddIcon />
               </IconButton>
             </motion.div>

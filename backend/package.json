@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "concurrently \"nodemon index.js\" \"cd ../FrontEnd && npm start\"",
     "heroku-postbuild": "npm run build"
   },
   "engines": {
@@ -23,8 +23,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "framer-motion": "^2.9.4",
+    "i": "^0.3.6",
     "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.17",
+    "npm": "^6.14.10",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-location-picker": "^1.5.0"

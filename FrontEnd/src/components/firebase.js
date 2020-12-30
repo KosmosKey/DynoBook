@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAxU4lJOly42R7aFzGBmC9oenWTy27YvxE",
-  authDomain: "dynobook-11d8e.firebaseapp.com",
-  databaseURL: "https://dynobook-11d8e.firebaseio.com",
-  projectId: "dynobook-11d8e",
-  storageBucket: "dynobook-11d8e.appspot.com",
-  messagingSenderId: "456753298435",
-  appId: "1:456753298435:web:1443494a475b37b00da236",
+  apiKey: "AIzaSyAzQE6TW3gMgQkh5GVe-lZpu6fiVJinNJI",
+  authDomain: "dynobook-d7510.firebaseapp.com",
+  projectId: "dynobook-d7510",
+  storageBucket: "dynobook-d7510.appspot.com",
+  messagingSenderId: "1069107457432",
+  appId: "1:1069107457432:web:a860f8ef18693fde4d4fed",
+  measurementId: "G-GDLW9QJK4C",
 };
 
 const firebaseapp = firebase.initializeApp(firebaseConfig);

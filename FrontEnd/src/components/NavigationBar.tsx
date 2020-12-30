@@ -12,7 +12,11 @@ import {
   Popover,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import { profile_picture, userInformation } from "../reducerSlices/authSlicer";
+import {
+  logoutUser,
+  profile_picture,
+  userInformation,
+} from "../reducerSlices/authSlicer";
 import MenuIcon from "@material-ui/icons/Menu";
 import db from "./firebase";
 import NavigationBarUsers from "./NavigationBarUsers";
@@ -21,6 +25,7 @@ import { profileLoader } from "../reducerSlices/authSlicer";
 import { setUserId } from "../reducerSlices/postSlicer";
 import { Link, useHistory } from "react-router-dom";
 import { Skeleton } from "@material-ui/lab";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { motion } from "framer-motion";
 
 const NavigationBar: React.FC = () => {
@@ -102,6 +107,12 @@ const NavigationBar: React.FC = () => {
     dispatch(setUserId(id));
     setModalUsers(false);
     setInputValue("");
+  };
+
+  const logout = () => {
+    dispatch(logoutUser(false));
+    history.push("/");
+    localStorage.removeItem("token");
   };
 
   const openMessage = Boolean(anchorElMessage);
@@ -251,7 +262,11 @@ const NavigationBar: React.FC = () => {
             {!user_profile && user.first_name.charAt(0)}
           </Avatar>
         )}
+        <IconButton style={{ marginLeft: "5px" }} onClick={logout}>
+          <ExitToAppIcon />
+        </IconButton>
       </motion.div>
+
       <IconButton
         className="NavigationBar__HamburgerMenu"
         onClick={() => {
