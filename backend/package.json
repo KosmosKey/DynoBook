@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon index.js\" \"cd ../FrontEnd && npm start\""
+    "start": "nodemon index.js",
+    "heroku-postbuild": "npm run build"
+  },
+  "engines": {
+    "node": "12.19.0"
   },
   "author": "",
   "license": "ISC",
